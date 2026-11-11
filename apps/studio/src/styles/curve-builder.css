@@ -1,0 +1,47 @@
+/* Market > Curve setups (Piece B, step B1): the setup list, the quote grid, the paste box and the result lines. Design
+   tokens only; the shared vocabulary (.card, .field, .input, .btn, .chip, .table-wrap) is components.css and app.css.
+   Imported from pages/market/CurveBuilderPage.tsx, and from pages/market/DerivedCurvesPage.tsx (Piece B, step B2), which
+   reuses the list, grid and result classes. The grid scrolls sideways inside its own .table-wrap, so the page itself
+   never does. */
+
+.cb-page { display: grid; gap: var(--sp-5); min-width: 0; }
+
+.cb-list { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: grid; gap: var(--sp-2); }
+.cb-item { display: grid; gap: var(--sp-1); padding: var(--sp-3); border: 1px solid var(--line); border-radius: var(--r-1); background: var(--surface); min-width: 0; }
+.cb-item-on { border-color: var(--accent); background: var(--accent-wash); }
+.cb-item-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.cb-item-label { font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.cb-item-id { font-size: var(--fs-1); overflow-wrap: anywhere; }
+.cb-item-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-1); }
+.cb-active { color: var(--accent); border-color: var(--accent); background: var(--accent-wash); }
+/* The presets under the saved setups (B4 Task 9): a quieter list of its own, under a small heading. */
+.cb-presets { margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1px solid var(--line); }
+.cb-presets-title { font-size: var(--fs-2); font-weight: 600; color: var(--ink-2); }
+/* A derived curve's estimatedOnDefault, read only (B4 Task 9). */
+.cb-item-stamp { font-size: var(--fs-2); }
+
+.cb-grid { margin-top: var(--sp-3); }
+.cb-grid select { height: 36px; background: var(--surface-2); }
+.cb-grid .input.cb-tenor { width: 8ch; }
+.cb-grid .input.cb-value { width: 12ch; }
+
+.cb-paste-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(160px, 220px); gap: var(--sp-4); align-items: start; margin-top: var(--sp-3); }
+.cb-paste-row select { height: 36px; background: var(--surface-2); }
+.cb-paste { height: auto; min-height: 120px; padding: var(--sp-2) var(--sp-3); font-family: var(--mono); resize: vertical; }
+
+.cb-result { margin-top: var(--sp-3); }
+.cb-result p { margin: 0 0 var(--sp-1); }
+.cb-lines { overflow-wrap: anywhere; }
+.cb-note-ok { list-style: none; margin: var(--sp-3) 0 0; padding: 0; color: var(--ink); }
+.cb-note { margin-top: var(--sp-3); }
+
+@media (max-width: 900px) {
+  .cb-paste-row { grid-template-columns: minmax(0, 1fr); }
+  /* The three-column preview fits a 375px phone: the table takes the wrapper's width instead of its one-line
+     max-content width, headers may wrap at their spaces, and cells pad by 8px a side. The widest column is then the
+     longer of DISCOUNT and a six-decimal factor, so the table needs about 210px of a 326px wrapper; a narrower screen
+     still scrolls inside the wrapper. */
+  .cb-preview-wrap.table-wrap .table.cb-preview { width: 100%; }
+  .cb-preview-wrap.table-wrap .table.cb-preview th { white-space: normal; overflow-wrap: normal; padding-left: var(--sp-2); padding-right: var(--sp-2); }
+  .cb-preview-wrap.table-wrap .table.cb-preview td { padding-left: var(--sp-2); padding-right: var(--sp-2); }
+}

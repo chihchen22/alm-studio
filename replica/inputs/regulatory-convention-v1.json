@@ -1,0 +1,9 @@
+{
+  "id": "regulatory-convention-v1",
+  "label": "The regulatory deposit convention's four parameters (cap on the marginal pass-through, cap on the core share, prescribed average life of the core ladder, number of rungs)",
+  "source": "Stated inputs to the convention, not derived by the replica: the engine's own defaults, read off the engine before any document stated them, and restated here so that both sides read the same four numbers (docs/oss/mid-size-bank.md, method note M8). The replica checks that the engine applies them; it does not check that they are right.",
+  "passThroughCap": 0.5,
+  "coreShareCap": 0.9,
+  "prescribedAverageLifeYears": 5.0,
+  "rungs": 10
+}

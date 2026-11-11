@@ -1,0 +1,360 @@
+:root {
+  --bg: #f7f7f6;
+  --panel: #ffffff;
+  --ink: #1a1c1e;
+  --muted: #5c6470;
+  --line: #e2e4e8;
+  --line-strong: #c9cdd4;
+  --head: #eef0f2;
+  --accent: #245e8a;
+  --pos: #1f7a4d;
+  --neg: #b23b3b;
+  --warn-bg: #fbf1d6;
+  --warn-ink: #7a5a12;
+  /* Chart series (piece 4b): validated categorical palette, light steps. */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  /* Sequential ramp (piece 4c): dataviz reference blue, steps 100 to 700, low to high. */
+  --seq-1: #cde2fb;
+  --seq-2: #b7d3f6;
+  --seq-3: #9ec5f4;
+  --seq-4: #86b6ef;
+  --seq-5: #6da7ec;
+  --seq-6: #5598e7;
+  --seq-7: #3987e5;
+  --seq-8: #2a78d6;
+  --seq-9: #256abf;
+  --seq-10: #1c5cab;
+  --seq-11: #184f95;
+  --seq-12: #104281;
+  --seq-13: #0d366b;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181b;
+    --panel: #1e2126;
+    --ink: #e6e8ea;
+    --muted: #9aa2ad;
+    --line: #2c3037;
+    --line-strong: #3a3f47;
+    --head: #262a30;
+    --accent: #6db3e6;
+    --pos: #5fce97;
+    --neg: #e88a8a;
+    --warn-bg: #3a3212;
+    --warn-ink: #e6cf8f;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    /* Sequential ramp (piece 4c), reversed for the dark surface: low recedes, high stands out. */
+    --seq-1: #0d366b;
+    --seq-2: #104281;
+    --seq-3: #184f95;
+    --seq-4: #1c5cab;
+    --seq-5: #256abf;
+    --seq-6: #2a78d6;
+    --seq-7: #3987e5;
+    --seq-8: #5598e7;
+    --seq-9: #6da7ec;
+    --seq-10: #86b6ef;
+    --seq-11: #9ec5f4;
+    --seq-12: #b7d3f6;
+    --seq-13: #cde2fb;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+}
+
+header.masthead {
+  border-bottom: 2px solid var(--line-strong);
+  padding-bottom: 14px;
+  margin-bottom: 8px;
+}
+
+header.masthead h1 {
+  font-size: 20px;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+header.masthead .sub {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+span.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.bookpicker {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0 2px;
+}
+
+.bookpicker button {
+  font: inherit;
+  font-size: 12px;
+  padding: 3px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.bookpicker button.active {
+  color: var(--ink);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+
+.provbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.provbar code {
+  font-family: var(--mono);
+  color: var(--ink);
+}
+
+section.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-top: 22px;
+}
+
+section.panel > h2 {
+  font-size: 15px;
+  margin: 0 0 2px;
+}
+
+section.panel > .desc {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 0 12px;
+}
+
+.tablewrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  padding: 6px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+th:first-child,
+td:first-child {
+  text-align: left;
+}
+
+thead th {
+  background: var(--head);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+tbody tr.total td {
+  font-weight: 700;
+  border-top: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--head) 55%, transparent);
+}
+
+tbody tr.subhead td {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: color-mix(in srgb, var(--head) 35%, transparent);
+}
+
+td.num {
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.pos {
+  color: var(--pos);
+}
+.neg {
+  color: var(--neg);
+}
+.zero {
+  color: var(--muted);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.controls button {
+  font: inherit;
+  padding: 5px 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  color: var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.controls button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.flag {
+  display: inline-block;
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.diffgrid {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 0;
+  font-size: 13px;
+}
+
+.diffgrid .h {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--line-strong);
+  padding: 4px 8px;
+}
+
+.diffgrid .c {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+}
+
+.diffgrid .c.path {
+  font-family: system-ui, sans-serif;
+}
+
+.rationale {
+  white-space: pre-wrap;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 16px;
+  font-size: 13px;
+}
+
+.kv dt {
+  color: var(--muted);
+}
+
+.kv dd {
+  margin: 0;
+  font-family: var(--mono);
+  word-break: break-all;
+}
+
+.emptynote {
+  color: var(--pos);
+  font-size: 13px;
+}
+
+.loading,
+.error {
+  padding: 40px 0;
+  color: var(--muted);
+}
+.error {
+  color: var(--neg);
+}
+
+.footnote {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+/* Piece 2c: an inline disclosure control inside a table cell. */
+button.linkish {
+  font: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+tr.cellrow td {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Piece 4b: collapsed values table under each rate chart. */
+details.values {
+  margin-top: 8px;
+}
+details.values summary {
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}

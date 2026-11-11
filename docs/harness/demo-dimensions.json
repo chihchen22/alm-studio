@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "demo-dimensions-v1",
+  "label": "Demo dimension taxonomy: ten position dimensions for CSV intake",
+  "dimensions": [
+    {
+      "id": "productFamily",
+      "label": "Product family"
+    },
+    {
+      "id": "side",
+      "label": "Balance-sheet side"
+    },
+    {
+      "id": "managementView",
+      "label": "Management view (business line)"
+    },
+    {
+      "id": "regulatoryView",
+      "label": "Regulatory view (reporting class)"
+    },
+    {
+      "id": "rateType",
+      "label": "Rate type"
+    },
+    {
+      "id": "behavioralClass",
+      "label": "Behavioral class (model map)"
+    },
+    {
+      "id": "governanceTier",
+      "label": "Governance tier"
+    },
+    {
+      "id": "disposition",
+      "label": "Granularity disposition"
+    },
+    {
+      "id": "segment",
+      "label": "Calibration segment"
+    },
+    {
+      "id": "behavioralClasses",
+      "label": "Behavioral classes (multi-valued)",
+      "multiValued": true
+    }
+  ]
+}

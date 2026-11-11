@@ -1,0 +1,183 @@
+[
+  {
+    "runId": "run-20260926-045352-001599e",
+    "portfolioId": "synthetic-2500-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-synthetic-2500-v1",
+    "assumptionSetIds": [
+      "demo-behavioral-v1"
+    ],
+    "portfolioRef": {
+      "id": "synthetic-2500-v1",
+      "contentHash": "690b9f13d121296f2449c5ce9ebb20200e8021fa1f4175c0acfd5ffa9ceb2b0e"
+    },
+    "asOf": "2026-03-31",
+    "label": "live drive S3a"
+  },
+  {
+    "runId": "run-20260926-155230-00129a5",
+    "portfolioId": "vanilla-book-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-vanilla-book-v1",
+    "assumptionSetIds": [
+      "vanilla-empty-v1"
+    ],
+    "portfolioRef": {
+      "id": "vanilla-book-v1",
+      "contentHash": "b7d8f1cbad64dcd6ad4a02fb6a121445a17a7b70955041f81884f3e7138dab37"
+    },
+    "asOf": "2026-03-31",
+    "label": "Vanilla book, contractual only, regulatory grid"
+  },
+  {
+    "runId": "run-20260926-175550-0015a15",
+    "portfolioId": "synthetic-2500-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-synthetic-2500-v1-edit-3",
+    "assumptionSetIds": [
+      "demo-behavioral-v1",
+      "stack-ab60dc782a83"
+    ],
+    "portfolioRef": {
+      "id": "synthetic-2500-v1",
+      "contentHash": "690b9f13d121296f2449c5ce9ebb20200e8021fa1f4175c0acfd5ffa9ceb2b0e"
+    },
+    "asOf": "2026-03-31",
+    "label": "Synthetic 2,500-position book, behavioral chain, regulatory grid"
+  },
+  {
+    "runId": "run-20260926-180155-002653d",
+    "portfolioId": "synthetic-2500-hedged-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-synthetic-2500-hedged-v1",
+    "assumptionSetIds": [
+      "demo-behavioral-v1"
+    ],
+    "portfolioRef": {
+      "id": "synthetic-2500-hedged-v1",
+      "contentHash": "66456127e412bdf76a72f7e24c538e4994ebeafe2e3a69e899d4b5080a92ab3d"
+    },
+    "asOf": "2026-03-31",
+    "label": "Synthetic hedged book, behavioral chain, regulatory grid"
+  },
+  {
+    "runId": "run-20260927-004127-0031e08",
+    "portfolioId": "synthetic-2500-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-synthetic-2500-v1",
+    "assumptionSetIds": [
+      "demo-behavioral-v1"
+    ],
+    "portfolioRef": {
+      "id": "synthetic-2500-v1",
+      "contentHash": "690b9f13d121296f2449c5ce9ebb20200e8021fa1f4175c0acfd5ffa9ceb2b0e"
+    },
+    "asOf": "2026-03-31",
+    "label": "Synthetic 2,500-position book, behavioral chain, regulatory grid"
+  },
+  {
+    "runId": "run-20260927-094857-0019807",
+    "portfolioId": "vanilla-book-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-vanilla-book-v1-edit-1",
+    "assumptionSetIds": [
+      "vanilla-empty-v1"
+    ],
+    "portfolioRef": {
+      "id": "vanilla-book-v1",
+      "contentHash": "b7d8f1cbad64dcd6ad4a02fb6a121445a17a7b70955041f81884f3e7138dab37"
+    },
+    "asOf": "2026-03-31",
+    "label": "Vanilla book, contractual only, regulatory grid"
+  },
+  {
+    "runId": "run-20260927-183526-001e52d",
+    "portfolioId": "vanilla-book-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-vanilla-book-v1-edit-2",
+    "assumptionSetIds": [
+      "vanilla-empty-v1"
+    ],
+    "portfolioRef": {
+      "id": "vanilla-book-v1",
+      "contentHash": "b7d8f1cbad64dcd6ad4a02fb6a121445a17a7b70955041f81884f3e7138dab37"
+    },
+    "asOf": "2026-03-31",
+    "label": "Vanilla book, contractual only, regulatory grid"
+  },
+  {
+    "runId": "run-20261008-070617-001a3b1",
+    "portfolioId": "vanilla-book-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "regulatory-grid-vanilla",
+    "assumptionSetIds": [
+      "vanilla-empty-v1"
+    ],
+    "portfolioRef": {
+      "id": "vanilla-book-v1",
+      "contentHash": "b7d8f1cbad64dcd6ad4a02fb6a121445a17a7b70955041f81884f3e7138dab37"
+    },
+    "asOf": "2026-03-31",
+    "label": "psc proof base"
+  },
+  {
+    "runId": "run-20261008-070617-00241e7",
+    "portfolioId": "vanilla-book-v1",
+    "marketId": "vol-shock-demo-v1",
+    "scenarioSlateId": "regulatory-grid-vanilla",
+    "assumptionSetIds": [
+      "vanilla-empty-v1"
+    ],
+    "portfolioRef": {
+      "id": "vanilla-book-v1",
+      "contentHash": "b7d8f1cbad64dcd6ad4a02fb6a121445a17a7b70955041f81884f3e7138dab37"
+    },
+    "asOf": "2026-03-31",
+    "label": "psc proof vols x1.5"
+  },
+  {
+    "runId": "run-20261009-164048-001c58e",
+    "portfolioId": "synthetic-2500-v1",
+    "marketId": "market-public-2026-03-31",
+    "scenarioSlateId": "plan-plan-synthetic-2500-v1",
+    "assumptionSetIds": [
+      "demo-behavioral-v1"
+    ],
+    "portfolioRef": {
+      "id": "synthetic-2500-v1",
+      "contentHash": "690b9f13d121296f2449c5ce9ebb20200e8021fa1f4175c0acfd5ffa9ceb2b0e"
+    },
+    "asOf": "2026-03-31",
+    "label": "Synthetic 2,500-position book, behavioral chain, regulatory grid"
+  },
+  {
+    "runId": "run-20261009-164157-002dffc",
+    "portfolioId": "synthetic-2500-v1",
+    "marketId": "macro-demo-v1",
+    "scenarioSlateId": "plan-plan-synthetic-2500-housing-v1",
+    "assumptionSetIds": [
+      "housing-demo-v1"
+    ],
+    "portfolioRef": {
+      "id": "synthetic-2500-v1",
+      "contentHash": "690b9f13d121296f2449c5ce9ebb20200e8021fa1f4175c0acfd5ffa9ceb2b0e"
+    },
+    "asOf": "2026-03-31",
+    "label": "Synthetic book, house-price response on hpi-down-30 (illustrative)"
+  },
+  {
+    "runId": "run-20261009-164213-0033d80",
+    "portfolioId": "synthetic-2500-v1",
+    "marketId": "macro-demo-v1",
+    "scenarioSlateId": "plan-plan-synthetic-2500-macro-unmapped-v1",
+    "assumptionSetIds": [
+      "demo-behavioral-v1"
+    ],
+    "portfolioRef": {
+      "id": "synthetic-2500-v1",
+      "contentHash": "690b9f13d121296f2449c5ce9ebb20200e8021fa1f4175c0acfd5ffa9ceb2b0e"
+    },
+    "asOf": "2026-03-31",
+    "label": "Synthetic book, demo set on the macro factors market, no mapping (demonstration)"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "generator": {
+    "portfolioId": "synthetic-book-v1",
+    "asOf": "2026-03-31",
+    "masterSeed": 20260716,
+    "targetPositions": 100000,
+    "capitalRatio": 0.1,
+    "familyCount": 11
+  },
+  "positionCount": 94001,
+  "totals": {
+    "assets": 220702227644,
+    "liabilities": 198632004847,
+    "equity": 22070222797
+  },
+  "contentHash": "87af3b97f01f0e6ff73d63abd2d25c97d55a055bdb14189a68fe8daa73f15867"
+}

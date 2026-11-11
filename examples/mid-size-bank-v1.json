@@ -1,0 +1,1313 @@
+{
+  "id": "mid-size-bank-v1",
+  "label": "Quillfield Bank, version 1.3 (synthetic example, about $5 billion, round illustrative numbers)",
+  "asOf": "2026-03-31",
+  "coa": {
+    "schemaVersion": "1.0.0",
+    "nodes": [
+      {
+        "id": "mb-assets",
+        "label": "Total Assets",
+        "parentId": null,
+        "side": "asset",
+        "isLeaf": false,
+        "order": 0
+      },
+      {
+        "id": "mb-non-earning",
+        "label": "Non-Earning Assets",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-non-earning",
+        "order": 0
+      },
+      {
+        "id": "mb-cash",
+        "label": "Cash and Fed Funds Sold",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-cash",
+        "order": 1
+      },
+      {
+        "id": "mb-treasuries",
+        "label": "US Treasury Securities",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-treasuries",
+        "order": 2
+      },
+      {
+        "id": "mb-agencies",
+        "label": "Agency Notes",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-agencies",
+        "order": 3
+      },
+      {
+        "id": "mb-agency-mbs",
+        "label": "Agency Mortgage-Backed Securities",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-agency-mbs",
+        "order": 4
+      },
+      {
+        "id": "mb-ci-floating",
+        "label": "C&I Loans, Floating",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-ci-floating",
+        "order": 5
+      },
+      {
+        "id": "mb-ci-fixed",
+        "label": "C&I Loans, Fixed",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-ci-fixed",
+        "order": 6
+      },
+      {
+        "id": "mb-cre-fixed",
+        "label": "Commercial Real Estate, Fixed",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-cre-fixed",
+        "order": 7
+      },
+      {
+        "id": "mb-cre-multifamily",
+        "label": "Multifamily Real Estate",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-cre-multifamily",
+        "order": 8
+      },
+      {
+        "id": "mb-cre-construction",
+        "label": "Construction and Land Loans",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-cre-construction",
+        "order": 9
+      },
+      {
+        "id": "mb-resi-mortgages",
+        "label": "Residential Mortgages",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-resi-mortgages",
+        "order": 10
+      },
+      {
+        "id": "mb-heloc",
+        "label": "Home Equity Lines",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-heloc",
+        "order": 11
+      },
+      {
+        "id": "mb-consumer",
+        "label": "Consumer Loans",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-consumer",
+        "order": 12
+      },
+      {
+        "id": "mb-other-loans",
+        "label": "Agricultural and Other Loans",
+        "parentId": "mb-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-other-loans",
+        "order": 13
+      },
+      {
+        "id": "mb-off-balance",
+        "label": "Off-Balance-Sheet Commitments",
+        "parentId": null,
+        "side": "asset",
+        "isLeaf": false,
+        "order": 1
+      },
+      {
+        "id": "mb-commitments",
+        "label": "Undrawn Committed Lines",
+        "parentId": "mb-off-balance",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mb-commitments",
+        "order": 0
+      },
+      {
+        "id": "mb-liab-equity",
+        "label": "Total Liabilities and Equity",
+        "parentId": null,
+        "side": "liability",
+        "isLeaf": false,
+        "order": 2
+      },
+      {
+        "id": "mb-nib-checking",
+        "label": "Non-Interest Checking",
+        "parentId": "mb-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mb-nib-checking",
+        "order": 0
+      },
+      {
+        "id": "mb-int-checking",
+        "label": "Interest Checking",
+        "parentId": "mb-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mb-int-checking",
+        "order": 1
+      },
+      {
+        "id": "mb-savings",
+        "label": "Savings",
+        "parentId": "mb-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mb-savings",
+        "order": 2
+      },
+      {
+        "id": "mb-mma",
+        "label": "Money Market Accounts",
+        "parentId": "mb-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mb-mma",
+        "order": 3
+      },
+      {
+        "id": "mb-cds",
+        "label": "Certificates of Deposit",
+        "parentId": "mb-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mb-cds",
+        "order": 4
+      },
+      {
+        "id": "mb-fhlb-fixed",
+        "label": "FHLB Advances, Fixed",
+        "parentId": "mb-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mb-fhlb-fixed",
+        "order": 5
+      },
+      {
+        "id": "mb-fhlb-floating",
+        "label": "FHLB Advances, Floating",
+        "parentId": "mb-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mb-fhlb-floating",
+        "order": 6
+      },
+      {
+        "id": "mb-equity",
+        "label": "Equity (plug)",
+        "parentId": "mb-liab-equity",
+        "side": "equity",
+        "isLeaf": false,
+        "order": 7
+      },
+      {
+        "id": "mb-derivatives",
+        "label": "Derivatives",
+        "parentId": null,
+        "side": "derivative",
+        "isLeaf": false,
+        "order": 3
+      },
+      {
+        "id": "mb-swaps",
+        "label": "Interest Rate Swaps",
+        "parentId": "mb-derivatives",
+        "side": "derivative",
+        "isLeaf": true,
+        "familyId": "mb-swaps",
+        "order": 0
+      }
+    ],
+    "families": [
+      {
+        "id": "mb-non-earning",
+        "label": "Non-Earning Assets",
+        "side": "asset",
+        "instrumentType": "non-rate-sensitive",
+        "coaNodeId": "mb-non-earning"
+      },
+      {
+        "id": "mb-cash",
+        "label": "Cash and Fed Funds Sold",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-cash"
+      },
+      {
+        "id": "mb-treasuries",
+        "label": "US Treasury Securities",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-treasuries"
+      },
+      {
+        "id": "mb-agencies",
+        "label": "Agency Notes",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-agencies"
+      },
+      {
+        "id": "mb-agency-mbs",
+        "label": "Agency Mortgage-Backed Securities",
+        "side": "asset",
+        "instrumentType": "mortgage",
+        "coaNodeId": "mb-agency-mbs"
+      },
+      {
+        "id": "mb-ci-floating",
+        "label": "C&I Loans, Floating",
+        "side": "asset",
+        "instrumentType": "floating-loan",
+        "coaNodeId": "mb-ci-floating"
+      },
+      {
+        "id": "mb-ci-fixed",
+        "label": "C&I Loans, Fixed",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-ci-fixed"
+      },
+      {
+        "id": "mb-cre-fixed",
+        "label": "Commercial Real Estate, Fixed",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-cre-fixed"
+      },
+      {
+        "id": "mb-cre-multifamily",
+        "label": "Multifamily Real Estate",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-cre-multifamily"
+      },
+      {
+        "id": "mb-cre-construction",
+        "label": "Construction and Land Loans",
+        "side": "asset",
+        "instrumentType": "floating-loan",
+        "coaNodeId": "mb-cre-construction"
+      },
+      {
+        "id": "mb-resi-mortgages",
+        "label": "Residential Mortgages",
+        "side": "asset",
+        "instrumentType": "mortgage",
+        "coaNodeId": "mb-resi-mortgages"
+      },
+      {
+        "id": "mb-heloc",
+        "label": "Home Equity Lines",
+        "side": "asset",
+        "instrumentType": "floating-loan",
+        "coaNodeId": "mb-heloc"
+      },
+      {
+        "id": "mb-consumer",
+        "label": "Consumer Loans",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-consumer"
+      },
+      {
+        "id": "mb-other-loans",
+        "label": "Agricultural and Other Loans",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-other-loans"
+      },
+      {
+        "id": "mb-commitments",
+        "label": "Undrawn Committed Lines",
+        "side": "asset",
+        "instrumentType": "commitment",
+        "coaNodeId": "mb-commitments"
+      },
+      {
+        "id": "mb-nib-checking",
+        "label": "Non-Interest Checking",
+        "side": "liability",
+        "instrumentType": "nmd",
+        "coaNodeId": "mb-nib-checking"
+      },
+      {
+        "id": "mb-int-checking",
+        "label": "Interest Checking",
+        "side": "liability",
+        "instrumentType": "nmd-b",
+        "coaNodeId": "mb-int-checking"
+      },
+      {
+        "id": "mb-savings",
+        "label": "Savings",
+        "side": "liability",
+        "instrumentType": "nmd-b",
+        "coaNodeId": "mb-savings"
+      },
+      {
+        "id": "mb-mma",
+        "label": "Money Market Accounts",
+        "side": "liability",
+        "instrumentType": "nmd-b",
+        "coaNodeId": "mb-mma"
+      },
+      {
+        "id": "mb-cds",
+        "label": "Certificates of Deposit",
+        "side": "liability",
+        "instrumentType": "cd",
+        "coaNodeId": "mb-cds"
+      },
+      {
+        "id": "mb-fhlb-fixed",
+        "label": "FHLB Advances, Fixed",
+        "side": "liability",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "mb-fhlb-fixed"
+      },
+      {
+        "id": "mb-fhlb-floating",
+        "label": "FHLB Advances, Floating",
+        "side": "liability",
+        "instrumentType": "floating-loan",
+        "coaNodeId": "mb-fhlb-floating"
+      },
+      {
+        "id": "mb-swaps",
+        "label": "Interest Rate Swaps",
+        "side": "derivative",
+        "instrumentType": "swap",
+        "coaNodeId": "mb-swaps"
+      }
+    ]
+  },
+  "taxonomy": {
+    "schemaVersion": "1.0.0",
+    "id": "mid-size-bank-tags-v1",
+    "label": "Liquidity roles and HQLA levels the stress ladder reads",
+    "dimensions": [
+      {
+        "id": "liquidityRole",
+        "label": "Liquidity stress role",
+        "values": [
+          "inflow-asset",
+          "hqla-stock",
+          "hys-pool",
+          "nib-pool",
+          "wholesale",
+          "term-deposit"
+        ]
+      },
+      {
+        "id": "hqla-level",
+        "label": "HQLA level of a buffer asset (level 1, 2A or 2B)",
+        "values": [
+          "l1",
+          "l2a",
+          "l2b"
+        ]
+      }
+    ]
+  },
+  "positions": [
+    {
+      "id": "mb-cash-due-1",
+      "familyId": "mb-non-earning",
+      "coaNodeId": "mb-non-earning",
+      "terms": {
+        "id": "mb-cash-due-1",
+        "type": "non-rate-sensitive",
+        "label": "Cash and due from banks, non-interest-bearing",
+        "notional": 50000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset"
+      }
+    },
+    {
+      "id": "mb-premises-1",
+      "familyId": "mb-non-earning",
+      "coaNodeId": "mb-non-earning",
+      "terms": {
+        "id": "mb-premises-1",
+        "type": "non-rate-sensitive",
+        "label": "Premises and equipment",
+        "notional": 50000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset"
+      }
+    },
+    {
+      "id": "mb-other-assets-1",
+      "familyId": "mb-non-earning",
+      "coaNodeId": "mb-non-earning",
+      "terms": {
+        "id": "mb-other-assets-1",
+        "type": "non-rate-sensitive",
+        "label": "Other assets, net of the loan loss allowance",
+        "notional": 150000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset"
+      }
+    },
+    {
+      "id": "mb-cash-1",
+      "familyId": "mb-cash",
+      "coaNodeId": "mb-cash",
+      "terms": {
+        "id": "mb-cash-1",
+        "type": "fixed-loan",
+        "label": "Fed funds sold and interest-bearing balances",
+        "notional": 400000000,
+        "maturityMonths": 1,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.037
+      },
+      "dimensions": {
+        "liquidityRole": "hqla-stock",
+        "hqla-level": "l1"
+      }
+    },
+    {
+      "id": "mb-ust-2y",
+      "familyId": "mb-treasuries",
+      "coaNodeId": "mb-treasuries",
+      "terms": {
+        "id": "mb-ust-2y",
+        "type": "fixed-loan",
+        "label": "Two-year Treasury notes",
+        "notional": 200000000,
+        "maturityMonths": 24,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.0375
+      },
+      "dimensions": {
+        "liquidityRole": "hqla-stock",
+        "hqla-level": "l1"
+      }
+    },
+    {
+      "id": "mb-ust-5y",
+      "familyId": "mb-treasuries",
+      "coaNodeId": "mb-treasuries",
+      "terms": {
+        "id": "mb-ust-5y",
+        "type": "fixed-loan",
+        "label": "Five-year Treasury notes",
+        "notional": 100000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.039
+      },
+      "dimensions": {
+        "liquidityRole": "hqla-stock",
+        "hqla-level": "l1"
+      }
+    },
+    {
+      "id": "mb-agency-3y",
+      "familyId": "mb-agencies",
+      "coaNodeId": "mb-agencies",
+      "terms": {
+        "id": "mb-agency-3y",
+        "type": "fixed-loan",
+        "label": "Three-year agency notes",
+        "notional": 150000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.04
+      },
+      "dimensions": {
+        "liquidityRole": "hqla-stock",
+        "hqla-level": "l2a"
+      }
+    },
+    {
+      "id": "mb-mbs-1",
+      "familyId": "mb-agency-mbs",
+      "coaNodeId": "mb-agency-mbs",
+      "terms": {
+        "id": "mb-mbs-1",
+        "type": "mortgage",
+        "label": "Agency MBS pool, 5.0 percent",
+        "notional": 400000000,
+        "maturityMonths": 324,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "noteRate": 0.05,
+        "originalTermMonths": 360,
+        "originalBalance": 450000000,
+        "ageMonths": 36,
+        "cprParams": {
+          "secSpread": 100,
+          "primSpread": 100,
+          "wac": 5.0,
+          "minCpr": 4.0,
+          "maxCpr": 45.0,
+          "steepness": 2.0,
+          "inflection": 60,
+          "seasoningRamp": 24,
+          "seasonalityAmp": 10,
+          "burnoutDecay": 0.05
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "hqla-stock",
+        "hqla-level": "l2a"
+      }
+    },
+    {
+      "id": "mb-ci-float-1",
+      "familyId": "mb-ci-floating",
+      "coaNodeId": "mb-ci-floating",
+      "terms": {
+        "id": "mb-ci-float-1",
+        "type": "floating-loan",
+        "label": "C&I lines, one-month index plus 225 bp",
+        "notional": 350000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "indexTenorMonths": 1,
+        "margin": 0.0225,
+        "resetFrequencyMonths": 1,
+        "fundingTenorMonths": 36
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 150
+    },
+    {
+      "id": "mb-ci-float-2",
+      "familyId": "mb-ci-floating",
+      "coaNodeId": "mb-ci-floating",
+      "terms": {
+        "id": "mb-ci-float-2",
+        "type": "floating-loan",
+        "label": "C&I term loans, one-month index plus 200 bp",
+        "notional": 100000000,
+        "maturityMonths": 24,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "indexTenorMonths": 1,
+        "margin": 0.02,
+        "resetFrequencyMonths": 1,
+        "fundingTenorMonths": 24
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 150
+    },
+    {
+      "id": "mb-ci-fixed-1",
+      "familyId": "mb-ci-fixed",
+      "coaNodeId": "mb-ci-fixed",
+      "terms": {
+        "id": "mb-ci-fixed-1",
+        "type": "fixed-loan",
+        "label": "Five-year fixed C&I loans",
+        "notional": 100000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "coupon": 0.065
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 150
+    },
+    {
+      "id": "mb-cre-1",
+      "familyId": "mb-cre-fixed",
+      "coaNodeId": "mb-cre-fixed",
+      "terms": {
+        "id": "mb-cre-1",
+        "type": "fixed-loan",
+        "label": "Commercial real estate, three-year balloon",
+        "notional": 600000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.06
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 125
+    },
+    {
+      "id": "mb-cre-2",
+      "familyId": "mb-cre-fixed",
+      "coaNodeId": "mb-cre-fixed",
+      "terms": {
+        "id": "mb-cre-2",
+        "type": "fixed-loan",
+        "label": "Commercial real estate, five-year amortizing",
+        "notional": 500000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "coupon": 0.0625
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 125
+    },
+    {
+      "id": "mb-multi-1",
+      "familyId": "mb-cre-multifamily",
+      "coaNodeId": "mb-cre-multifamily",
+      "terms": {
+        "id": "mb-multi-1",
+        "type": "fixed-loan",
+        "label": "Multifamily, seven-year amortizing",
+        "notional": 300000000,
+        "maturityMonths": 84,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "coupon": 0.0575
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 100
+    },
+    {
+      "id": "mb-constr-1",
+      "familyId": "mb-cre-construction",
+      "coaNodeId": "mb-cre-construction",
+      "terms": {
+        "id": "mb-constr-1",
+        "type": "floating-loan",
+        "label": "Construction loans, one-month index plus 275 bp",
+        "notional": 250000000,
+        "maturityMonths": 24,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "indexTenorMonths": 1,
+        "margin": 0.0275,
+        "resetFrequencyMonths": 1,
+        "fundingTenorMonths": 24
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 125
+    },
+    {
+      "id": "mb-mtg-30y",
+      "familyId": "mb-resi-mortgages",
+      "coaNodeId": "mb-resi-mortgages",
+      "terms": {
+        "id": "mb-mtg-30y",
+        "type": "mortgage",
+        "label": "30-year fixed mortgages, four years seasoned",
+        "notional": 600000000,
+        "maturityMonths": 312,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "noteRate": 0.06,
+        "originalTermMonths": 360,
+        "originalBalance": 660000000,
+        "ageMonths": 48,
+        "cprParams": {
+          "secSpread": 100,
+          "primSpread": 120,
+          "wac": 6.0,
+          "minCpr": 3.0,
+          "maxCpr": 50.0,
+          "steepness": 2.0,
+          "inflection": 75,
+          "seasoningRamp": 24,
+          "seasonalityAmp": 15,
+          "burnoutDecay": 0.05
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 75
+    },
+    {
+      "id": "mb-mtg-15y",
+      "familyId": "mb-resi-mortgages",
+      "coaNodeId": "mb-resi-mortgages",
+      "terms": {
+        "id": "mb-mtg-15y",
+        "type": "mortgage",
+        "label": "15-year fixed mortgages, two years seasoned",
+        "notional": 150000000,
+        "maturityMonths": 156,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "noteRate": 0.0525,
+        "originalTermMonths": 180,
+        "originalBalance": 175000000,
+        "ageMonths": 24,
+        "cprParams": {
+          "secSpread": 100,
+          "primSpread": 120,
+          "wac": 6.0,
+          "minCpr": 3.0,
+          "maxCpr": 50.0,
+          "steepness": 2.0,
+          "inflection": 75,
+          "seasoningRamp": 24,
+          "seasonalityAmp": 15,
+          "burnoutDecay": 0.05
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 75
+    },
+    {
+      "id": "mb-heloc-1",
+      "familyId": "mb-heloc",
+      "coaNodeId": "mb-heloc",
+      "terms": {
+        "id": "mb-heloc-1",
+        "type": "floating-loan",
+        "label": "Home equity lines, one-month index plus 125 bp",
+        "notional": 100000000,
+        "maturityMonths": 120,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "indexTenorMonths": 1,
+        "margin": 0.0125,
+        "resetFrequencyMonths": 1,
+        "fundingTenorMonths": 60
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 150
+    },
+    {
+      "id": "mb-consumer-1",
+      "familyId": "mb-consumer",
+      "coaNodeId": "mb-consumer",
+      "terms": {
+        "id": "mb-consumer-1",
+        "type": "fixed-loan",
+        "label": "Auto and consumer loans",
+        "notional": 200000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "coupon": 0.07
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 300
+    },
+    {
+      "id": "mb-other-1",
+      "familyId": "mb-other-loans",
+      "coaNodeId": "mb-other-loans",
+      "terms": {
+        "id": "mb-other-1",
+        "type": "fixed-loan",
+        "label": "Agricultural and other loans",
+        "notional": 250000000,
+        "maturityMonths": 84,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "coupon": 0.065
+      },
+      "dimensions": {
+        "liquidityRole": "inflow-asset"
+      },
+      "discountSpreadBp": 200
+    },
+    {
+      "id": "mb-lines-1",
+      "familyId": "mb-commitments",
+      "coaNodeId": "mb-commitments",
+      "terms": {
+        "id": "mb-lines-1",
+        "type": "commitment",
+        "label": "Undrawn C&I and home equity lines",
+        "notional": 1000000000,
+        "maturityMonths": 24,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "draw": {
+          "rampRates": [
+            0.02,
+            0.02,
+            0.02
+          ],
+          "steadyRate": 0.01
+        }
+      },
+      "commitmentDials": {
+        "expectedUtilization": 0.15,
+        "tailUtilization": 0.35
+      }
+    },
+    {
+      "id": "mb-nib-1",
+      "familyId": "mb-nib-checking",
+      "coaNodeId": "mb-nib-checking",
+      "terms": {
+        "id": "mb-nib-1",
+        "type": "nmd",
+        "label": "Non-interest checking",
+        "notional": 900000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "depositRate": 0,
+        "beta": 0,
+        "nmdParams": {
+          "closureSteady": 0.6,
+          "closureInitial": 1.5,
+          "closureTauMonths": 18,
+          "burnoutLambda": 0.05,
+          "maxRateDecay": 2.0,
+          "maxRateGrowth": -0.5,
+          "logisticK": 1.5,
+          "logisticMidpoint": 0.5,
+          "maPeriod": 24,
+          "regimeAlpha": 1.0,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.2,
+            "gMax": 1.0,
+            "bStar": 1000000,
+            "kappaB": 1.0
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 100000,
+              "share": 0.5
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M to $5M",
+              "repBalance": 2000000,
+              "share": 0.15
+            },
+            {
+              "label": "Over $5M",
+              "repBalance": 8000000,
+              "share": 0.1
+            }
+          ]
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "nib-pool"
+      }
+    },
+    {
+      "id": "mb-intchk-1",
+      "familyId": "mb-int-checking",
+      "coaNodeId": "mb-int-checking",
+      "terms": {
+        "id": "mb-intchk-1",
+        "type": "nmd-b",
+        "label": "Interest checking",
+        "notional": 650000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "sCurve": {
+          "betaMin": 0.24,
+          "betaMax": 0.26,
+          "k": 1.0,
+          "m": 3.5,
+          "lambda": 0.5
+        },
+        "nmdParams": {
+          "closureSteady": 0.8,
+          "closureInitial": 1.5,
+          "closureTauMonths": 18,
+          "burnoutLambda": 0.05,
+          "maxRateDecay": 2.5,
+          "maxRateGrowth": -0.5,
+          "logisticK": 1.5,
+          "logisticMidpoint": 1.0,
+          "maPeriod": 24,
+          "regimeAlpha": 1.0,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.2,
+            "gMax": 1.0,
+            "bStar": 1000000,
+            "kappaB": 1.0
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 150000,
+              "share": 0.25
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M to $5M",
+              "repBalance": 2000000,
+              "share": 0.3
+            },
+            {
+              "label": "Over $5M",
+              "repBalance": 10000000,
+              "share": 0.2
+            }
+          ]
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "nib-pool"
+      }
+    },
+    {
+      "id": "mb-sav-1",
+      "familyId": "mb-savings",
+      "coaNodeId": "mb-savings",
+      "terms": {
+        "id": "mb-sav-1",
+        "type": "nmd-b",
+        "label": "Savings",
+        "notional": 550000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "sCurve": {
+          "betaMin": 0.15,
+          "betaMax": 0.5,
+          "k": 1.0,
+          "m": 3.0,
+          "lambda": 0.5
+        },
+        "nmdParams": {
+          "closureSteady": 0.5,
+          "closureInitial": 1.0,
+          "closureTauMonths": 18,
+          "burnoutLambda": 0,
+          "maxRateDecay": 5.0,
+          "maxRateGrowth": 0,
+          "logisticK": 0.4,
+          "logisticMidpoint": 3.0,
+          "maPeriod": 24,
+          "regimeAlpha": 0,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.2,
+            "gMax": 1.0,
+            "bStar": 1000000,
+            "kappaB": 1.0
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 100000,
+              "share": 0.5
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M to $5M",
+              "repBalance": 2000000,
+              "share": 0.15
+            },
+            {
+              "label": "Over $5M",
+              "repBalance": 8000000,
+              "share": 0.1
+            }
+          ]
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "hys-pool"
+      }
+    },
+    {
+      "id": "mb-mma-1",
+      "familyId": "mb-mma",
+      "coaNodeId": "mb-mma",
+      "terms": {
+        "id": "mb-mma-1",
+        "type": "nmd-b",
+        "label": "Money market accounts",
+        "notional": 1050000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "sCurve": {
+          "betaMin": 0.35,
+          "betaMax": 0.75,
+          "k": 1.0,
+          "m": 3.5,
+          "lambda": 0.6
+        },
+        "nmdParams": {
+          "closureSteady": 0.6,
+          "closureInitial": 1.0,
+          "closureTauMonths": 18,
+          "burnoutLambda": 0,
+          "maxRateDecay": 8.0,
+          "maxRateGrowth": 0,
+          "logisticK": 0.4,
+          "logisticMidpoint": 2.5,
+          "maPeriod": 24,
+          "regimeAlpha": 0,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.2,
+            "gMax": 1.0,
+            "bStar": 1000000,
+            "kappaB": 1.0
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 150000,
+              "share": 0.25
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M to $5M",
+              "repBalance": 2000000,
+              "share": 0.3
+            },
+            {
+              "label": "Over $5M",
+              "repBalance": 10000000,
+              "share": 0.2
+            }
+          ]
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "hys-pool"
+      }
+    },
+    {
+      "id": "mb-cds-1",
+      "familyId": "mb-cds",
+      "coaNodeId": "mb-cds",
+      "terms": {
+        "id": "mb-cds-1",
+        "type": "cd",
+        "label": "Certificates of deposit, cohort book",
+        "notional": 1050000000,
+        "maturityMonths": 40,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "liability",
+        "cohorts": [
+          {
+            "termMonths": 3,
+            "monthsToMaturity": 2,
+            "balance": 200.0,
+            "contractRate": 0.039
+          },
+          {
+            "termMonths": 6,
+            "monthsToMaturity": 4,
+            "balance": 300.0,
+            "contractRate": 0.04
+          },
+          {
+            "termMonths": 12,
+            "monthsToMaturity": 7,
+            "balance": 600.0,
+            "contractRate": 0.041
+          },
+          {
+            "termMonths": 18,
+            "monthsToMaturity": 12,
+            "balance": 300.0,
+            "contractRate": 0.04
+          },
+          {
+            "termMonths": 24,
+            "monthsToMaturity": 15,
+            "balance": 300.0,
+            "contractRate": 0.039
+          },
+          {
+            "termMonths": 36,
+            "monthsToMaturity": 26,
+            "balance": 200.0,
+            "contractRate": 0.038
+          },
+          {
+            "termMonths": 60,
+            "monthsToMaturity": 40,
+            "balance": 200.0,
+            "contractRate": 0.0375
+          }
+        ]
+      },
+      "dimensions": {
+        "liquidityRole": "term-deposit"
+      }
+    },
+    {
+      "id": "mb-fhlb-1",
+      "familyId": "mb-fhlb-fixed",
+      "coaNodeId": "mb-fhlb-fixed",
+      "terms": {
+        "id": "mb-fhlb-1",
+        "type": "fixed-loan",
+        "label": "Three-year fixed FHLB advance",
+        "notional": 150000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "liability",
+        "coupon": 0.041
+      },
+      "dimensions": {
+        "liquidityRole": "wholesale"
+      }
+    },
+    {
+      "id": "mb-fhlb-2",
+      "familyId": "mb-fhlb-floating",
+      "coaNodeId": "mb-fhlb-floating",
+      "terms": {
+        "id": "mb-fhlb-2",
+        "type": "floating-loan",
+        "label": "Two-year floating FHLB advance, one-month index plus 25 bp",
+        "notional": 100000000,
+        "maturityMonths": 24,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "liability",
+        "indexTenorMonths": 1,
+        "margin": 0.0025,
+        "resetFrequencyMonths": 1,
+        "fundingTenorMonths": 24
+      },
+      "dimensions": {
+        "liquidityRole": "wholesale"
+      }
+    },
+    {
+      "id": "mb-swap-1",
+      "familyId": "mb-swaps",
+      "coaNodeId": "mb-swaps",
+      "terms": {
+        "id": "mb-swap-1",
+        "type": "swap",
+        "label": "Five-year pay-fixed swap",
+        "notional": 250000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "direction": "pay-fixed",
+        "fixedRate": 0.039
+      }
+    }
+  ],
+  "liquidity": {
+    "note": "Version 1.3: round illustrative values for the liquidity stress. The seeded survival-path setup reads them; the engine reads this block from the setup, never from the book.",
+    "receivedFacilities": [
+      {
+        "id": "mb-fhlb-capacity",
+        "label": "FHLB borrowing capacity, unused",
+        "capacity": 500000000,
+        "haircut": 0.2
+      }
+    ],
+    "cdRenewal": {
+      "bau": 0.9,
+      "moderate": 0.6,
+      "severe": 0.3
+    }
+  }
+}

@@ -1,0 +1,20 @@
+/* Results picker, Grid as of, basis notes, NII window and New business block (Task E7). Tokens only. */
+.result-picker { display: grid; gap: var(--sp-2); }
+.result-picker select { width: 100%; max-width: 100%; height: 36px; padding: 0 var(--sp-3); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--surface-2); color: var(--ink); font: inherit; font-size: var(--fs-3); }
+.result-picker-why { color: var(--ink-2); font-size: var(--fs-2); overflow-wrap: anywhere; }
+.result-picker-badges { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.result-picker-all { font-size: var(--fs-2); }
+.result-picker-all ul { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; gap: var(--sp-1); }
+.result-picker-all li { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; overflow-wrap: anywhere; }
+.result-picker-all a[aria-current="true"] { font-weight: 600; }
+
+.result-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); margin: 0; font-size: var(--fs-2); color: var(--ink-2); }
+.result-asof { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.result-clash { display: inline-flex; align-items: center; min-height: 24px; padding: 0 var(--sp-2); border-radius: 999px; font-size: var(--fs-1); font-weight: 600; color: var(--warn); background: var(--warn-wash); border: 1px solid var(--warn); white-space: nowrap; }
+.result-basis { overflow-wrap: anywhere; }
+
+.nii-window { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); }
+.nii-window input[type="range"] { flex: 1 1 200px; min-width: 120px; accent-color: var(--accent); }
+.nii-note { margin: var(--sp-2) 0 0; color: var(--ink-2); font-size: var(--fs-2); }
+.nb-details { margin-top: var(--sp-3); }
+.nb-details summary { cursor: pointer; color: var(--ink-2); font-size: var(--fs-2); }

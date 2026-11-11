@@ -1,0 +1,299 @@
+{
+  "schemaVersion": "1.4.0",
+  "planId": "plan-synthetic-2500-v1-edit-3",
+  "label": "Synthetic 2,500-position book, behavioral chain, regulatory grid",
+  "authoredBy": "person",
+  "asOf": "2026-03-31",
+  "grid": {
+    "horizonMonths": 360
+  },
+  "inputs": {
+    "marketSnapshot": "market-public-2026-03-31",
+    "positionBook": "synthetic-2500-v1",
+    "routingPolicy": "model-map-default-v1",
+    "assumptionSets": [
+      "demo-behavioral-v1",
+      "stack-ab60dc782a83"
+    ]
+  },
+  "stages": [
+    {
+      "id": "st-curve",
+      "component": "alm-yield-curve",
+      "kind": "curve",
+      "consumes": [
+        "MarketSnapshot"
+      ],
+      "produces": [
+        "ZeroCurve"
+      ],
+      "params": {
+        "dayCount": "ACT/360"
+      }
+    },
+    {
+      "id": "st-tlp",
+      "component": "alm-tlp-overlay",
+      "kind": "curve",
+      "consumes": [
+        "ZeroCurve",
+        "MarketSnapshot"
+      ],
+      "produces": [
+        "FundingCurve"
+      ],
+      "params": {
+        "dayCount": "ACT/360"
+      },
+      "dependsOn": [
+        "st-curve"
+      ]
+    },
+    {
+      "id": "st-term",
+      "component": "engine.rate-path",
+      "kind": "term-structure",
+      "consumes": [
+        "ZeroCurve"
+      ],
+      "produces": [
+        "RatePath",
+        "DiscountFactorPath"
+      ],
+      "dependsOn": [
+        "st-curve"
+      ]
+    },
+    {
+      "id": "st-prepay",
+      "component": "alm-mortgage-prepayment",
+      "kind": "behavioral",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Position"
+      ],
+      "dependsOn": [
+        "st-term"
+      ],
+      "selector": {
+        "productFamily": [
+          "mortgages",
+          "mbs"
+        ],
+        "behavioralClasses": "prepayment"
+      },
+      "disposition": "M",
+      "tier": "Tier 1",
+      "feeds": [
+        "nii",
+        "eve",
+        "ir-gap"
+      ]
+    },
+    {
+      "id": "st-decay",
+      "component": "alm-deposit-decay",
+      "kind": "behavioral",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Position"
+      ],
+      "dependsOn": [
+        "st-prepay",
+        "st-term"
+      ],
+      "selector": {
+        "productFamily": [
+          "dda",
+          "mma"
+        ],
+        "behavioralClasses": "decay"
+      },
+      "disposition": "M",
+      "tier": "Tier 1",
+      "feeds": [
+        "eve",
+        "ir-gap",
+        "liq-gap"
+      ]
+    },
+    {
+      "id": "st-beta",
+      "component": "alm-deposit-beta",
+      "kind": "behavioral",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Position"
+      ],
+      "dependsOn": [
+        "st-decay",
+        "st-term"
+      ],
+      "selector": {
+        "productFamily": "mma",
+        "behavioralClasses": "deposit-beta"
+      },
+      "disposition": "M",
+      "tier": "Tier 1",
+      "feeds": [
+        "nii",
+        "eve"
+      ]
+    },
+    {
+      "id": "st-cashflow",
+      "component": "engine.contractual",
+      "kind": "contractual-cashflow",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow",
+        "RepricingSchedule"
+      ],
+      "dependsOn": [
+        "st-beta",
+        "st-term"
+      ]
+    },
+    {
+      "id": "st-nii",
+      "component": "alm-nii",
+      "kind": "metric",
+      "consumes": [
+        "Cashflow"
+      ],
+      "produces": [
+        "NiiResult"
+      ],
+      "dependsOn": [
+        "st-cashflow"
+      ]
+    },
+    {
+      "id": "st-eve",
+      "component": "alm-eve",
+      "kind": "metric",
+      "consumes": [
+        "Cashflow",
+        "ZeroCurve",
+        "FundingCurve",
+        "Position"
+      ],
+      "produces": [
+        "EveResult"
+      ],
+      "dependsOn": [
+        "st-cashflow",
+        "st-curve",
+        "st-tlp",
+        "st-beta"
+      ]
+    },
+    {
+      "id": "st-gap",
+      "component": "alm-gap-analytics",
+      "kind": "metric",
+      "consumes": [
+        "Cashflow",
+        "RepricingSchedule",
+        "Position"
+      ],
+      "produces": [
+        "GapResult"
+      ],
+      "dependsOn": [
+        "st-cashflow",
+        "st-beta"
+      ]
+    },
+    {
+      "id": "st-ftp",
+      "component": "engine.metric.ftp",
+      "kind": "metric",
+      "consumes": [
+        "Cashflow",
+        "ZeroCurve",
+        "FundingCurve",
+        "Position",
+        "NiiResult",
+        "RatePath"
+      ],
+      "produces": [
+        "FtpResult"
+      ],
+      "dependsOn": [
+        "st-curve",
+        "st-tlp",
+        "st-term",
+        "st-cashflow",
+        "st-nii",
+        "st-beta"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "ref": "regulatory-grid-v1#S0"
+    },
+    {
+      "ref": "regulatory-grid-v1#S100"
+    },
+    {
+      "ref": "regulatory-grid-v1#S-100"
+    },
+    {
+      "ref": "regulatory-grid-v1#S200"
+    },
+    {
+      "ref": "regulatory-grid-v1#S-200"
+    },
+    {
+      "id": "STEEP100",
+      "label": "Steepener +100 long",
+      "rateSpec": {
+        "kind": "twist",
+        "shortBp": 0,
+        "longBp": 100,
+        "pivotYears": 5
+      },
+      "assumptionSetId": "stack-ab60dc782a83"
+    }
+  ],
+  "reports": [
+    {
+      "id": "r-mgmt",
+      "view": "managementView",
+      "metrics": [
+        "nii",
+        "eve"
+      ]
+    }
+  ],
+  "validationRules": {
+    "typeGate": [
+      "T1",
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6"
+    ],
+    "routingGate": [
+      "R1",
+      "R2",
+      "R3",
+      "R4"
+    ]
+  }
+}

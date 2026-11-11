@@ -1,0 +1,279 @@
+{
+  "id": "quillfield-deposit-desk-v1",
+  "label": "Quillfield Bank deposit desk, version 1.0 (synthetic example, deposits only, $1.2 billion, round illustrative numbers)",
+  "asOf": "2026-03-31",
+  "coa": {
+    "schemaVersion": "1.0.0",
+    "nodes": [
+      {
+        "id": "dd-liabilities",
+        "label": "Deposit Desk, Total Deposits",
+        "parentId": null,
+        "side": "liability",
+        "isLeaf": false,
+        "order": 0
+      },
+      {
+        "id": "dd-operating",
+        "label": "Operating Deposits, Straight-Line Runoff",
+        "parentId": "dd-liabilities",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "dd-operating",
+        "order": 0
+      },
+      {
+        "id": "dd-savings",
+        "label": "Savings, Component Decay",
+        "parentId": "dd-liabilities",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "dd-savings",
+        "order": 1
+      },
+      {
+        "id": "dd-mma",
+        "label": "Money Market Accounts, Full Beta Form",
+        "parentId": "dd-liabilities",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "dd-mma",
+        "order": 2
+      }
+    ],
+    "families": [
+      {
+        "id": "dd-operating",
+        "label": "Operating Deposits, Straight-Line Runoff",
+        "side": "liability",
+        "instrumentType": "nmd",
+        "coaNodeId": "dd-operating"
+      },
+      {
+        "id": "dd-savings",
+        "label": "Savings, Component Decay",
+        "side": "liability",
+        "instrumentType": "nmd",
+        "coaNodeId": "dd-savings"
+      },
+      {
+        "id": "dd-mma",
+        "label": "Money Market Accounts, Full Beta Form",
+        "side": "liability",
+        "instrumentType": "nmd-b",
+        "coaNodeId": "dd-mma"
+      }
+    ]
+  },
+  "taxonomy": {
+    "schemaVersion": "1.0.0",
+    "id": "mid-size-bank-tags-v1",
+    "label": "Liquidity roles the stress ladder reads",
+    "dimensions": [
+      {
+        "id": "liquidityRole",
+        "label": "Liquidity stress role",
+        "values": [
+          "inflow-asset",
+          "hqla-stock",
+          "hys-pool",
+          "nib-pool",
+          "wholesale"
+        ]
+      }
+    ]
+  },
+  "positions": [
+    {
+      "id": "dd-operating-1",
+      "familyId": "dd-operating",
+      "coaNodeId": "dd-operating",
+      "terms": {
+        "id": "dd-operating-1",
+        "type": "nmd",
+        "label": "Operating deposits, non-interest, run off in a straight line over four years",
+        "notional": 300000000,
+        "maturityMonths": 48,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "depositRate": 0,
+        "beta": 0,
+        "nmdParams": {
+          "closureSteady": 0.6,
+          "closureInitial": 1.5,
+          "closureTauMonths": 18,
+          "burnoutLambda": 0.05,
+          "maxRateDecay": 2.0,
+          "maxRateGrowth": -0.5,
+          "logisticK": 1.5,
+          "logisticMidpoint": 0.5,
+          "maPeriod": 24,
+          "regimeAlpha": 1.0,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.2,
+            "gMax": 1.0,
+            "bStar": 1000000,
+            "kappaB": 1.0
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 100000,
+              "share": 0.5
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M to $5M",
+              "repBalance": 2000000,
+              "share": 0.15
+            },
+            {
+              "label": "Over $5M",
+              "repBalance": 8000000,
+              "share": 0.1
+            }
+          ]
+        },
+        "linearDecay": {
+          "horizonMonths": 48
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "nib-pool"
+      }
+    },
+    {
+      "id": "dd-savings-1",
+      "familyId": "dd-savings",
+      "coaNodeId": "dd-savings",
+      "terms": {
+        "id": "dd-savings-1",
+        "type": "nmd",
+        "label": "Savings, paid 0.50 percent, balances on the component decay form",
+        "notional": 400000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "depositRate": 0.005,
+        "beta": 0,
+        "nmdParams": {
+          "closureSteady": 0.5,
+          "closureInitial": 1.0,
+          "closureTauMonths": 18,
+          "burnoutLambda": 0,
+          "maxRateDecay": 5.0,
+          "maxRateGrowth": 0,
+          "logisticK": 0.4,
+          "logisticMidpoint": 3.0,
+          "maPeriod": 24,
+          "regimeAlpha": 0,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.2,
+            "gMax": 1.0,
+            "bStar": 1000000,
+            "kappaB": 1.0
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 100000,
+              "share": 0.5
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M to $5M",
+              "repBalance": 2000000,
+              "share": 0.15
+            },
+            {
+              "label": "Over $5M",
+              "repBalance": 8000000,
+              "share": 0.1
+            }
+          ]
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "hys-pool"
+      }
+    },
+    {
+      "id": "dd-mma-1",
+      "familyId": "dd-mma",
+      "coaNodeId": "dd-mma",
+      "terms": {
+        "id": "dd-mma-1",
+        "type": "nmd-b",
+        "label": "Money market accounts, paid rate on the full beta form",
+        "notional": 500000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "sCurve": {
+          "betaMin": 0.35,
+          "betaMax": 0.75,
+          "k": 1.0,
+          "m": 3.5,
+          "lambda": 0.6
+        },
+        "nmdParams": {
+          "closureSteady": 0.6,
+          "closureInitial": 1.0,
+          "closureTauMonths": 18,
+          "burnoutLambda": 0,
+          "maxRateDecay": 8.0,
+          "maxRateGrowth": 0,
+          "logisticK": 0.4,
+          "logisticMidpoint": 2.5,
+          "maPeriod": 24,
+          "regimeAlpha": 0,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.2,
+            "gMax": 1.0,
+            "bStar": 1000000,
+            "kappaB": 1.0
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 150000,
+              "share": 0.25
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M to $5M",
+              "repBalance": 2000000,
+              "share": 0.3
+            },
+            {
+              "label": "Over $5M",
+              "repBalance": 10000000,
+              "share": 0.2
+            }
+          ]
+        }
+      },
+      "dimensions": {
+        "liquidityRole": "hys-pool"
+      }
+    }
+  ]
+}

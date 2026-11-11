@@ -1,0 +1,336 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-11-05",
+  "updatedBy": "liquidity-survival-path is added, shipped, with its check on Quillfield Bank version 1.3",
+  "comment": "Every capability of the platform, with its shipping status. Read by npm run accept (data/src/examples/acceptance.ts), merged with the entries an optional extension folder registers (accept/registry.ts). Rules the battery enforces: a 'shipped' entry must have an anchor check registered in data/src/examples/accept/registry.ts; any other status prints SKIPPED with the reason and must NOT have a check. A module that ships a capability flips its status to 'shipped' in the same commit as its check. expectedNotImplementedLayers lists RunResult/StochasticRunResult notImplemented layers the battery's own runs are expected to emit; stage 4 asserts exact set equality. Entries left SKIPPED are genuine cuts, never shipped-but-unasserted work.",
+  "capabilities": [
+    {
+      "id": "kernel-hash-gate-standing",
+      "title": "Kernel byte-integrity gate as a standing suite member",
+      "status": "shipped",
+      "module": "W1-H1",
+      "reason": "Shipped wave 1. Anchor: kernelIntegrity.test.ts runs on every `npm test` (97 = 94 + 3 rows, node:crypto re-hash); the battery re-hashes all 97 files independently in stage 0 AND in this capability's own check.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "overlay-compat-refusal",
+      "title": "D5: overlay-to-instrument incompatibility throws typed instead of silently skipping",
+      "status": "shipped",
+      "module": "W1-H2",
+      "reason": "Shipped wave 1. Anchor: each formerly-silent site (deposit-beta on non-IB nmd, prepay on fixed-loan, nmd-decay on a loan family) throws typed IncompatibleOverlayError naming family/kind/type; enforced by one shared table at run time and compile time.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "floater-reset-banding",
+      "title": "D1: floaters band by actual next reset in the repricing ladder",
+      "status": "shipped",
+      "module": "W1-H3",
+      "reason": "Shipped wave 1. Anchor: hand-built three-floater book (monthly/quarterly/annual) lands 0-1M / 1-3M / 6-12M through the full run pipeline, band totals conserved.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "nmdb-beta-ladder-split",
+      "title": "D2: NMD-B beta x balance repricing slice in the ladder via kernel initialBeta()",
+      "status": "shipped",
+      "module": "W1-H3 / W2-A3",
+      "reason": "Shipped wave 1 (gap engine) and live in the run pipeline since the W2-A3 chunk.ts step. Anchor: the kernel's own initialBeta() decomposition reproduced band-wise against the run's liquidity ladder; non-IB stays pure runoff.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "typed-shortfalls-contract",
+      "title": "F1+F3: typed reinvestment-shortfall slot, deltaEvePct unit pin, durationMode echo (schema 1.1.0)",
+      "status": "shipped",
+      "module": "W1-H4",
+      "reason": "Shipped wave 1. Anchor: a bullet family against a declining dynamic target reports the typed shortfall with balanceGapEnd === achieved - target to the bit; the free-text run.shortfall tag is gone. NOTE: the battery's dynamic scenario (id SDYN) is not rate-only, so attribution declines it with the typed attribution.SDYN tag — that is the declared multi-driver-peel boundary (stretch entry below), asserted here so it can never degrade silently.",
+      "expectedNotImplementedLayers": [
+        "attribution.SDYN"
+      ]
+    },
+    {
+      "id": "platform-service-loop",
+      "title": "Local HTTP service: queue, child runner, file store, SSE, CSV export, seed",
+      "status": "shipped",
+      "module": "W1-P1 / W2-P6",
+      "reason": "Shipped waves 1-2. Anchor: the real child runner (runnerEntry.mjs) executes the stored vanilla request in a scratch store and its result.json is byte-identical (timestamps blanked) to in-process buildRunResult — the transport adds no arithmetic. HTTP contract tests live in the apps/server suite.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "intake-json-csv-workbook",
+      "title": "Intake: JSON canonical, CSV assisted against a stored COA, market workbook import",
+      "status": "shipped",
+      "module": "W1-P2",
+      "reason": "Shipped wave 1. Anchor: a two-defect book returns ONE report naming both rows (all errors, not first-failure), with the kernel's own dry-instantiation message verbatim; the good book round-trips. CSV/workbook arms carry 32 suite tests.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "workbench-ui",
+      "title": "Workbench UI: six routes, show-before-run gate, v1 fixture archive, wave-3 analytics tabs",
+      "status": "shipped",
+      "module": "W1-P3 / W1-P4 / W2-P6 / W3-P7",
+      "reason": "Shipped waves 1-3. Anchor: value parity — the served fixture's headline figures are bit-identical to a fresh engine run, and the ONE shared formatter's honesty edges (tiny nonzero SE never renders as zero; absent never renders as 0) are asserted through the real module. Pixel correctness is not battery-gated (design Section 5); interaction flows were verified live in the P6/P7 sit-downs.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "ftp-deterministic",
+      "title": "FTP three-leg par-match (IR / all-in / LP residual) with book NIM bridge, base scenario only",
+      "status": "shipped",
+      "module": "W2-A1",
+      "reason": "Shipped wave 2. Anchors: flat-curve two-period hand case to 1e-12 (independent closed form), all-in - IR = LP per family, book charges/credits net to the stated residual 1e-9, NIM bridge re-sums to computeNII 1e-9 with niiNet12 a verbatim copy. Base scenario only: shocked series refuse typed IN-BLOCK (never in the run register); seasoned books omit the block with the typed ftp.seasoned-book tag (asserted under seasoning-reanchor).",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "cd-competing-risk",
+      "title": "CD competing-risk wiring: cdBook adapter, cd terms arm, cds family off the bullet",
+      "status": "shipped",
+      "module": "W2-A2 / W3-A2b",
+      "reason": "Shipped waves 2-3 (executed for the cds family only; FHLB and borrowings remain bullets). Anchors: factory stream vs direct kernel cdCashflows bit-exact; zero-hazard degeneracy reproduces independently aggregated kernel bullets <= 1e-12; principal conserves; duration shortens and liquidity front-loads vs the bullet comparator. v0 semantics disclosed in the limitations page (behavioral state is shock-invariant; run-off view in both ladders).",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "seasoning-reanchor",
+      "title": "D3a: originationOffsetMonths re-anchors ladders, buckets, and durations engine-side",
+      "status": "shipped",
+      "module": "W2-A3 / W3-A7",
+      "reason": "Shipped wave 2 (module level + run-pipeline gate) and wave 3 (gate LIFTED for fixed-loan terms by the A7 duration-engine re-anchor). Anchor: a seasoned 24M bullet at -6 equals its fresh 18M comparator across nii/eve/gap/cashflows exactly; the comparator never runs the re-anchor code. FTP abstains on seasoned books with the typed ftp.seasoned-book tag (declared here; the battery's seasoned run emits it). Floating/mortgage/nmd offsets still refuse typed; behavioral age is D3b, declined below.",
+      "expectedNotImplementedLayers": [
+        "ftp.seasoned-book"
+      ]
+    },
+    {
+      "id": "stochastic-hw-v0",
+      "title": "Stochastic run mode v0: HW1F calibration, path-driven projection, EVE/NII-12m distributions",
+      "status": "shipped",
+      "module": "W2-A4 / W3-A4b",
+      "reason": "Shipped waves 2-3, engine mode plus the platform submission arm. Anchors: zero-vol degeneracy to deterministic base EVE (measured ~3e-14 relative vs the 1e-6 bound), engine-level martingale with printed SE, same-seed byte-identity / different-seed divergence, typed refusals (no cap vols, invalid path counts). CALIBRATION GATE BREACH IS DISCLOSED, NOT ABSORBED: on the vendored 2026-03-31 surface the HW1F fit RMSE is ~7.78 bp vs the 5 bp gate with rmseGateBreached: true and the fitted mean reversion at its lower bound — the battery asserts the FLAG IS TRUTHFUL, not that the surface fits. The stochastic envelope carries the in-envelope stochastic.shocked-scenarios refusal (base-only), declared here.",
+      "expectedNotImplementedLayers": [
+        "stochastic.shocked-scenarios"
+      ]
+    },
+    {
+      "id": "krd-channel-decomposition",
+      "title": "Key-rate durations plus non-parallel three-way channel decomposition (cost-labeled opt-ins)",
+      "status": "shipped",
+      "module": "W3-A5",
+      "reason": "Shipped wave 3 as PIPELINE-CONTEXT OPT-INS, off by default; no platform submission can request them yet (engine-level capability; the run-request field is a post-window ruling). Anchors: KRD sum lands on the pinned 5.37 vanilla duration (re-pinned from 5.43 on the public basis, 2026-09-24) within disclosed bump-width convexity, the additivity residual falls ~4x under bump halving (the convergence gate IS the number), channels' projection leg and interaction remainder are exactly 0 on a path-independent book. Books with the one-sided regime amplifier REFUSE typed (eve.key-rate.regime-amplifier; conditional tag — the battery's vanilla runs emit none).",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "custom-rate-vector",
+      "title": "Custom per-tenor bp shock vector RateSpec arm",
+      "status": "shipped",
+      "module": "W3-A6",
+      "reason": "Shipped wave 3. Anchors: a custom vector on the twist's own breakpoints reproduces twistCurve < 1e-12 at every node and a dense tenor sweep (measured exact 0); an all-zero vector round-trips the base curve bitwise; malformed vectors throw CustomShockError naming the offending knot (the platform's 422). Static instantaneous shock like parallel/twist; ramps remain declined.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "nii-flexible-horizons-wal",
+      "title": "NII byHorizon plus monthly net vector; per-family WAL via kernel walFromCashflows",
+      "status": "shipped",
+      "module": "W3-A7",
+      "reason": "Shipped wave 3. Anchors: net12 === byHorizon[12].net exactly (identity, not tolerance), the monthly vector's partial sums reproduce the horizon nets exactly, and the two-payment-bond WAL hand case (50 @ 12M + 50 @ 24M -> 1.5y exactly). The run pipeline requests the default [12, 24]; other horizons are engine-callable, not yet a run-request field.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "platform-database-mirror",
+      "title": "Platform database: node:sqlite relational mirror of the file store, immutability-triggered, content-hash-verified",
+      "status": "shipped",
+      "module": "W3-D1",
+      "reason": "Shipped wave 3b: the file store remains the byte store of record and the run path; the DB is its content-hash-verified mirror, refreshed at boot/seed/migrate (it does NOT advance when a run completes mid-session). Anchor: byte parity — a run composed from DB-resolved inputs is byte-identical to the file-store composition and reproduces the pinned vanilla duration exactly, with every artifact pinned by content hash.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "catalog-read-surface",
+      "title": "Catalog read API over the database mirror (positions, aggregates, curves, run inputs, lineage)",
+      "status": "shipped",
+      "module": "W3-P9 / W6-C1",
+      "reason": "Shipped, with routes and 27 suite tests, served on /api/catalog/* by registerCatalogRoutes in apps/server/src/server.ts, and anchored by its check. Anchor: aggregate reconciliation — the catalog's SQL aggregates over the mirrored synthetic book (11 families, 2,351 positions at the committed generator seed) (counts, notional, notional-weighted rate and maturity, per family and whole-book) are independently recomputed from the store DOCUMENTS (the non-SQL path) and reconcile within 1e-12 relative, counts exact; honesty edge asserted: weightedAvgRate is notional-weighted over rate-bearing rows only (basis ratedNotional), a family with no rate-bearing notional is NULL (never 0) and a genuine zero-rate family is 0 (never NULL).",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "multi-driver-attribution-peel",
+      "title": "Multi-driver attribution peel (re-projection under partial configurations)",
+      "status": "stretch",
+      "reason": "stretch: a combinatorial verification burden, deferred by design. Attribution on multi-driver scenarios continues to decline with a typed NotImplemented tag (attribution.<scenarioId>) rather than fabricate a split; the battery's typed-shortfalls run asserts the tag appears.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "index-history-store",
+      "title": "Rate index history store, CSV and Excel import, lag reads before the cut-off",
+      "status": "shipped",
+      "module": "PieceB-B3b",
+      "reason": "Shipped in Studio a later release, step B3b: an index history is an append-only store document (ih- and 16 hex of its content hash) of monthly month-end fixings imported from a CSV or .xlsx file with a declared unit; a rate index carries the id; a lagged formula reads its parent's history for the months before the cut-off and the cut-off value where the history stops short. Anchors: a daily file's month values are each month's last weekday fixing on paper; a second store of the same content is the same id; a lag-3 floater's first three months of interest equal 1M x (fixing + margin) / 12 on paper; where the history stops short the months read flat, equal to each other exactly and to month 4 within 1e-6 dollars (the cut-off value month 4 reads as the path's month 0); the note says history ends 2025-12; 2 months filled flat.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "python-replica-tie-out",
+      "title": "Quillfield Bank tied out against an independent Python replica (replica/), every cell at 1e-9",
+      "status": "shipped",
+      "module": "S3a-2",
+      "reason": "Shipped in Studio slice S3a-2: replica/ is a Python and numpy second implementation of the deterministic core, written from the docs and method comments with no shared code or constant. Its committed targets hold Quillfield Bank (replica/targets/quillfield-v1.json, base and the parallel +-100 and +-200 bp shocks) and a coverage book of the paths the bank does not reach (replica/targets/coverage-v1.json, base, +100, -100, -200 and -300 bp), each the static run-off with the SOFR history warmup. Anchor: the engine reproduces every target cell (the projection of every position, NII, run-off EVE on both bases, both gap ladders, FTP) at 1e-9 relative, floors 1e-6 dollars and 1e-12 on rates, with what is compared listed from the engine side. npm run replica:check re-runs the replica; npm run accept never needs Python.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "seg-ear",
+      "title": "SEG / earnings-at-risk",
+      "status": "shipped",
+      "module": "S3b-1",
+      "reason": "Shipped as the opt-in seg block with its knobs and the cohort-0 overlay. Studio slice S3b-1 brings the entry back to the core register on the example bank's SEG demo: the run reads the seeded setup's knobs, the overlay moves its own family's SEG only and leaves every other family's bit for bit; Studio slice S3b-2 ties the whole block out against the Python replica's targets (replica/targets/demo-seg-v1.json) at 1e-9, enumerated from the engine side, in four lines named by S3b-1's pin stems; the interest-checking family's SEG and up-shock NII are compared out from the month its deposit vintages first read the warmup, a month the replica derives, and the book read less it from there (replica/DISAGREEMENTS.md D6). The book-number tie-out stays in the extension folder as seg-ear-book.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "per-position-drilldown",
+      "title": "Per-position drill-down analytics endpoint",
+      "status": "shipped",
+      "module": "S3b-1",
+      "reason": "Shipped as instrument-level results. Studio slice S3b-1 brings the entry back to the core register on the example bank's instruments demo: one row per position per scenario, the rows' values summed by family equal the run's family values in every scenario at 1e-9, every row carries its position's discount spread; Studio slice S3b-2 ties every row of the file out against the Python replica's targets (replica/targets/demo-instruments-v1.json) at 1e-9. The book-number tie-out stays in the extension folder as per-position-drilldown-book.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "quillfield-feature-demos",
+      "title": "The example bank's feature demos: regulatory deposit convention, spread-consistent discounting, six standardized shocks, constant prepayment with the stress inflow line, fixed-rate ladder",
+      "status": "shipped",
+      "module": "S3b-1",
+      "reason": "Studio slice S3b-1: each seeded demo setup runs on Quillfield Bank version 1.1 as its launch does. Anchors: the regulatory convention splits each non-maturity deposit into ten core rungs and one non-core slice; spread-consistent value is below all-in on every family carrying a spread and equal on every other, and with the spreads removed it equals all-in bit for bit; the six shocks' parallel pair equals the parallel grid's +-200 bp values; the two stress rows read one inflow line, below business as usual; the fixed-rate ladder holds every principal dollar of the rate-locked positions. Studio slice S3b-2 ties each demo's measures out against the Python replica's targets (replica/targets/demo-<id>-v1.json) at 1e-9, enumerated from the engine side, and holds the replica's input file of the seeded setups equal to the seed. Shocked-level slotting is not here: on this bank the engine refuses it (a plain deposit carries no full form), so it moves to S3c (ruling 2026-11-04). Studio slice S3c-1 ships it under nmd-b-full-beta-form, on Quillfield's deposit desk.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "nmd-b-full-beta-form",
+      "title": "Full beta form on nmd-b and its frozen and shocked-level EVE slotting, on Quillfield's deposit desk",
+      "status": "shipped",
+      "module": "S3c-1",
+      "reason": "Studio slice S3c-1 brings the entry back to the core register on the deposit desk's two full beta demos (the regulatory and the shocked-level convention, one set binding the form on the money market book). Anchors: the base paid rate is alpha + beta_eff x r restated from the desk file's S-curve at the base state; frozen slotting leaves the non-core min(1 - min(beta_eff, 0.5), 0.9) of the book in month 1 in every scenario; shocked-level leaves beta_eff at each scenario's own level; the operating and savings deposits take the same regulatory split under both conventions, so only the money market family moves; FTP stands aside. Five provisional pins of the seeded runs' values, which S3c-2 replaces with the replica's targets. The book-number tie-out stays in the extension folder as nmd-b-full-beta-form-book.",
+      "expectedNotImplementedLayers": [
+        "ftp.full-beta-form"
+      ]
+    },
+    {
+      "id": "nmd-component-decay-dated-path",
+      "title": "Component decay on a dated monthly rate path and the full-runoff WAL, on Quillfield's deposit desk",
+      "status": "shipped",
+      "module": "S3c-1",
+      "reason": "Studio slice S3c-1 brings the entry back to the core register on the deposit desk's component decay demo (the savings book on the shipped SOFR series, April 2022 to March 2026, a 12-month benchmark). Anchors: the savings balance at every month of the grid, every scenario, is B0 x prod R (1 + mu0 + phi x_s) restated on the shipped series, the shift on the window only and the driver held after it; the family WAL is the full runoff's, summed far past the grid; the other families keep their in-horizon WAL; NII, EVE and FTP stand aside with their notes. Two provisional pins, which S3c-2 replaces with the replica's targets. The book-number tie-out stays in the extension folder as nmd-component-decay-dated-path-book.",
+      "expectedNotImplementedLayers": [
+        "nii.component-decay",
+        "eve.component-decay",
+        "cashflows.wal.full-runoff",
+        "ftp.component-decay"
+      ]
+    },
+    {
+      "id": "ftp-replicating-portfolio-credit",
+      "title": "The straight-line deposit runoff, the replicating-portfolio credit on each desk deposit, and the floater's funding tenor on Quillfield Bank version 1.2",
+      "status": "shipped",
+      "module": "S3c-1",
+      "reason": "Studio slice S3c-1 brings the entry back to the core register. Anchors: the deposit desk's operating deposits run off $6.25M a month for 48 months, from the desk file's terms; their credit reads life (48 + 1) / 2 and a life-target blend whose life is that life; on each of the desk's three credits the total is the rate leg plus the liquidity leg and the family's IR, LP and all-in rates are those; version 1.1 of Quillfield Bank (the same file with the funding tenors taken out) against version 1.2 moves the FTP rows of the four tenored floater families only, every other block bit for bit; each tenored family's LP FTP is the market's own premium quote at its funding tenors. Five provisional pins, which S3c-2 replaces with the replica's targets. The book-number tie-out stays in the extension folder as ftp-replicating-portfolio-credit-book.",
+      "expectedNotImplementedLayers": [
+        "nii.component-decay",
+        "eve.component-decay",
+        "cashflows.wal.full-runoff"
+      ]
+    },
+    {
+      "id": "ftp-credit-scenario-reading",
+      "title": "The replicating-portfolio credit on a balance path and on a capped life, read at every parallel scenario, on Quillfield's deposit desk",
+      "status": "shipped",
+      "module": "S3c-1",
+      "reason": "Studio slice S3c-1 brings the entry back to the core register on the deposit desk's scenario credit demo (the savings credit on its balance path and the money market credit on a 60-month cap, both re-priced on each scenario's shifted curve). Anchors: both credits read every scenario in request order, the base first and equal to the top level; every reading's legs add up; the money market beta is beta_eff at each scenario's level restated from the S-curve, and its life the cap; the savings life is the full-runoff life of the balance path each scenario projects, restated. Two provisional pins, which S3c-2 replaces with the replica's targets. The book-number tie-out stays in the extension folder as ftp-credit-scenario-reading-book.",
+      "expectedNotImplementedLayers": [
+        "nii.component-decay",
+        "eve.component-decay",
+        "cashflows.wal.full-runoff"
+      ]
+    },
+    {
+      "id": "liquidity-survival-path",
+      "title": "The survival path past the ladder's 12 months with a received facility, the commitment dials setting the severe draw, certificates of deposit as term deposits and the buffer from the HQLA tags, on Quillfield Bank version 1.3",
+      "status": "shipped",
+      "module": "S3d-1",
+      "reason": "Studio slice S3d-1: the seeded survival-path setup runs on Quillfield Bank version 1.3 as its launch does. Anchors: the buffer is each hqla-stock position's face less the public level haircut, restated from the bank file; the certificates of deposit pay out what the run's own projection of the family pays, less the renewal share; the severe draw is the undrawn face times U99 - Ubar over 12 months and nothing after; months 1 to 12 of the path are the ladder's severe row and the whole path equals the recursion restated in the check; survival in days is months x 365/12, with the FHLB line counted after its haircut in the path only; the LCR reference is 10 percent of the undrawn line; and version 1.3 moves no block of any existing Quillfield demo. Six provisional pins, which S3d-2 replaces with the replica's targets.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "stochastic-fan-chart-ui",
+      "title": "Stochastic distribution fan chart in the viewer",
+      "status": "stretch",
+      "reason": "stretch: not built by design; the engine block renders as a table with N and SE leading every row.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "position-level-overlay-override",
+      "title": "Position-level overlay override cascade (family default, position exception)",
+      "status": "stretch",
+      "reason": "stretch: not built. Overlays bind at the family grain only.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "ftp-shocked-series",
+      "title": "FTP monthly series at shocked scenarios",
+      "status": "stretch",
+      "reason": "stretch, and gated behind the shocked-NII convention decision. The deterministic FTP block refuses at shocked scenarios (typed, in-block) rather than publish a series on a convention flagged wrong-by-one-coupon-month.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "shocked-nii-convention-migration",
+      "title": "ShockedPath (shock from step 1) NII convention migration",
+      "status": "declined",
+      "reason": "declined for now: it moves every shocked NII golden under FTP and stochastic, so it is sequenced as a later step of its own.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "behavioral-age-d3b",
+      "title": "D3b: behavioral age on seasoned books (CPR seasoning, burnout state, decay age ramp)",
+      "status": "declined",
+      "reason": "declined for now: it requires a kernel contract change and the kernel is frozen; it is disclosed as a limitation. The D3a re-anchor moves where cashflows land, not how old the kernel thinks the instrument is.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "accounting-layer",
+      "title": "GL, posting, income-statement and balance-sheet forecast with equity plug, taxes, OCI",
+      "status": "declined",
+      "reason": "declined: the accounting half of a vendor platform, a multi-month program.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "enterprise-operations",
+      "title": "Multi-entity consolidation, alternate COA views, regulatory report packs, multi-user security, bitemporal store",
+      "status": "declined",
+      "reason": "declined: half-building any of these reproduces a vendor platform's silent-failure surface.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "derivative-instruments",
+      "title": "Swaps, caps/floors, swaptions, revolver, lease instrument classes",
+      "status": "declined",
+      "reason": "declined: new kernel classes would break the frozen kernel; linear swaps composed from two legs are recorded as the cheap future path.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "credit-ecl-rwa-and-adjacent",
+      "title": "Credit/ECL/RWA, equation language, lookup tables, exogenous accounts, external-results injection, OAS solver, daily grain, multi-index basis risk",
+      "status": "declined",
+      "reason": "declined: each a program of its own.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "behavioral-depth-ports",
+      "title": "Replicating portfolio, deposit model tier, mortgage competing-risks credit arm, draw-rate/revolver, SABR fit",
+      "status": "declined",
+      "reason": "declined: real estate depth, each with its own verification program. BGM is a selectable stochastic rate model by request; SABR is a read-only surface preview; a SABR fit stays declined.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "harness-plan-object",
+      "title": "Harness plan-object re-architecture (dimension bag, two gates)",
+      "status": "declined",
+      "reason": "declined: a design source, not a build target.",
+      "expectedNotImplementedLayers": []
+    },
+    {
+      "id": "nl-authoring-and-platform-extras",
+      "title": "NL authoring in the browser, MCP store re-pointing, auth, WebSockets, report packs, deploy, deletes",
+      "status": "declined",
+      "reason": "declined for now; MCP re-pointing is the first later item. (The database formerly in this list shipped as the platform database mirror; see platform-database-mirror.)",
+      "expectedNotImplementedLayers": []
+    }
+  ]
+}

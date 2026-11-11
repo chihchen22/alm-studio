@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Results</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+/* Results. Three type sizes: fs-1 labels, captions, chips and axis text; fs-3 body, tabs and card titles; fs-6 the page
+   title and stat values. Shell, tabs, tiles, plots and the unobservable panel live in components.css. Page-local: the
+   attribution waterfall, a table-chart whose labels and values are HTML columns either side of an SVG of bars. */
+.wf { display: grid; grid-template-columns: max-content minmax(0, 1fr) max-content; column-gap: var(--sp-3); }
+.wf svg { display: block; width: 100%; overflow: visible; }
+.wf-labels span, .wf-values span { display: block; height: 22px; line-height: 22px; font-size: var(--fs-1); color: var(--ink-2); white-space: nowrap; }
+.wf-values span { text-align: right; }
+.wf-conn { stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+.wf-labels .wf-total, .wf-values .wf-total { color: var(--ink); font-weight: 600; }
+.wf-labels .wf-resid, .wf-values .wf-resid { color: var(--muted); }
+.table td.muted { color: var(--muted); font-weight: 400; }
+.prov-more { margin-top: var(--sp-4); }
+.prov-more summary { font-size: var(--fs-1); color: var(--ink-2); cursor: pointer; width: max-content; }
+.prov-more .kv { margin-top: var(--sp-3); }
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="rail">
+  <div class="rail-brand">Studio</div>
+  <nav aria-label="Workflow">
+    <div class="rail-group">
+      <a class="rail-item" href="#">Home</a>
+    </div>
+    <div class="rail-group">
+      <div class="rail-group-label">Inputs</div>
+      <a class="rail-item" href="#">Balance Sheet</a>
+      <a class="rail-item" href="#">Market</a>
+      <a class="rail-item" href="#">Assumptions</a>
+      <a class="rail-item" href="#">Scenarios</a>
+    </div>
+    <div class="rail-group">
+      <div class="rail-group-label">Compose</div>
+      <a class="rail-item" href="#">Plan</a>
+      <a class="rail-item" href="#">Run</a>
+    </div>
+    <div class="rail-group">
+      <div class="rail-group-label">Read</div>
+      <a class="rail-item" href="#" aria-current="page">Results</a>
+      <a class="rail-item" href="#">Compare</a>
+    </div>
+  </nav>
+  <div class="rail-foot">
+    <span class="field-label muted">Theme</span>
+    <div class="seg" role="group" aria-label="Theme">
+      <button type="button" data-theme-set="system" aria-pressed="true">System</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="head-band">
+    <h1 class="page-title">Results</h1>
+    <div class="head-chips">
+      <button class="pill pill-select" type="button" aria-haspopup="listbox"><span class="pill-key">Book</span><span>synthetic-2500-v1</span></button><!-- source: provenance.portfolioId -->
+      <span class="pill" role="note"><span class="pill-key">As of</span><span class="num">2026-03-31</span></span><!-- source: cashflows.grid.asOf -->
+      <button class="pill pill-select" type="button" aria-haspopup="listbox"><span class="pill-key">Run</span><span class="mono">run-20260923-163546-001557f</span></button><!-- source: provenance.runId -->
+      <button class="pill pill-quiet pill-action" type="button">Export</button>
+    </div>
+    <p class="head-meta"><span class="num">2,351</span><!-- source: portfolios/synthetic-2500-v1.meta.json intake.positionCount --> positions, assets <span class="num">5,358.7</span><!-- source: portfolios/synthetic-2500-v1.meta.json intake.assets = 5,358,726,767 --> mm USD, intake statistics, source portfolios/synthetic-2500-v1.meta.json; <span class="num">5</span><!-- source: provenance.scenarioIds (count) --> scenarios, engine <span class="num">0.1.0</span><!-- source: provenance.engineVersion --></p>
+  </header>
+
+  <div class="content">
+
+    <div class="tabs" role="tablist" aria-label="Result views">
+      <button class="tab" type="button" role="tab" aria-selected="true">Overview</button>
+      <button class="tab" type="button" role="tab" aria-selected="false">Rates</button>
+      <button class="tab" type="button" role="tab" aria-selected="false">Gap</button>
+      <button class="tab" type="button" role="tab" aria-selected="false">Attribution</button>
+      <button class="tab" type="button" role="tab" aria-selected="false">Lenses</button>
+      <button class="tab" type="button" role="tab" aria-selected="false">Metrics</button>
+    </div>
+
+    <div class="stat" title="623,336,149 USD">
+      <div class="stat-label">Base EVE</div>
+      <div class="stat-value"><span class="num">623.3</span><!-- source: eve.byScenario[S0].eve --><span class="stat-unit">mm USD</span></div>
+      <div class="stat-source">eve<wbr>.byScenario<wbr>[S0]<wbr>.eve</div>
+    </div>
+    <div class="stat" title="-184,947,868 USD">
+      <div class="stat-label">EVE change, +200 bp</div>
+      <div class="stat-value"><span class="num">-184.9</span><!-- source: eve.byScenario[S200].deltaEveVsBase --><span class="stat-unit">mm USD</span></div>
+      <span class="stat-delta is-neg"><span class="num">-29.7%</span><!-- source: eve.byScenario[S200].deltaEvePct --> vs base</span>
+      <div class="stat-source">eve<wbr>.byScenario<wbr>[S200]<wbr>.deltaEveVsBase, deltaEvePct</div>
+    </div>
+    <div class="stat" title="-185,436,305 USD">
+      <div class="stat-label">EVE change, -200 bp</div>
+      <div class="stat-value"><span class="num">-185.4</span><!-- source: eve.byScenario[S-200].deltaEveVsBase --><span class="stat-unit">mm USD</span></div>
+      <span class="stat-delta is-neg"><span class="num">-29.7%</span><!-- source: eve.byScenario[S-200].deltaEvePct --> vs base</span>
+      <div class="stat-source">eve<wbr>.byScenario<wbr>[S-200]<wbr>.deltaEveVsBase, deltaEvePct</div>
+    </div>
+    <div class="stat" title="13,942,069 USD">
+      <div class="stat-label">Base NII, 12m</div>
+      <div class="stat-value"><span class="num">13.9</span><!-- source: nii.byScenario[S0].totalNet12 --><span class="stat-unit">mm USD</span></div>
+      <div class="stat-source">nii<wbr>.byScenario<wbr>[S0]<wbr>.totalNet12</div>
+    </div>
+
+    <figure class="card viz">
+      <div class="viz-head"><div class="card-title">EVE profile</div>
+        <p class="viz-sub">+200 bp <span class="num">-184.9</span> mm<!-- source: eve.byScenario[S200].deltaEveVsBase -->, -200 bp <span class="num">-185.4</span> mm<!-- source: eve.byScenario[S-200].deltaEveVsBase --></p></div>
+      <div class="plot">
+        <div class="plot-top"><span>mm USD, axis from 400</span><span>Parallel shocks, base hollow</span></div>
+        <svg viewBox="0 0 816 180" preserveAspectRatio="none" role="img" aria-label="EVE across five parallel rate scenarios on an axis from 400 mm, base marked with a hollow dot, mm USD"><path class="mk" d="M81.6 154.2 L244.8 101.1 L408 28.1 L571.2 80.0 L734.4 153.9" stroke="var(--series-1)" stroke-width="2" stroke-linejoin="round"/><g><title>-200 bp: 437.9 mm USD</title><rect class="hit" x="0" y="0" width="163.2" height="180"/><path class="mk" d="M81.6 154.2h0" stroke="var(--surface)" stroke-width="10"/><path class="mk" d="M81.6 154.2h0" stroke="var(--series-1)" stroke-width="7"/></g><!-- source: eve.byScenario[S-200].eve --><g><title>-100 bp: 516.0 mm USD</title><rect class="hit" x="163.2" y="0" width="163.2" height="180"/><path class="mk" d="M244.8 101.1h0" stroke="var(--surface)" stroke-width="10"/><path class="mk" d="M244.8 101.1h0" stroke="var(--series-1)" stroke-width="7"/></g><!-- source: eve.byScenario[S-100].eve --><g><title>Base: 623.3 mm USD</title><rect class="hit" x="326.4" y="0" width="163.2" height="180"/><path class="mk" d="M408 28.1h0" stroke="var(--series-1)" stroke-width="12"/><path class="mk" d="M408 28.1h0" stroke="var(--surface)" stroke-width="7"/></g><!-- source: eve.byScenario[S0].eve --><g><title>+100 bp: 547.1 mm USD</title><rect class="hit" x="489.6" y="0" width="163.2" height="180"/><path class="mk" d="M571.2 80.0h0" stroke="var(--surface)" stroke-width="10"/><path class="mk" d="M571.2 80.0h0" stroke="var(--series-1)" stroke-width="7"/></g><!-- source: eve.byScenario[S100].eve --><g><title>+200 bp: 438.4 mm USD</title><rect class="hit" x="652.8" y="0" width="163.2" height="180"/><path class="mk" d="M734.4 153.9h0" stroke="var(--surface)" stroke-width="10"/><path class="mk" d="M734.4 153.9h0" stroke="var(--series-1)" stroke-width="7"/></g><!-- source: eve.byScenario[S200].eve --></svg>
+        <div class="plot-cats" aria-hidden="true"><span>-200 bp</span><span>-100 bp</span><span class="is-base">Base</span><span>+100 bp</span><span>+200 bp</span></div>
+      </div>
+      <figcaption>Source: eve.byScenario[*].eve, run <span class="run">run-20260923-163546-001557f</span></figcaption>
+      <details class="viz-table"><summary>Show table</summary><!-- source: eve.byScenario[*].pvAssets, eve.byScenario[*].pvLiabilities, eve.byScenario[*].eve --><table class="table"><thead><tr><th>Scenario</th><th class="num">PV assets (USD)</th><th class="num">PV liabilities (USD)</th><th class="num">EVE (USD)</th></tr></thead><tbody><tr><td>-200 bp</td><td class="num lvl">5,686,960,813</td><td class="num lvl">5,249,060,968</td><td class="num lvl">437,899,845</td></tr><tr><td>-100 bp</td><td class="num lvl">5,591,949,471</td><td class="num lvl">5,075,975,205</td><td class="num lvl">515,974,266</td></tr><tr><td>Base</td><td class="num lvl">5,535,670,259</td><td class="num lvl">4,912,334,109</td><td class="num lvl">623,336,149</td></tr><tr><td>+100 bp</td><td class="num lvl">5,304,434,801</td><td class="num lvl">4,757,315,106</td><td class="num lvl">547,119,695</td></tr><tr><td>+200 bp</td><td class="num lvl">5,051,707,186</td><td class="num lvl">4,613,318,905</td><td class="num lvl">438,388,281</td></tr></tbody></table></details>
+    </figure>
+
+    <figure class="card viz">
+      <div class="viz-head"><div class="card-title">NII by horizon</div>
+        <div class="chip-row"><span class="stat-delta is-pos">12m +200 bp <span class="num">+20.6</span> mm</span><!-- source: attribution.headlines[nii-12m, S200].totalDelta --></div></div>
+      <div class="plot">
+        <div class="plot-top"><span>mm USD</span><div class="legend"><span><i class="key-box" style="background: var(--ink-2)"></i>12m</span><span><i class="key-box" style="background: var(--line-2)"></i>24m</span></div></div>
+        <svg viewBox="0 0 816 180" preserveAspectRatio="none" role="img" aria-label="Net interest income by rate scenario, 12 and 24 month horizons, mm USD"><line class="zero-line" x1="0" x2="816" y1="80.4" y2="80.4"/><g><title>-200 bp, 12m: -23.9 mm USD</title><rect class="hit" x="65.6" y="0" width="16" height="180"/><path d="M66.6 80.4V99.3Q66.6 103.3 70.6 103.3H76.6Q80.6 103.3 80.6 99.3V80.4Z" fill="var(--ink-2)"/></g><g><title>-200 bp, 24m: -91.7 mm USD</title><rect class="hit" x="81.6" y="0" width="16" height="180"/><path d="M82.6 80.4V164Q82.6 168 86.6 168H92.6Q96.6 168 96.6 164V80.4Z" fill="var(--line-2)"/></g><!-- source: nii.byScenario[S-200].totalNet12, nii.byScenario[S-200].totalNet24 --><g><title>-100 bp, 12m: -11.4 mm USD</title><rect class="hit" x="228.8" y="0" width="16" height="180"/><path d="M229.8 80.4V87.4Q229.8 91.4 233.8 91.4H239.8Q243.8 91.4 243.8 87.4V80.4Z" fill="var(--ink-2)"/></g><g><title>-100 bp, 24m: -63.6 mm USD</title><rect class="hit" x="244.8" y="0" width="16" height="180"/><path d="M245.8 80.4V137.2Q245.8 141.2 249.8 141.2H255.8Q259.8 141.2 259.8 137.2V80.4Z" fill="var(--line-2)"/></g><!-- source: nii.byScenario[S-100].totalNet12, nii.byScenario[S-100].totalNet24 --><g><title>Base, 12m: 13.9 mm USD</title><rect class="hit" x="392" y="0" width="16" height="180"/><path d="M393 80.4V71.1Q393 67.1 397 67.1H403Q407 67.1 407 71.1V80.4Z" fill="var(--ink-2)"/></g><g><title>Base, 24m: 11.2 mm USD</title><rect class="hit" x="408" y="0" width="16" height="180"/><path d="M409 80.4V73.7Q409 69.7 413 69.7H419Q423 69.7 423 73.7V80.4Z" fill="var(--line-2)"/></g><!-- source: nii.byScenario[S0].totalNet12, nii.byScenario[S0].totalNet24 --><g><title>+100 bp, 12m: 27.6 mm USD</title><rect class="hit" x="555.2" y="0" width="16" height="180"/><path d="M556.2 80.4V58.1Q556.2 54.1 560.2 54.1H566.2Q570.2 54.1 570.2 58.1V80.4Z" fill="var(--ink-2)"/></g><g><title>+100 bp, 24m: 51.6 mm USD</title><rect class="hit" x="571.2" y="0" width="16" height="180"/><path d="M572.2 80.4V35.2Q572.2 31.2 576.2 31.2H582.2Q586.2 31.2 586.2 35.2V80.4Z" fill="var(--line-2)"/></g><!-- source: nii.byScenario[S100].totalNet12, nii.byScenario[S100].totalNet24 --><g><title>+200 bp, 12m: 34.6 mm USD</title><rect class="hit" x="718.4" y="0" width="16" height="180"/><path d="M719.4 80.4V51.4Q719.4 47.4 723.4 47.4H729.4Q733.4 47.4 733.4 51.4V80.4Z" fill="var(--ink-2)"/></g><g><title>+200 bp, 24m: 65.9 mm USD</title><rect class="hit" x="734.4" y="0" width="16" height="180"/><path d="M735.4 80.4V21.5Q735.4 17.5 739.4 17.5H745.4Q749.4 17.5 749.4 21.5V80.4Z" fill="var(--line-2)"/></g><!-- source: nii.byScenario[S200].totalNet12, nii.byScenario[S200].totalNet24 --></svg>
+        <div class="plot-cats" aria-hidden="true"><span>-200 bp</span><span>-100 bp</span><span class="is-base">Base</span><span>+100 bp</span><span>+200 bp</span></div>
+      </div>
+      <figcaption>Source: nii.byScenario[*].totalNet12, totalNet24, run <span class="run">run-20260923-163546-001557f</span></figcaption>
+      <details class="viz-table"><summary>Show table</summary><!-- source: nii.byScenario[*].totalNet12, nii.byScenario[*].totalNet24 --><table class="table"><thead><tr><th>Scenario</th><th class="num">NII 12m (USD)</th><th class="num">NII 24m (USD)</th></tr></thead><tbody><tr><td>-200 bp</td><td class="num lvl">-23,942,697</td><td class="num lvl">-91,675,740</td></tr><tr><td>-100 bp</td><td class="num lvl">-11,437,837</td><td class="num lvl">-63,617,266</td></tr><tr><td>Base</td><td class="num lvl">13,942,069</td><td class="num lvl">11,239,864</td></tr><tr><td>+100 bp</td><td class="num lvl">27,584,981</td><td class="num lvl">51,576,501</td></tr><tr><td>+200 bp</td><td class="num lvl">34,590,013</td><td class="num lvl">65,874,135</td></tr></tbody></table></details>
+    </figure>
+
+    <figure class="card viz">
+      <div class="viz-head"><div class="card-title">Repricing gap, base</div>
+        <p class="viz-sub">0-1M <span class="num">+873.2</span> mm<!-- source: gap.repricing[0].rows[0].gap -->, 1-2Y <span class="num">-988.0</span> mm<!-- source: gap.repricing[0].rows[4].gap --></p></div>
+      <div class="plot">
+        <div class="plot-top"><span>mm USD, net gap by band</span><span>First eight bands</span></div>
+        <svg class="h-220" viewBox="0 0 816 220" preserveAspectRatio="none" role="img" aria-label="Repricing gap by band, base scenario, first eight bands, mm USD"><line class="zero-line" x1="0" x2="816" y1="110" y2="110"/><g><title>0-1M: net gap 873.2 mm USD</title><rect class="hit" x="0" y="0" width="102" height="220"/><path class="bar-lvl" d="M33 110V22.3Q33 18.3 37 18.3H65Q69 18.3 69 22.3V110Z"/></g><!-- source: gap.repricing[0].rows[0].gap --><g><title>1-3M: net gap 496.7 mm USD</title><rect class="hit" x="102" y="0" width="102" height="220"/><path class="bar-lvl" d="M135 110V61.8Q135 57.8 139 57.8H167Q171 57.8 171 61.8V110Z"/></g><!-- source: gap.repricing[0].rows[1].gap --><g><title>3-6M: net gap 108.1 mm USD</title><rect class="hit" x="204" y="0" width="102" height="220"/><path class="bar-lvl" d="M237 110V102.7Q237 98.7 241 98.7H269Q273 98.7 273 102.7V110Z"/></g><!-- source: gap.repricing[0].rows[2].gap --><g><title>6-12M: net gap 216.4 mm USD</title><rect class="hit" x="306" y="0" width="102" height="220"/><path class="bar-lvl" d="M339 110V91.3Q339 87.3 343 87.3H371Q375 87.3 375 91.3V110Z"/></g><!-- source: gap.repricing[0].rows[3].gap --><g><title>1-2Y: net gap -988.0 mm USD</title><rect class="hit" x="408" y="0" width="102" height="220"/><path class="bar-lvl" d="M441 110V209.7Q441 213.7 445 213.7H473Q477 213.7 477 209.7V110Z"/></g><!-- source: gap.repricing[0].rows[4].gap --><g><title>2-3Y: net gap -351.3 mm USD</title><rect class="hit" x="510" y="0" width="102" height="220"/><path class="bar-lvl" d="M543 110V142.9Q543 146.9 547 146.9H575Q579 146.9 579 142.9V110Z"/></g><!-- source: gap.repricing[0].rows[5].gap --><g><title>3-5Y: net gap -723.0 mm USD</title><rect class="hit" x="612" y="0" width="102" height="220"/><path class="bar-lvl" d="M645 110V181.9Q645 185.9 649 185.9H677Q681 185.9 681 181.9V110Z"/></g><!-- source: gap.repricing[0].rows[6].gap --><g><title>5-10Y: net gap 372.8 mm USD</title><rect class="hit" x="714" y="0" width="102" height="220"/><path class="bar-lvl" d="M747 110V74.9Q747 70.9 751 70.9H779Q783 70.9 783 74.9V110Z"/></g><!-- source: gap.repricing[0].rows[7].gap --></svg>
+        <div class="plot-cats" aria-hidden="true"><span>0-1M</span><span>1-3M</span><span>3-6M</span><span>6-12M</span><span>1-2Y</span><span>2-3Y</span><span>3-5Y</span><span>5-10Y</span></div>
+      </div>
+      <figcaption>Source: gap.repricing[0].rows[0-7].gap (scenario S0), run <span class="run">run-20260923-163546-001557f</span></figcaption>
+      <details class="viz-table"><summary>Show table</summary><!-- source: gap.repricing[0].rows[0-7].assets, .liabilities, .gap --><table class="table"><thead><tr><th>Band</th><th class="num">Assets (USD)</th><th class="num">Liabilities (USD)</th><th class="num">Net gap (USD)</th></tr></thead><tbody><tr><td>0-1M</td><td class="num lvl">975,939,162</td><td class="num lvl">102,746,987</td><td class="num lvl">873,192,175</td></tr><tr><td>1-3M</td><td class="num lvl">581,386,195</td><td class="num lvl">84,636,677</td><td class="num lvl">496,749,517</td></tr><tr><td>3-6M</td><td class="num lvl">124,500,955</td><td class="num lvl">16,411,203</td><td class="num lvl">108,089,752</td></tr><tr><td>6-12M</td><td class="num lvl">239,463,313</td><td class="num lvl">23,075,422</td><td class="num lvl">216,387,891</td></tr><tr><td>1-2Y</td><td class="num lvl">478,277,061</td><td class="num lvl">1,466,233,211</td><td class="num lvl">-987,956,150</td></tr><tr><td>2-3Y</td><td class="num lvl">445,726,891</td><td class="num lvl">797,072,591</td><td class="num lvl">-351,345,699</td></tr><tr><td>3-5Y</td><td class="num lvl">703,407,189</td><td class="num lvl">1,426,403,313</td><td class="num lvl">-722,996,124</td></tr><tr><td>5-10Y</td><td class="num lvl">1,234,357,612</td><td class="num lvl">861,508,375</td><td class="num lvl">372,849,237</td></tr></tbody></table></details>
+    </figure>
+
+    <!-- Waterfall residual = totalDelta - sum(contributions[*].amount) over all families and drivers
+         = -184947867.715015 - (-184947867.715016) = +0.00000012 USD
+         (engine residual field on the same headline: -0.00000012, the opposite sign convention).
+         The residual bar is drawn as a 2px minimum mark so it stays visible.
+         The right-hand value column on every row is deliberate: this is a table-chart, 13 rows read as an attribution
+         table, so it departs on purpose from the selective direct-label rule the other charts follow. -->
+    <figure class="card viz">
+      <div class="viz-head"><div class="card-title">Attribution, +200 bp</div>
+        <div class="chip-row"><span class="stat-delta is-neg">Total <span class="num">-184.9</span> mm</span><!-- source: attribution.headlines[11].totalDelta --></div></div>
+      <div class="plot">
+        <div class="plot-top"><span>mm USD, EVE change by product family</span><div class="legend"><span><i class="key-box" style="background: var(--neg)"></i>Lowers EVE</span><span><i class="key-box" style="background: var(--pos)"></i>Raises EVE</span><span><i class="key-box" style="background: var(--muted)"></i>Residual</span></div></div>
+        <div class="wf"><div class="wf-labels" aria-hidden="true"><span>cash</span><span>investments</span><span>fixed-loans</span><span>floating-loans</span><span>mortgages</span><span>mbs</span><span>dda</span><span>mma</span><span>cds</span><span>fhlb</span><span>borrowings</span><span class="wf-resid">residual</span><span class="wf-total">Total change</span></div><svg viewBox="0 0 640 286" preserveAspectRatio="none" style="height: 286px" role="img" aria-label="EVE change at +200 bp attributed by product family, residual and total, mm USD"><g><title>cash: -2.4 mm USD</title><rect class="hit" x="0" y="0" width="640" height="22"/><rect x="635" y="4" width="3" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].contributions[familyId=cash], summed over drivers --><line class="wf-conn" x1="635" x2="635" y1="18" y2="26"/><g><title>investments: -121.0 mm USD</title><rect class="hit" x="0" y="22" width="640" height="22"/><rect x="480.6" y="26" width="154.4" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].contributions[familyId=investments], summed over drivers --><line class="wf-conn" x1="480.6" x2="480.6" y1="40" y2="48"/><g><title>fixed-loans: -21.6 mm USD</title><rect class="hit" x="0" y="44" width="640" height="22"/><rect x="453.1" y="48" width="27.5" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].contributions[familyId=fixed-loans], summed over drivers --><line class="wf-conn" x1="453.1" x2="453.1" y1="62" y2="70"/><g><title>floating-loans: -0.8 mm USD</title><rect class="hit" x="0" y="66" width="640" height="22"/><rect x="452.1" y="70" width="2" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].contributions[familyId=floating-loans], summed over drivers --><line class="wf-conn" x1="452.1" x2="452.1" y1="84" y2="92"/><g><title>mortgages: -44.0 mm USD</title><rect class="hit" x="0" y="88" width="640" height="22"/><rect x="396" y="92" width="56.1" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].contributions[familyId=mortgages], summed over drivers --><line class="wf-conn" x1="396" x2="396" y1="106" y2="114"/><g><title>mbs: -294.3 mm USD</title><rect class="hit" x="0" y="110" width="640" height="22"/><rect x="20.5" y="114" width="375.5" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].contributions[familyId=mbs], summed over drivers --><line class="wf-conn" x1="20.5" x2="20.5" y1="128" y2="136"/><g><title>dda: +4.5 mm USD</title><rect class="hit" x="0" y="132" width="640" height="22"/><rect x="20.5" y="136" width="5.7" height="14" rx="2" fill="var(--pos)"/></g><!-- source: attribution.headlines[11].contributions[familyId=dda], summed over drivers --><line class="wf-conn" x1="26.1" x2="26.1" y1="150" y2="158"/><g><title>mma: -2.4 mm USD</title><rect class="hit" x="0" y="154" width="640" height="22"/><rect x="23.1" y="158" width="3" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].contributions[familyId=mma], summed over drivers --><line class="wf-conn" x1="23.1" x2="23.1" y1="172" y2="180"/><g><title>cds: +0.8 mm USD</title><rect class="hit" x="0" y="176" width="640" height="22"/><rect x="23.1" y="180" width="2" height="14" rx="2" fill="var(--pos)"/></g><!-- source: attribution.headlines[11].contributions[familyId=cds], summed over drivers --><line class="wf-conn" x1="24.1" x2="24.1" y1="194" y2="202"/><g><title>fhlb: +142.4 mm USD</title><rect class="hit" x="0" y="198" width="640" height="22"/><rect x="24.1" y="202" width="181.7" height="14" rx="2" fill="var(--pos)"/></g><!-- source: attribution.headlines[11].contributions[familyId=fhlb], summed over drivers --><line class="wf-conn" x1="205.7" x2="205.7" y1="216" y2="224"/><g><title>borrowings: +153.8 mm USD</title><rect class="hit" x="0" y="220" width="640" height="22"/><rect x="205.7" y="224" width="196.3" height="14" rx="2" fill="var(--pos)"/></g><!-- source: attribution.headlines[11].contributions[familyId=borrowings], summed over drivers --><line class="wf-conn" x1="402" x2="402" y1="238" y2="246"/><g><title>residual: +0.00000012 USD</title><rect class="hit" x="0" y="242" width="640" height="22"/><rect x="401" y="246" width="2" height="14" rx="1" fill="var(--muted)"/></g><!-- source: attribution.headlines[11].totalDelta minus sum of contributions[*].amount --><line class="wf-conn" x1="402" x2="402" y1="260" y2="268"/><g><title>Total change: -184.9 mm USD</title><rect class="hit" x="0" y="264" width="640" height="22"/><rect x="402" y="268" width="236" height="14" rx="2" fill="var(--neg)"/></g><!-- source: attribution.headlines[11].totalDelta --><line class="zero-line" x1="638" x2="638" y1="0" y2="286" stroke="var(--line-2)"/><!-- zero line, drawn last so the bars that end on it do not hide it --></svg><div class="wf-values" aria-hidden="true"><span class="num">-2.4</span><span class="num">-121.0</span><span class="num">-21.6</span><span class="num">-0.8</span><span class="num">-44.0</span><span class="num">-294.3</span><span class="num">+4.5</span><span class="num">-2.4</span><span class="num">+0.8</span><span class="num">+142.4</span><span class="num">+153.8</span><span class="num wf-resid">+0.0</span><span class="num wf-total">-184.9</span></div></div>
+      </div>
+      <figcaption>Source: attribution.headlines[11] (metric eve, S200), contributions summed by familyId, run <span class="run">run-20260923-163546-001557f</span></figcaption>
+      <details class="viz-table"><summary>Show table</summary><!-- source: attribution.headlines[11].contributions, .totalDelta --><table class="table"><thead><tr><th>Family</th><th class="num">EVE change (USD)</th></tr></thead><tbody><tr><td>cash</td><td class="num neg">-2,371,428</td></tr><tr><td>investments</td><td class="num neg">-120,997,376</td></tr><tr><td>fixed-loans</td><td class="num neg">-21,568,199</td></tr><tr><td>floating-loans</td><td class="num neg">-779,374</td></tr><tr><td>mortgages</td><td class="num neg">-43,954,710</td></tr><tr><td>mbs</td><td class="num neg">-294,291,985</td></tr><tr><td>dda</td><td class="num pos">+4,451,676</td></tr><tr><td>mma</td><td class="num neg">-2,387,039</td></tr><tr><td>cds</td><td class="num pos">+759,252</td></tr><tr><td>fhlb</td><td class="num pos">+142,374,866</td></tr><tr><td>borrowings</td><td class="num pos">+153,816,450</td></tr><tr><td class="muted">residual</td><td class="num muted">+0.00000012</td></tr><tr><td>Total change</td><td class="num neg">-184,947,868</td></tr></tbody></table></details>
+    </figure>
+
+    <section class="card half" aria-labelledby="prov-title">
+      <div class="card-title" id="prov-title">Provenance</div>
+      <dl class="kv kv-stack">
+        <dt>Inputs hash</dt><dd><span class="mono" title="e0834800ca9b889187f7c3e67a5e48c6628ee13c09dc3a213f2b146eec84c25a">e0834800ca9b</span><!-- source: provenance.inputsHash, first 12 characters --></dd>
+        <dt>Plan</dt><dd>none (derived from the request)<!-- source: provenance.planId absent; runLog shows a derived plan --></dd>
+        <dt>Plugin profile hash</dt><dd><span class="mono" title="902a64599cde9f55511ba45c86d3402e6f4717bc74d2d0ec25e3271261fcfc07">902a64599cde</span><!-- source: provenance.profileHash, first 12 characters --></dd>
+        <dt>Seed</dt><dd class="mono">platform-0<!-- source: provenance.seed --></dd>
+        <dt>Finished</dt><dd class="num">2026-09-23 16:35:47.898 UTC<!-- source: provenance.timestamps.finishedAt --></dd>
+      </dl>
+      <details class="prov-more">
+        <summary>All fields</summary>
+        <dl class="kv kv-stack">
+          <dt>Kernel provenance file</dt><dd><span class="mono" title="cb91d804f741df078718a7fbe4015c0e1027910de2a4b1cce75fe07790448752">cb91d804f741</span><!-- source: provenance.kernel.provenanceFileHash, first 12 characters --></dd>
+          <dt>Kernel commit</dt><dd><span class="mono" title="cccccccccccccccccccccccccccccccccccccccc">cccccccccccc</span><!-- source: provenance.kernel.sourceCommit, first 12 characters --></dd>
+          <dt>Started</dt><dd class="num">2026-09-23 16:35:47.027 UTC<!-- source: provenance.timestamps.startedAt --></dd>
+          <dt>Rerun comparison</dt><dd><div class="kv-status"><span class="status status-unobs">Unobservable</span><span>No rerun comparison stored</span></div></dd>
+        </dl>
+      </details>
+    </section>
+
+    <section class="card half unobs-panel" aria-labelledby="krd-title">
+      <div class="viz-head"><div class="card-title" id="krd-title">Key-rate durations</div><span class="status status-unobs">Unobservable</span></div>
+      <p class="unobs-text">Unobservable for this run: durations were computed base-only.<!-- source: eve.durationMode = base-only --></p>
+      <p class="card-foot">Source: eve.durationMode, run run-20260923-163546-001557f</p>
+    </section>
+
+  </div>
+</main>
+
+<aside class="assist-rail" aria-label="Assistant">
+  <div class="assist-title">Assistant</div>
+  <p class="assist-text">No provider configured. The manual path is the pages on the left.</p>
+  <label class="drop">
+    <input type="file">
+    <span>Drop a file here</span>
+    <span class="drop-hint">Balance sheet, curve or assumption file</span>
+    <span class="btn">Choose file</span>
+  </label>
+  <div class="assist-does">
+    <div class="label">What the assistant will do here</div>
+    <ul>
+      <li>Narrate the attribution</li>
+      <li>Compare two runs</li>
+      <li>Export a table</li>
+    </ul>
+  </div>
+</aside>
+
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var buttons = document.querySelectorAll("[data-theme-set]");
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      root.setAttribute("data-theme", b.getAttribute("data-theme-set"));
+      buttons.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    });
+  });
+})();
+</script>
+</body>
+</html>

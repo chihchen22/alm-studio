@@ -1,0 +1,23 @@
+Third-party data in this folder
+
+These three files embed copies of the Secured Overnight Financing Rate (SOFR)
+monthly averages shipped in examples/sofr-monthly-v1.json, as the dated rate
+path of the seeded setups they hold:
+
+  replica/inputs/deposit-forms-v1.json
+  replica/inputs/feature-demos-v1.json
+  replica/inputs/survival-path-v1.json
+
+They are the same data under the same terms. The files carry no notice field
+of their own; this notice applies to the SOFR values in each of them.
+
+Source: Federal Reserve Bank of New York, Secured Overnight Financing Rate
+[SOFR], retrieved from FRED, Federal Reserve Bank of St. Louis:
+https://fred.stlouisfed.org/series/SOFR. Retrieved 2026-11-03.
+
+The SOFR data is subject to the Terms of Use posted at newyorkfed.org. The New York Fed is not responsible for publication of the SOFR data by ALM Studio, does not sanction or endorse any particular republication, and has no liability for your use. © 2026 Federal Reserve Bank of New York. Content from the New York Fed subject to the Terms of Use at newyorkfed.org.
+
+Terms of Use: https://www.newyorkfed.org/privacy/termsofuse
+
+FRED marks the series "Copyrighted: Citation Required"; the citation above is
+the one FRED suggests.

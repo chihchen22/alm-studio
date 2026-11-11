@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0.0",
+  "series": [
+    { "seriesId": "HPIPONM226S", "provider": "FHFA via FRED", "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=HPIPONM226S", "file": "HPIPONM226S.csv", "retrievedOn": "2026-10-08", "vintage": "FRED as retrieved 2026-10-08, revised, not point-in-time", "endMonth": "2026-03", "sha256": "9f1092b3ffdcb7c141dda36066643de91658b019cd4fcdc1ecf19d1d7dc1bf5c", "knownGaps": [] },
+    { "seriesId": "UNRATE", "provider": "BLS via FRED", "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=UNRATE", "file": "UNRATE.csv", "retrievedOn": "2026-10-08", "vintage": "FRED as retrieved 2026-10-08, revised, not point-in-time", "endMonth": "2026-03", "sha256": "621ff6fadf50910cb7a21ee20ba610c247cb043b29b4e05c4c1a72fadca2a06c", "knownGaps": ["2025-10"] }
+  ]
+}

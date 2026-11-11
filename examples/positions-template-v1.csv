@@ -1,0 +1,9 @@
+position_id,family_id,coa_node_id,terms_type,label,notional,maturityMonths,originationOffsetMonths,amortType,side,coupon,indexTenorMonths,margin,resetFrequencyMonths,noteRate,originalTermMonths,originalBalance,ageMonths,depositRate,beta
+cash-1,cash,coa-cash,fixed-loan,One-month placement,50000000,1,0,bullet,asset,0.04,,,,,,,,,
+inv-1,investments,coa-investments,fixed-loan,Five-year note,100000000,60,0,bullet,asset,0.042,,,,,,,,,
+loan-1,fixed-loans,coa-fixed-loans,fixed-loan,Five-year term loan,120000000,60,0,level-pay,asset,0.065,,,,,,,,,
+float-1,floating-loans,coa-floating-loans,floating-loan,Three-year floater,80000000,36,0,bullet,asset,,1,0.02,1,,,,,,
+mort-1,mortgages,coa-mortgages,mortgage,30-year fixed pool,150000000,336,0,level-pay,asset,,,,,0.06,360,160000000,24,,
+dda-1,dda,coa-dda,nmd,Non-interest checking,140000000,360,0,bullet,liability,,,,,,,,,0,0
+mma-1,mma,coa-mma,nmd-b,Money market and savings,180000000,360,0,bullet,liability,,,,,,,,,,
+fhlb-1,fhlb,coa-fhlb,fixed-loan,Three-year advance,110000000,36,0,bullet,liability,0.041,,,,,,,,,

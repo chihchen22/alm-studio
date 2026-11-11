@@ -1,0 +1,408 @@
+/* Studio shared components. Pages link tokens.css first, then this file.
+   Class names are the ones design-system.html shows; values are tokens only. */
+
+*, *::before, *::after { box-sizing: border-box; }
+body { color: var(--ink); font-size: var(--fs-3); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, dl, dd, figure { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.label { font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.mono { font-family: var(--mono); }
+/* A mono or words cell keeps one line at 12px (Polish 3 Task 5 drive 4f; one rule since Polish 4 T5). words sets that
+   and nothing else: the face comes from the cell's other class, the body font alone or the figure face with num. */
+.table td.mono, .table td.words { white-space: nowrap; font-size: var(--fs-1); }
+.muted { color: var(--muted); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-5); }
+.stack { display: grid; gap: var(--sp-5); }
+
+/* Theme toggle: a segmented control, deliberately not accent-coloured */
+.seg { display: inline-flex; padding: var(--sp-1); gap: var(--sp-1); background: var(--surface-2); border-radius: var(--r-2); flex: none; }
+.seg button { font: inherit; font-size: var(--fs-3); color: var(--ink-2); background: transparent; border: 0; border-radius: var(--r-1); padding: var(--sp-1) var(--sp-3); cursor: pointer; transition: background var(--t-fast), color var(--t-fast); }
+.seg button[aria-pressed="true"] { background: var(--seg-on); color: var(--ink); box-shadow: var(--shadow-1), inset 0 0 0 1px var(--seg-ring); }
+
+.ramp { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.ramp-cell { height: 40px; }
+.ramp-cell:first-child { border-radius: var(--r-1) 0 0 var(--r-1); }
+.ramp-cell:last-child { border-radius: 0 var(--r-1) var(--r-1) 0; }
+.ramp-names { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; margin-top: var(--sp-2); }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); height: 32px; padding: 0 var(--sp-4); border-radius: var(--r-1); border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); font: inherit; font-size: var(--fs-3); font-weight: 500; line-height: 1; white-space: nowrap; cursor: pointer; transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast); }
+.btn:hover { background: var(--surface-2); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { background: var(--accent); opacity: .9; }
+.btn-quiet { background: transparent; border-color: transparent; color: var(--ink-2); }
+.btn-quiet:hover { background: var(--surface-2); color: var(--ink); }
+.btn:disabled, .btn:disabled:hover { background: var(--surface-2); border-color: var(--line); color: var(--muted); opacity: 1; cursor: not-allowed; }
+/* A disabled quiet button keeps no fill, so it is never louder than the quiet buttons beside it that are on */
+.btn-quiet:disabled, .btn-quiet:disabled:hover { background: transparent; border-color: transparent; color: var(--muted); }
+.btn-icon { width: 32px; padding: 0; }
+/* Flush-left quiet button: its label lines up with the text column above it */
+.btn-flush { padding-left: 0; padding-right: 0; height: auto; }
+.btn-flush:hover { background: transparent; color: var(--ink); text-decoration: underline; }
+
+/* Card */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-2); padding: var(--sp-5); min-width: 0; }
+.card-title { font-size: var(--fs-3); font-weight: 600; }
+.card-desc { color: var(--ink-2); margin-top: var(--sp-1); }
+.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sp-3) var(--sp-5); margin-top: var(--sp-4); }
+.kv dt { color: var(--muted); }
+.kv dd { color: var(--ink); }
+.list { list-style: none; padding: 0; margin: var(--sp-4) 0 0; display: grid; gap: var(--sp-3); }
+.list li { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); color: var(--ink-2); }
+
+/* Stat tile */
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-2); padding: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.stat-label { font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.stat-value { font-size: var(--fs-6); font-weight: 400; letter-spacing: -.01em; line-height: 1.2; color: var(--ink); font-variant-numeric: tabular-nums; }
+.stat-unit { font-size: var(--fs-3); font-weight: 500; color: var(--muted); letter-spacing: 0; margin-left: var(--sp-1); }
+.stat-delta { justify-self: start; align-self: flex-start; white-space: nowrap; display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 24px; padding: 0 var(--sp-2); border-radius: 999px; font-size: var(--fs-1); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink-2); background: var(--surface-2); }
+/* KPI figures print in ink and the delta chip carries the tile colour, except on the Dashboard cards, which print a negative KPI figure in the --neg token (app.css .dash-cards .stat-value.is-neg, spec Section 7 item 4) */
+.stat-value.is-neg, .stat-value.is-pos { color: var(--ink); }
+.stat-delta.is-neg { color: var(--neg); background: var(--neg-wash); }
+.stat-delta.is-pos { color: var(--pos); background: var(--pos-wash); }
+.stat-note { font-size: var(--fs-1); color: var(--muted); }
+/* The visible source of a tile's figure: the envelope field, in mono. The exact figure sits in the tile's title attribute. */
+.stat-source { font-family: var(--mono); font-size: var(--fs-1); line-height: 16px; color: var(--muted); margin-top: auto; padding-top: var(--sp-1); }
+
+/* Table: a hairline under the header and between rows, never a fill (bar item 3) */
+.table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--fs-3); }
+.table th { font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); text-align: left; padding: var(--sp-2) var(--sp-3); background: transparent; border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+.table td { padding: var(--sp-3); color: var(--ink-2); border-bottom: 1px solid var(--line); transition: background var(--t-fast); }
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover td { background: var(--surface-2); }
+.table td:first-child { color: var(--ink); font-weight: 500; }
+/* A muted cell is muted: ".table td" sets the cell ink and outranks ".muted" alone, so the muted ink is set here, at
+   the table's weight and after the first-cell ink, for every muted table cell (Polish 5 T3). */
+.table td.muted { color: var(--muted); }
+.table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* A text leaf in a value column (the Stack diff From and To, each By kind set column) ends on the column's right
+   edge, under its right-aligned header, and keeps the mono face: this class sets the edge and nothing else, so the
+   figure face on num does not reach it (Polish 5 T2). */
+.table td.right { text-align: right; }
+.table td.num.lvl { color: var(--ink); }
+.table td.pos { color: var(--pos); }
+.table td.neg { color: var(--neg); }
+.table-card { padding: var(--sp-3); }
+.table-foot { font-size: var(--fs-1); color: var(--muted); padding: var(--sp-3) var(--sp-3) var(--sp-1); }
+
+/* Chips */
+.chip { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 24px; padding: 0 var(--sp-2); border-radius: 999px; font-size: var(--fs-1); font-weight: 500; color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+
+/* Rail specimen: the persistent app shell */
+.shell { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; border: 1px solid var(--line); border-radius: var(--r-3); overflow: hidden; background: var(--bg); min-height: 600px; }
+.rail { width: 232px; flex: none; background: var(--surface); border-right: 1px solid var(--line); padding: var(--sp-5) var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-1); }
+.rail-brand { font-weight: 600; padding: 0 var(--sp-3) var(--sp-4); }
+.rail nav { display: grid; }
+.rail-group { display: grid; gap: 2px; padding: var(--sp-3) 0; border-top: 1px solid var(--line); }
+.rail-group:first-child { border-top: 0; padding-top: 0; }
+.rail-group-label { font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 0 var(--sp-3) var(--sp-1); }
+.rail-item { display: flex; align-items: center; min-height: 32px; padding: var(--sp-1) var(--sp-3); line-height: 1.3; border-radius: var(--r-1); color: var(--ink-2); text-decoration: none; transition: background var(--t-fast), color var(--t-fast); }
+.rail-item:hover { background: var(--surface-2); color: var(--ink); }
+.rail-item[aria-current="page"] { background: var(--surface-2); color: var(--ink); font-weight: 500; }
+.shell-main { min-width: 0; display: flex; flex-direction: column; }
+.shell-body { padding: var(--sp-5); display: grid; gap: var(--sp-5); align-content: start; }
+.assist-rail { width: 280px; flex: none; background: var(--surface); border-left: 1px solid var(--line); padding: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-3); }
+.assist-title { font-weight: 600; }
+.assist-text { color: var(--ink-2); }
+.drop { position: relative; display: grid; justify-items: center; gap: var(--sp-2); text-align: center; padding: var(--sp-5) var(--sp-4); border: 1px solid var(--line-2); border-radius: var(--r-2); background: var(--surface-2); color: var(--ink-2); transition: border-color var(--t-fast), background var(--t-fast); }
+.drop:hover, .drop:focus-within { border-color: var(--accent); }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.drop-hint { font-size: var(--fs-1); color: var(--muted); }
+.assist-does { margin-top: var(--sp-3); display: grid; gap: var(--sp-2); font-size: var(--fs-1); }
+.assist-does ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); color: var(--ink-2); }
+.assist-does li { padding-left: var(--sp-3); border-left: 1px solid var(--line-2); }
+
+/* Sheet */
+.sheet-stage { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-5); background: var(--surface-2); border-radius: var(--r-3); padding: var(--sp-5); min-height: 460px; }
+.sheet-notes { display: grid; gap: var(--sp-3); align-content: start; color: var(--ink-2); max-width: 44ch; padding: var(--sp-2); }
+.sheet { width: 400px; max-width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-3); box-shadow: var(--shadow-2); display: flex; flex-direction: column; transition: transform var(--t-base), opacity var(--t-base); }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-4) var(--sp-4) var(--sp-2) var(--sp-5); }
+.sheet-title { font-size: var(--fs-4); font-weight: 600; }
+.sheet-body { padding: var(--sp-3) var(--sp-5) var(--sp-5); display: grid; gap: var(--sp-4); }
+.sheet-foot { margin-top: auto; display: flex; justify-content: flex-end; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--line); }
+.field { display: grid; gap: var(--sp-1); }
+.field-label { font-size: var(--fs-1); font-weight: 600; color: var(--ink-2); }
+.input { height: 36px; width: 100%; padding: 0 var(--sp-3); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--surface-2); color: var(--ink); font: inherit; font-size: var(--fs-3); transition: border-color var(--t-fast); }
+.input:focus { border-color: var(--accent); }
+.input-wrap { position: relative; }
+/* Typed inputs inside a table row and a page toolbar (Targets and new business): sized to the value, not the cell. */
+.table td .input { width: 16ch; height: 32px; text-align: right; font-variant-numeric: tabular-nums; }
+.plan-toolbar .input { width: 24ch; height: 32px; }
+/* A balance takes nine digits and grouping; a month, a spread or a term takes three or four characters. */
+.table td .input-bal { width: 15ch; }
+.table td .input-short { width: 7ch; }
+.table td .field-help { display: block; margin-top: var(--sp-1); font-variant-numeric: tabular-nums; }
+.input-suffix { position: absolute; right: var(--sp-3); top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.field-help { font-size: var(--fs-1); color: var(--muted); }
+
+/* Charts */
+.viz { display: grid; gap: var(--sp-3); }
+.viz-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); flex-wrap: wrap; min-height: 24px; }
+.viz-title { font-weight: 600; }
+/* One muted supporting line under a chart card title: the headline movement, printed once, uncoloured */
+.viz-sub { font-size: var(--fs-1); line-height: 16px; color: var(--muted); }
+.viz-head:has(> .viz-sub) { flex-direction: column; align-items: flex-start; gap: var(--sp-1); }
+/* Plot: the SVG carries marks only and stretches to the card (preserveAspectRatio none, fixed height).
+   The unit label above and the category labels below are HTML text, so they never scale. No gridlines, no y-axis;
+   one zero line where negative values exist. A headline the page already shows is one muted .viz-sub line under the title. */
+.plot { display: grid; gap: var(--sp-2); }
+.plot-top { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-1); color: var(--muted); }
+.plot svg { display: block; width: 100%; height: 180px; overflow: visible; }
+.plot svg.h-220 { height: 220px; }
+.plot-cats { display: flex; font-size: var(--fs-1); color: var(--muted); }
+.plot-cats span { flex: 1 1 0; min-width: 0; text-align: center; white-space: nowrap; }
+.plot-cats span.is-base { color: var(--ink-2); }
+.zero-line { stroke: var(--line-2); stroke-width: 1; vector-effect: non-scaling-stroke; shape-rendering: crispEdges; }
+.bar-lvl { fill: var(--muted); }
+.bar-base { fill: var(--ink-2); }
+.mk { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.viz figcaption { font-size: var(--fs-1); color: var(--muted); }
+.viz figcaption .run { white-space: nowrap; }
+/* In a half-width card the chips go under the title, so two cards in a row start their plots level */
+.half .viz-head { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+.legend { display: flex; gap: var(--sp-4); flex-wrap: wrap; font-size: var(--fs-1); color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: var(--sp-1); }
+.key-line { width: 16px; height: 2px; border-radius: 1px; }
+.key-box { width: 12px; height: 12px; border-radius: 2px; }
+.viz-table summary { font-size: var(--fs-1); color: var(--ink-2); cursor: pointer; width: max-content; }
+.viz-table .table { margin-top: var(--sp-2); }
+.hit { fill: transparent; }
+/* Heatmap: an HTML grid. Row and column labels are text; each cell is a token fill with its value inside. */
+.hm { display: grid; grid-template-columns: max-content repeat(var(--hm-cols), minmax(0, 1fr)); gap: 2px; font-size: var(--fs-1); }
+.hm-col { color: var(--muted); text-align: center; padding-bottom: var(--sp-1); }
+.hm-row { color: var(--ink-2); padding-right: var(--sp-3); display: flex; align-items: center; white-space: nowrap; }
+.hm-cell { height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-variant-numeric: tabular-nums; border-radius: 2px; }
+.hm-lo { color: var(--ink); }
+.hm-mid { color: var(--hm-mid-ink); }
+.hm-hi { color: var(--surface); }
+:root { --hm-mid-ink: var(--ink); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --hm-mid-ink: var(--surface); } }
+:root[data-theme="dark"] { --hm-mid-ink: var(--surface); }
+.ramp-legend { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-1); color: var(--muted); flex-wrap: wrap; }
+.ramp-legend .ramp { width: 420px; }
+.ramp-legend .ramp-names { width: 420px; margin-top: var(--sp-1); }
+.ramp-legend .ramp-names span { text-align: center; }
+.ramp-legend .ramp-cell { height: 12px; }
+
+/* Tabs: a view switcher inside a page. The selected tab is one of the screen's accent elements. */
+.tabs { display: flex; gap: var(--sp-5); border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tab { font: inherit; font-size: var(--fs-3); color: var(--ink-2); background: transparent; border: 0; border-bottom: 2px solid transparent; padding: var(--sp-2) 0; margin-bottom: -1px; cursor: pointer; white-space: nowrap; transition: color var(--t-fast), border-color var(--t-fast); }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* Stacked key-value list: label above value, so identifiers do not break in a narrow card */
+.kv-stack { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.kv-stack dt { font-size: var(--fs-1); font-weight: 600; margin-top: var(--sp-3); }
+.kv-stack dt:first-child { margin-top: 0; }
+.kv-stack dd .mono, .kv-stack dd.mono { font-size: var(--fs-1); overflow-wrap: anywhere; }
+.kv-status { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-1); color: var(--ink-2); }
+
+/* Unobservable panel: a chart slot the engine cannot fill for this run. The card's usual hairline; the dotted cue
+   is on the status chip only. The word, its reason, no fake chart. */
+.unobs-panel { display: grid; gap: var(--sp-3); align-content: start; justify-items: start; }
+.unobs-text { color: var(--ink-2); justify-self: stretch; }
+.unobs-panel .card-foot { margin-top: 0; }
+
+/* App shell for product screens: rail, main, assistant rail. The grid itself is the ALM Studio P1 shell rule
+   below (top bar, rail, main, strip). The assistant rail drops under main below 1280px. Gutters inside main:
+   24px, 32px from 1280px. */
+.app > .assist-rail { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.rail-foot { margin-top: auto; padding: var(--sp-3) var(--sp-3) 0; display: grid; gap: var(--sp-2); }
+.rail-foot .seg button { font-size: var(--fs-1); padding: var(--sp-1) var(--sp-2); }
+.main { min-width: 0; display: flex; flex-direction: column; container-type: inline-size; container-name: main; }
+
+/* Collapsed assistant rail, allowed on canvas pages (Plan): a 48px strip with a vertical label and a small drop chip.
+   It stays at the right at every width, so the canvas keeps the room. */
+.assist-strip { position: sticky; top: 0; height: 100vh; width: 48px; background: var(--surface); border-left: 1px solid var(--line); padding: var(--sp-5) 0; display: flex; flex-direction: column; align-items: center; gap: var(--sp-4); }
+.assist-strip-label, .drop-chip span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: var(--fs-1); line-height: 16px; white-space: nowrap; }
+.assist-strip-label { font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.drop-chip { position: relative; display: inline-flex; padding: var(--sp-2) var(--sp-1); border-radius: 999px; border: 1px solid var(--line-2); background: var(--surface-2); color: var(--ink-2); cursor: pointer; transition: border-color var(--t-fast); }
+.drop-chip:hover, .drop-chip:focus-within { border-color: var(--accent); }
+.drop-chip input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+/* Header band: the page title, one row of pill chips carrying the selectors and the page's one action, then the
+   metadata line. The title is the only non-number text at --fs-6 on a page. No native select in the band. */
+.head-band { display: grid; gap: var(--sp-2); padding: var(--sp-6) var(--sp-5) 0; }
+.head-band .head-meta { margin-top: -2px; }
+.page-title { font-size: var(--fs-6); font-weight: 400; line-height: 1.25; padding-bottom: var(--sp-1); letter-spacing: -.01em; color: var(--ink); }
+.head-chips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.head-meta { font-size: var(--fs-1); line-height: 16px; color: var(--muted); }
+.pill { display: inline-flex; align-items: center; gap: var(--sp-2); height: 32px; padding: 0 var(--sp-3); border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); font: inherit; font-size: var(--fs-3); line-height: 1; white-space: nowrap; cursor: pointer; transition: background var(--t-fast), border-color var(--t-fast); }
+.pill:hover { border-color: var(--line-2); }
+.pill-key { color: var(--muted); flex: none; }
+.pill .mono { font-size: var(--fs-3); }
+/* A selector pill ends in a chevron drawn from two borders of a rotated box: no icon font */
+.pill-select::after { content: ""; width: 6px; height: 6px; margin: -3px 2px 0 var(--sp-1); border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); }
+.pill-quiet { background: transparent; }
+.pill-quiet:hover { background: var(--surface-2); }
+.pill-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 500; }
+.pill-primary:hover { border-color: var(--accent); opacity: .9; }
+.head-chips .pill-action:first-of-type { margin-left: var(--sp-2); }
+
+/* Content: a 12-column grid. Dense flow lets two half-width cards share a row between full-width charts. */
+.content { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-flow: row dense; gap: var(--sp-5); padding: var(--sp-5); align-content: start; }
+.content > * { grid-column: 1 / -1; }
+.content > .stat { grid-column: span 6; padding: var(--sp-4) var(--sp-4) var(--sp-3); }
+.content > .side, .content > .half { grid-column: span 6; }
+.card-foot { font-size: var(--fs-1); color: var(--muted); margin-top: var(--sp-4); }
+
+/* Banner: a full-width status line, for example the stale-seed notice */
+.banner { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-radius: var(--r-2); font-size: var(--fs-3); font-weight: 400; }
+.banner[hidden] { display: none; }
+.banner-text { color: var(--ink); }
+
+/* Four tiles a row from 700px of main. Charts carry no SVG text, so a plot stretches to any card width:
+   a chart is full width or one half of the row, never a fixed-size drawing. */
+@container main (min-width: 700px) {
+  .content > .stat { grid-column: span 3; }
+}
+@media (min-width: 1280px) {
+  .app .content, .app .head-band { padding-left: var(--sp-6); padding-right: var(--sp-6); }
+}
+@media (max-width: 1279px) {
+  .app > .rail { grid-row: 1 / span 2; }
+  .app > .assist-rail { grid-column: 2; position: static; height: auto; width: auto; border-left: 0; border-top: 1px solid var(--line); margin: 0 var(--sp-5); padding-left: 0; padding-right: 0; background: transparent; }
+  .app > .assist-rail .drop { margin-top: var(--sp-2); }
+  .app.app-strip > .rail { grid-row: auto; }
+}
+
+@media (max-width: 1199px) {
+  .grid-2.charts { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+
+/* ALM Studio P1: figures take the theme's figure face; table rows take the theme's density. */
+.num, .stat-value, .table .num { font-family: var(--font-num); }
+/* An absence cell ("Not bound", "Not stored", "No roll-up served") is words, not a figure: the body face in both
+   themes (Polish 4 T3). Its muted ink is the ".table td.muted" rule's (Polish 5 T3). Numeric header cells keep the
+   theme's figure face. */
+.table td.num.muted { font-family: var(--font); }
+.table td { padding-top: var(--row-pad); padding-bottom: var(--row-pad); }
+
+/* ALM Studio P1 shell: top bar across, then rail, main, assistant strip. */
+.app, .app.app-strip { display: grid; grid-template-columns: 220px minmax(0, 1fr) 48px; grid-template-rows: 56px minmax(0, 1fr); min-height: 100vh; }
+.topbar { grid-column: 1 / -1; position: sticky; top: 0; z-index: 15; display: grid; grid-template-columns: 220px max-content minmax(0, 1fr); align-items: center; gap: var(--sp-4); height: 56px; padding: 0 var(--sp-4); background: var(--surface); border-bottom: 1px solid var(--line); }
+.wordmark { display: inline-flex; align-items: baseline; gap: var(--sp-1); color: var(--ink); text-decoration: none; white-space: nowrap; }
+.wordmark-brand { font-weight: 600; letter-spacing: -.01em; }
+.wordmark-product { font-weight: 500; color: var(--muted); }
+.modbar { display: flex; gap: var(--sp-1); }
+.mod { display: inline-flex; align-items: center; height: 32px; padding: 0 var(--sp-3); border-radius: var(--r-1) var(--r-1) 0 0; border-bottom: 2px solid transparent; color: var(--ink-2); text-decoration: none; font-size: var(--fs-3); transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast); }
+.mod:hover { background: var(--surface-2); color: var(--ink); }
+.mod[aria-current="true"] { background: var(--surface-2); color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+/* The module column keeps its four labels whole (max-content); the context column takes what is left and its pills
+   give way: a select pill shrinks and its value is cut from its start behind a leading ellipsis (Polish 4 T1; the
+   full value is in the pill's title). A failed-list status pill and a pill that reads none never shrink. The
+   three-button theme switch never shrinks; below 1280px it is hidden and one cycle button stands in (Polish 4 T2). */
+.topbar-ctx { display: flex; align-items: center; justify-content: flex-end; gap: var(--sp-2); min-width: 0; }
+.topbar-ctx .seg button { font-size: var(--fs-1); padding: var(--sp-1) var(--sp-2); }
+.topbar-ctx .pill-menu-wrap { flex: 0 1 auto; min-width: 0; }
+.topbar-ctx .pill { height: 28px; font-size: var(--fs-2); max-width: 100%; min-width: 0; overflow: hidden; }
+.topbar-ctx .pill-value { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* A select pill's value that does not fit is cut from its start, so its end survives (Polish 4 T1): every seeded
+   book id starts "synthetic-2500-", so a cut at the end read the same for every book. The span runs right to left, which
+   puts the overflow and the ellipsis at the left; the value inside it is an isolated left-to-right run (bdi
+   dir="ltr" in SelectPill), so its characters keep their reading order. A value that fits reads as before. */
+.topbar-ctx .pill-select .pill-value { direction: rtl; }
+/* A failed-list status pill keeps its one word whole: it and its wrapper never shrink, so the selectors give way
+   (Polish 2 Task 8 critic I3). */
+.topbar-ctx .pill-status, .topbar-ctx .pill-menu-wrap:has(> .pill-status) { flex: none; }
+/* A select pill that reads the placeholder "none" keeps it whole the same way: shrunk in proportion to its content,
+   the four letters printed as an ellipsis and "e" (Polish 4 Task 5 fix I1). */
+.topbar-ctx .pill-menu-wrap.pill-none { flex: none; }
+/* The chevron keeps its size however narrow the pill gets. */
+.topbar-ctx .pill-select::after { flex: none; }
+/* The one-button theme switch (Polish 4 T2): hidden at every width until the compact block below shows it. */
+.theme-cycle { display: none; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-2); color: var(--ink-2); cursor: pointer; transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast); }
+.theme-cycle:hover { border-color: var(--line-2); color: var(--ink); }
+/* Below 1280px the top bar is compact (Polish 3 T1; top bar 1). A select pill drops its key word (it stays in the
+   pill's title) and spends its width on the value; a failed-list status pill keeps its key, so two failed pills still
+   say which list each one is. To fit both beside the four module labels at 1024px, the bar's column gap drops to 8px
+   (the module bar then starts on the page's 24px gutter), the module tabs and the context pills take 8px sides, the
+   pills set 12px text, and the context gap tightens. The three-word theme switch gives way to one cycle button
+   (Polish 4 T2), so the select pills get the width the three words took; the one not shown is display: none, so
+   only one of the two is in the accessibility tree. The block opens at 1279px, the assistant rail's break, so the
+   1200 to 1279px band takes the compact bar too; it stays here, after the base top-bar rules, and does not merge
+   into the rail's block above them. */
+@media (max-width: 1279px) {
+  .topbar { gap: var(--sp-2); }
+  .mod { padding: 0 var(--sp-2); }
+  .topbar-ctx { gap: var(--sp-1); }
+  .topbar-ctx .pill { padding: 0 var(--sp-2); gap: var(--sp-1); font-size: var(--fs-1); }
+  .topbar-ctx .pill .mono { font-size: var(--fs-1); }
+  .topbar-ctx .pill-select .pill-key { display: none; }
+  .topbar-ctx .switcher-cutoff { display: none; }
+  .topbar-ctx .seg { display: none; }
+  .topbar-ctx .theme-cycle { display: inline-flex; }
+}
+.topbar-ctx .pill-menu { left: auto; right: 0; }
+.app > .rail { position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; width: 220px; }
+.app > .assist-strip { top: 56px; height: calc(100vh - 56px); }
+.soon-tag { margin-left: auto; padding: 0 var(--sp-1); border-radius: var(--r-1); font-size: var(--fs-1); color: var(--warn); background: var(--warn-wash); }
+/* A Soon card's tag sits flush right on its title row, as in the rail */
+.soon-panel .card-title { display: flex; align-items: center; gap: var(--sp-2); }
+.head-crumb { font-size: var(--fs-1); color: var(--muted); }
+/* Text for screen readers only: kept in the accessibility tree, drawn nowhere (the 1px box of .drop input, clipped). */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ALM Studio phone 1. The context button,
+   the context sheet's head and its scrim exist for the phone only: hidden at every width here, shown in the phone band
+   below, so above 900px the render and the accessibility tree are as before. */
+.ctx-button, .ctx-scrim, .ctx-sheet-head { display: none; }
+/* The crumb chip and the sections-and-screens list are phone chrome too (Piece E2): the desktop has the section bar and the rail. */
+.nav-chip, .section-sheet { display: none; }
+/* The phone band, up to 900px (band 900: from 720 to about 790px the desktop bar's pills read
+   nothing): one column. The top bar is a 52px row (the wordmark reads ALM Studio, the brand word kept for screen
+   readers; the context button on the right, reading Workspace and its name) over a 40px row that holds one crumb chip,
+   Section then Screen. The two row heights are --phone-bar and --phone-mods. The section bar and the rail leave: the
+   chip and the context button open the same bottom sheet, which holds the workspace switcher, the seven sections with
+   their screens and the theme switch, so nothing scrolls sideways. The assistant strip leaves. The sheet is the
+   top bar's context group, a bottom sheet over a scrim while open: each pill a full-width row, its menu in the
+   sheet's flow so nothing clips it, the three-button theme switch across the sheet. The head band and the content
+   take 16px sides and the page title steps down one size.
+   This block comes after the compact top-bar block (1279px), so its pill and theme rules win over the compact ones. */
+@media (max-width: 900px) {
+  .app, .app.app-strip { --phone-bar: 52px; --phone-mods: 40px; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); }
+  .app > .assist-strip { display: none; }
+  .topbar { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: var(--phone-bar) var(--phone-mods); gap: 0; height: auto; padding: 0; }
+  .wordmark { grid-column: 1; grid-row: 1; justify-self: start; padding-left: var(--sp-4); }
+  .wordmark-brand { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .wordmark-product { color: var(--ink); font-weight: 600; }
+  .ctx-button { display: inline-flex; grid-column: 2; grid-row: 1; align-items: center; gap: 6px; height: 36px; margin-right: var(--sp-3); padding: 0 10px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--surface); color: var(--ink); font: inherit; font-size: var(--fs-2); white-space: nowrap; cursor: pointer; }
+  .ctx-button .mono { font-size: var(--fs-1); color: var(--ink-2); }
+  .ctx-button .mono { max-width: 16ch; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }
+  .modbar { display: none; }
+  .nav-chip { display: flex; grid-column: 1 / -1; grid-row: 2; align-items: center; justify-content: space-between; gap: var(--sp-3); min-width: 0; padding: 0 var(--sp-4); border: 0; border-top: 1px solid var(--line); border-radius: 0; background: var(--surface); color: var(--ink); font: inherit; font-size: var(--fs-3); text-align: left; cursor: pointer; }
+  .nav-chip::after { content: ""; flex: none; width: 6px; height: 6px; margin-top: -3px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); }
+  .app > .rail { display: none; }
+  .topbar-ctx { display: none; }
+  .topbar-ctx[data-open="true"] { position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; justify-content: stretch; gap: var(--sp-2); max-height: 85vh; overflow-y: auto; overscroll-behavior: contain; padding: var(--sp-2) var(--sp-4) calc(var(--sp-5) + env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--line); border-radius: var(--r-3) var(--r-3) 0 0; box-shadow: var(--shadow-2); }
+  .topbar-ctx[data-open="true"]::before { content: ""; justify-self: center; width: 36px; height: 4px; margin-top: var(--sp-1); border-radius: 2px; background: var(--line-2); }
+  .ctx-scrim[data-open="true"] { display: block; position: fixed; inset: 0; z-index: 30; background: var(--shade); opacity: .32; }
+  .ctx-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+  .ctx-sheet-title { font-size: var(--fs-4); font-weight: 600; }
+  .ctx-sheet-close { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); cursor: pointer; }
+  .topbar-ctx .pill-menu-wrap { display: grid; min-width: 0; }
+  .topbar-ctx .pill { width: 100%; height: 44px; padding: 0 var(--sp-3); gap: var(--sp-3); justify-content: space-between; font-size: var(--fs-3); }
+  .topbar-ctx .pill .mono { font-size: var(--fs-2); }
+  .topbar-ctx .pill-select .pill-key { display: inline; }
+  .topbar-ctx .switcher-cutoff { display: inline; }
+  .topbar-ctx .pill-value { flex: 1 1 auto; text-align: right; }
+  .topbar-ctx .pill-menu { position: static; margin-top: var(--sp-1); max-height: 40vh; overflow-y: auto; box-shadow: none; }
+  .topbar-ctx .pill-menu a { white-space: normal; overflow-wrap: anywhere; }
+  .topbar-ctx .pill-status-reason { position: static; width: auto; max-width: none; margin-top: var(--sp-1); box-shadow: none; }
+  .topbar-ctx .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .topbar-ctx .seg button { font-size: var(--fs-3); padding: var(--sp-2) 0; }
+  .topbar-ctx .theme-cycle { display: none; }
+  .section-sheet { display: grid; gap: var(--sp-3); }
+  .section-sheet-group { display: grid; gap: 2px; }
+  .section-sheet-head { padding: 0 var(--sp-3); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .section-sheet-item { display: block; min-width: 0; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-1); color: var(--ink-2); text-decoration: none; font-size: var(--fs-3); overflow-wrap: anywhere; }
+  .section-sheet-item[aria-current="page"] { background: var(--accent-wash); color: var(--accent); font-weight: 600; }
+  .app .content { padding: var(--sp-4); }
+  .app .head-band { padding: var(--sp-4) var(--sp-4) 0; }
+  .page-title { font-size: var(--fs-5); }
+}

@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "0.3.0",
+  "kind": "stochastic-distribution",
+  "model": "bgm-lmm-2f",
+  "runId": "fixture-stochastic-bgm-vanilla-64",
+  "scenarioId": "S0",
+  "assumptionSetId": "vanilla-empty-v1",
+  "seed": "42",
+  "nPaths": 64,
+  "horizonMonths": 360,
+  "discountBasis": "all-in",
+  "curveDefault": {
+    "kind": "default",
+    "version": 2
+  },
+  "calibration": {
+    "source": "long-yield-atm-calibration",
+    "a": 0.2028720214643671,
+    "b": 0.5109045397295916,
+    "c": 0.4810244306875239,
+    "d": 0.8032210913057348,
+    "beta": -0.000006838184228279072,
+    "volScalar": 0.03111624859199792,
+    "displacement": 0.05,
+    "cevBeta": 0.5,
+    "rmseBp": 12.450457208551644,
+    "rmseGateBp": 10,
+    "rmseGateBreached": true,
+    "nQuotes": 28,
+    "subset": [
+      {
+        "expiryYears": 0.08333333333333333,
+        "tenorYears": 1
+      },
+      {
+        "expiryYears": 0.08333333333333333,
+        "tenorYears": 2
+      },
+      {
+        "expiryYears": 0.08333333333333333,
+        "tenorYears": 5
+      },
+      {
+        "expiryYears": 0.08333333333333333,
+        "tenorYears": 10
+      },
+      {
+        "expiryYears": 0.25,
+        "tenorYears": 1
+      },
+      {
+        "expiryYears": 0.25,
+        "tenorYears": 2
+      },
+      {
+        "expiryYears": 0.25,
+        "tenorYears": 5
+      },
+      {
+        "expiryYears": 0.25,
+        "tenorYears": 10
+      },
+      {
+        "expiryYears": 0.5,
+        "tenorYears": 1
+      },
+      {
+        "expiryYears": 0.5,
+        "tenorYears": 2
+      },
+      {
+        "expiryYears": 0.5,
+        "tenorYears": 5
+      },
+      {
+        "expiryYears": 0.5,
+        "tenorYears": 10
+      },
+      {
+        "expiryYears": 1,
+        "tenorYears": 1
+      },
+      {
+        "expiryYears": 1,
+        "tenorYears": 2
+      },
+      {
+        "expiryYears": 1,
+        "tenorYears": 5
+      },
+      {
+        "expiryYears": 1,
+        "tenorYears": 10
+      },
+      {
+        "expiryYears": 2,
+        "tenorYears": 1
+      },
+      {
+        "expiryYears": 2,
+        "tenorYears": 2
+      },
+      {
+        "expiryYears": 2,
+        "tenorYears": 5
+      },
+      {
+        "expiryYears": 2,
+        "tenorYears": 10
+      },
+      {
+        "expiryYears": 5,
+        "tenorYears": 1
+      },
+      {
+        "expiryYears": 5,
+        "tenorYears": 2
+      },
+      {
+        "expiryYears": 5,
+        "tenorYears": 5
+      },
+      {
+        "expiryYears": 5,
+        "tenorYears": 10
+      },
+      {
+        "expiryYears": 10,
+        "tenorYears": 1
+      },
+      {
+        "expiryYears": 10,
+        "tenorYears": 2
+      },
+      {
+        "expiryYears": 10,
+        "tenorYears": 5
+      },
+      {
+        "expiryYears": 10,
+        "tenorYears": 10
+      }
+    ],
+    "iterations": 150
+  },
+  "martingale": {
+    "correctedMaxAbsErrBp": 6.661338147750939e-12,
+    "rawTerminalErrBp": 105.23157440182729,
+    "terminalDfStandardError": 0.014522249478206637,
+    "terminalYears": 30
+  },
+  "simulation": {
+    "nCapFires": 0,
+    "nFloorFires": 0,
+    "nTotalEvolutions": 4158720,
+    "savedTenors": [
+      0.002777777777777778,
+      0.08333333333333333,
+      1,
+      2,
+      3,
+      5,
+      7,
+      10,
+      20,
+      30
+    ],
+    "fixedCostMs": 2659.333833
+  },
+  "eveDistribution": {
+    "nPaths": 64,
+    "mean": 120866072.26933374,
+    "standardError": 132772.77053264194,
+    "stdev": 14673730.654659892,
+    "min": 86330785.49081075,
+    "max": 158033828.3586167,
+    "quantiles": [
+      {
+        "p": 0.05,
+        "value": 97900515.28378224
+      },
+      {
+        "p": 0.25,
+        "value": 110786114.36130548
+      },
+      {
+        "p": 0.5,
+        "value": 119854666.73483413
+      },
+      {
+        "p": 0.75,
+        "value": 130908626.35165891
+      },
+      {
+        "p": 0.95,
+        "value": 145646206.89028767
+      }
+    ]
+  },
+  "nii12mDistribution": {
+    "nPaths": 64,
+    "mean": 11772965.6583846,
+    "standardError": 1.0036228337889995e-9,
+    "stdev": 5.632109537858176e-9,
+    "min": 11772965.658384606,
+    "max": 11772965.658384606,
+    "quantiles": [
+      {
+        "p": 0.05,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.25,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.5,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.75,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.95,
+        "value": 11772965.658384606
+      }
+    ]
+  },
+  "notImplemented": [
+    {
+      "_tag": "not-implemented",
+      "layer": "stochastic.shocked-scenarios",
+      "reason": "stochastic distributions are computed for the base scenario only this window; shocked-scenario distributions await the shocked-NII convention migration and are refused, not approximated. NII horizon distributed: 12 months."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "id": "regulatory-grid-edit-1",
+  "label": "Regulatory grid (edited demo set)",
+  "scenarios": [
+    {
+      "id": "S0",
+      "label": "Base",
+      "rateSpec": {
+        "kind": "base"
+      },
+      "assumptionSetId": "demo-behavioral-v1-edit-1",
+      "newBusiness": {
+        "mode": "static",
+        "rules": []
+      }
+    },
+    {
+      "id": "S100",
+      "label": "Parallel +100bp",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": 100
+      },
+      "assumptionSetId": "demo-behavioral-v1-edit-1",
+      "newBusiness": {
+        "mode": "static",
+        "rules": []
+      }
+    },
+    {
+      "id": "S-100",
+      "label": "Parallel -100bp",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": -100
+      },
+      "assumptionSetId": "demo-behavioral-v1-edit-1",
+      "newBusiness": {
+        "mode": "static",
+        "rules": []
+      }
+    },
+    {
+      "id": "S200",
+      "label": "Parallel +200bp",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": 200
+      },
+      "assumptionSetId": "demo-behavioral-v1-edit-1",
+      "newBusiness": {
+        "mode": "static",
+        "rules": []
+      }
+    },
+    {
+      "id": "S-200",
+      "label": "Parallel -200bp",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": -200
+      },
+      "assumptionSetId": "demo-behavioral-v1-edit-1",
+      "newBusiness": {
+        "mode": "static",
+        "rules": []
+      }
+    }
+  ]
+}

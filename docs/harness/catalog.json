@@ -1,0 +1,687 @@
+{
+  "schemaVersion": "2.0.0",
+  "id": "component-catalog-v2",
+  "label": "The component library: 35 registered harness stages",
+  "source": "The engine's registered stages and the modeling components a run plan may name, each classified by stage kind. The engine.* entries are mounted plugins; the others are the methods the engine's stages implement.",
+  "note": "Each entry is a component classified by stage kind and declared by the contract types it consumes and produces. alm-conventions states the units, signs, day count and shapes every stage shares. The gaps array is part of the catalog, not an appendix: a component library that hides what it lacks is how a harness ends up fabricating.",
+  "contractNote": "Every stage declares a contract (what it requires and what it produces) that mirrors the harness stage manifest. The harness does not invent a component interface per stage; it generalises the one the stages already honour.",
+  "stageKinds": [
+    {
+      "id": "foundation",
+      "label": "Shared contract",
+      "note": "Units, signs, day count, cash-flow shape, RatePath bridge. Shared by every stage."
+    },
+    {
+      "id": "market-data",
+      "label": "Market data intake",
+      "note": "Quotes to a typed snapshot."
+    },
+    {
+      "id": "curve",
+      "label": "Curve construction",
+      "note": "Discount and forward curves, plus spread overlays."
+    },
+    {
+      "id": "term-structure",
+      "label": "Term structure and index",
+      "note": "Rate paths, deterministic or stochastic."
+    },
+    {
+      "id": "contractual-cashflow",
+      "label": "Contractual cash flow",
+      "note": "Instrument terms plus a rate path to a contractual stream."
+    },
+    {
+      "id": "behavioral",
+      "label": "Behavioral overlay",
+      "note": "Hazards and response functions applied to the contractual stream."
+    },
+    {
+      "id": "scenario",
+      "label": "Scenario and shock definition",
+      "note": "Rate specs, regime presets, macro paths. See gaps: this kind has no owning component."
+    },
+    {
+      "id": "balance-new-business",
+      "label": "Balance targets and new business",
+      "note": "Target balances, new volume, mix, and the repricing of what is added. The engine.balance-plan stage owns it. See gaps."
+    },
+    {
+      "id": "metric",
+      "label": "Metric",
+      "note": "NII, EVE, gap, FTP, SEG, liquidity, replicating portfolio."
+    }
+  ],
+  "spine": {
+    "label": "The behavioral model lifecycle",
+    "note": "The asset-class-agnostic 12-stage ordering a behavioral model goes through. Families skip stages; none reorder them.",
+    "stages": [
+      "0 contract and config",
+      "1 data intake",
+      "2 feature store",
+      "3 behavioral EDA",
+      "4 segmentation and carve-out",
+      "5 functional form and bootstrap calibration",
+      "6 pre-registered validation gate and effective challenge",
+      "7 forecast and scenario",
+      "8 EVE and duration consumers",
+      "9 SR 11-7 documentation",
+      "10 reproducibility harness and golden gate",
+      "11 lessons learned"
+    ]
+  },
+  "components": [
+    {
+      "id": "alm-conventions",
+      "kind": "foundation",
+      "family": "core",
+      "role": "foundation",
+      "label": "Shared contract",
+      "consumes": [],
+      "produces": [
+        "Contract"
+      ],
+      "purpose": "Units, signs, ACT/360 day count, the Cashflow shape, the RatePath bridge, and the parameter cascade every stage shares.",
+      "critical": "Balance is pre-amortization and month_offset is 1-based, so the rate applying in month m is rate_at(m-1). interest_paid is a positive magnitude even on liabilities; direction comes from side_sign(terms.side). ShockedPath shocks from step 1 (SEG); ParallelShockPath shocks from step 0 (EVE); swapping them shifts one month of coupon."
+    },
+    {
+      "id": "alm-market-data",
+      "kind": "market-data",
+      "family": "core",
+      "role": "methodology",
+      "label": "Market snapshot loader",
+      "consumes": [
+        "QuoteFile"
+      ],
+      "produces": [
+        "MarketSnapshot"
+      ],
+      "purpose": "SOFR OIS quotes, cap and swaption vol surfaces, the FHLB advance curve, TLP nodes, calibration date and currency into the typed market snapshot the stages read."
+    },
+    {
+      "id": "alm-yield-curve",
+      "kind": "curve",
+      "family": "core",
+      "role": "methodology",
+      "label": "SOFR OIS zero curve",
+      "consumes": [
+        "MarketSnapshot"
+      ],
+      "produces": [
+        "ZeroCurve"
+      ],
+      "purpose": "Bootstraps a zero curve from par swap quotes. ACT/360, annual fixed schedule, Brent root-finding, linear in zero.",
+      "critical": "The forward switches at the 1Y boundary: simply-compounded below, par swap rate above. Mixing them produces hundreds of basis points of error at long tenors."
+    },
+    {
+      "id": "alm-tlp-overlay",
+      "kind": "curve",
+      "family": "core",
+      "role": "methodology",
+      "label": "Term liquidity premium overlay",
+      "consumes": [
+        "ZeroCurve",
+        "MarketSnapshot"
+      ],
+      "produces": [
+        "ZeroCurve"
+      ],
+      "purpose": "TLP spread over SOFR, composing additively in zero space to give the all-in funding curve for FTP and EVE discounting.",
+      "critical": "Documented blind spots: silent flat extrapolation, duplicate-node silent drop, an all-zero CSV parses as valid."
+    },
+    {
+      "id": "alm-hull-white",
+      "kind": "term-structure",
+      "family": "core",
+      "role": "methodology",
+      "label": "Hull-White 1-factor",
+      "consumes": [
+        "ZeroCurve",
+        "CapVolSurface"
+      ],
+      "produces": [
+        "RatePath",
+        "DiscountFactorPath"
+      ],
+      "purpose": "Shifted-Gaussian short rate. Calibration to the at-the-money column of the short-rate volatility surface (normal vols) at a 5bp RMSE target, exact-transition Monte Carlo with antithetic pairing and multiplicative martingale correction, per-path discount factors for stochastic FTP.",
+      "critical": "The bundled 2026-03-31 snapshot fits at about 7.8bp, a one-factor structural limit rather than a bug. The gate warns, it does not throw."
+    },
+    {
+      "id": "alm-bgm-lmm",
+      "kind": "term-structure",
+      "family": "core",
+      "role": "methodology",
+      "label": "BGM / LIBOR market model",
+      "consumes": [
+        "ZeroCurve",
+        "SwaptionVolSurface"
+      ],
+      "produces": [
+        "RatePath"
+      ],
+      "purpose": "Rebonato 2-factor parametric volatility, multi-start least squares to the ATM swaption surface at a 10bp RMSE target, Glasserman-Zhao shifted-CEV simulation under the spot-LIBOR measure."
+    },
+    {
+      "id": "alm-sabr",
+      "kind": "term-structure",
+      "family": "core",
+      "role": "methodology",
+      "label": "SABR smile",
+      "consumes": [
+        "MarketSnapshot"
+      ],
+      "produces": [
+        "VolSurface"
+      ],
+      "purpose": "Bachelier closed-form smile at a single expiry.",
+      "critical": "Explicitly NOT in the path-generation chain. A smile lens, not a dynamics engine. A plan that wires it as a RatePath producer is wrong."
+    },
+    {
+      "id": "alm-fixed-loan",
+      "kind": "contractual-cashflow",
+      "family": "core",
+      "role": "methodology",
+      "label": "Fixed-rate loan",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "purpose": "Level-pay or bullet amortizer with no optionality. Also the base class for fixed-rate term funding via side=liability."
+    },
+    {
+      "id": "alm-floating-loan",
+      "kind": "contractual-cashflow",
+      "family": "core",
+      "role": "methodology",
+      "label": "Floating-rate loan",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow",
+        "RepricingSchedule"
+      ],
+      "purpose": "SOFR plus margin with re-amortization at each reset. The repricing schedule is what the IR gap ladder reads."
+    },
+    {
+      "id": "alm-mortgage",
+      "kind": "contractual-cashflow",
+      "family": "core",
+      "role": "methodology",
+      "label": "Mortgage",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "purpose": "Remaining-term level-pay annuity on the agency-MBS scheduled-principal convention, with CPR injected through the PrepayModel seam."
+    },
+    {
+      "id": "alm-term-funding",
+      "kind": "contractual-cashflow",
+      "family": "core",
+      "role": "methodology",
+      "label": "Term funding",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "purpose": "Conventions overlay for CDs, wholesale advances, brokered deposits, repo, sub debt.",
+      "critical": "Callable CDs and callable advances are explicitly unsupported. The instruction is to flag the gap rather than price the bullet."
+    },
+    {
+      "id": "alm-revolving-facility",
+      "kind": "contractual-cashflow",
+      "family": "core",
+      "role": "methodology",
+      "label": "Revolving facility",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow",
+        "CommitmentSchedule"
+      ],
+      "purpose": "Revolvers, HELOCs and cards: commitment, drawn and undrawn legs, negative principal for draws, commitment fee separate from coupon."
+    },
+    {
+      "id": "alm-mortgage-prepayment",
+      "kind": "behavioral",
+      "family": "mortgage",
+      "role": "methodology",
+      "label": "Four-factor CPR prepayment",
+      "consumes": [
+        "Cashflow",
+        "RatePath",
+        "PrepayParams"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "behavioralClass": "prepayment",
+      "chainPosition": null,
+      "purpose": "Refi incentive logistic on WAC minus mortgage rate, seasoning ramp, calendar seasonality, exponential burnout. CPR to SMM conversion and the PrepayModel injection seam.",
+      "critical": "Sits inside the mortgage stages but produces nothing standalone: its forward branch feeds the mortgage valuation."
+    },
+    {
+      "id": "alm-competing-risks-prepay",
+      "kind": "behavioral",
+      "family": "mortgage",
+      "role": "methodology",
+      "label": "Competing risks: prepay and default",
+      "consumes": [
+        "Cashflow",
+        "RatePath",
+        "HpiPath",
+        "PrepayParams",
+        "DefaultParams"
+      ],
+      "produces": [
+        "Cashflow",
+        "EveResult"
+      ],
+      "behavioralClass": "prepayment",
+      "purpose": "Cause-specific SMM and MDR hazards in a multi-decrement survivor recursion, structural LGD on the mark-to-market LTV path, lagged recoveries, producing PV, WAL, EVE and effective duration."
+    },
+    {
+      "id": "alm-deposit-decay",
+      "kind": "behavioral",
+      "family": "nmd",
+      "role": "methodology",
+      "label": "NMD decay kernel",
+      "consumes": [
+        "Cashflow",
+        "RatePath",
+        "NmdParams"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "behavioralClass": "decay",
+      "purpose": "Age-ramped baseline closure composed with a one-sided incentive logistic, a regime excursion amplifier, and a balance-sensitivity surface.",
+      "critical": "The incentive driver differs by book. The non-interest-bearing book reads the rate LEVEL as opportunity cost; the interest-bearing book reads the switching spread against its own modeled deposit rate."
+    },
+    {
+      "id": "alm-deposit-beta",
+      "kind": "behavioral",
+      "family": "repricing",
+      "role": "methodology",
+      "label": "Deposit beta S-curve",
+      "consumes": [
+        "RatePath",
+        "BetaParams"
+      ],
+      "produces": [
+        "DepositRatePath"
+      ],
+      "behavioralClass": "deposit-beta",
+      "purpose": "Logistic beta(r) with Nerlove partial adjustment. The deposit-rate path it produces sets the switching spread that drives interest-bearing decay."
+    },
+    {
+      "id": "alm-nmd-noninterest-bearing",
+      "kind": "behavioral",
+      "family": "nmd",
+      "role": "methodology",
+      "label": "NMD-A, non-interest bearing",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "behavioralClass": "decay",
+      "purpose": "Rate locked at zero, decay driven by the spot rate level. Balance monotone non-increasing: a runoff instrument, so new production is a separate cohort instance."
+    },
+    {
+      "id": "alm-nmd-interest-bearing",
+      "kind": "behavioral",
+      "family": "nmd",
+      "role": "methodology",
+      "label": "NMD-B, interest bearing",
+      "consumes": [
+        "Position",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow",
+        "DepositRatePath"
+      ],
+      "behavioralClass": "decay",
+      "purpose": "Deposit rate from beta(r) times r, with the closure overlay reading the switching spread. Regime amplifier off."
+    },
+    {
+      "id": "alm-draw-rate-model",
+      "kind": "behavioral",
+      "family": "core",
+      "role": "methodology",
+      "label": "Draw and utilization",
+      "consumes": [
+        "CommitmentSchedule",
+        "RatePath"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "behavioralClass": "draw-utilization",
+      "purpose": "Utilization S-curve with partial adjustment, draw and paydown decomposition, mean-reverting stochastic utilization with reflection.",
+      "critical": "The only behavioral family with a forward model and no inverse. It asks for calibrated parameters but no utilization calibration component exists."
+    },
+    {
+      "id": "alm-loan-client-rate",
+      "kind": "behavioral",
+      "family": "core",
+      "role": "methodology",
+      "label": "Loan client rate",
+      "consumes": [
+        "RatePath"
+      ],
+      "produces": [
+        "ClientRatePath"
+      ],
+      "behavioralClass": "client-rate-asset",
+      "purpose": "Borrower-facing offered rate along a scenario path: additive path-plus-spreads with imposed unit beta as a long-run cointegrating relation, a spread-leg specification ladder, and a validation battery separating real edge from realized-driver flattery.",
+      "critical": "Models the PRICE of new business, not its VOLUME. It does not close the balance-target gap."
+    },
+    {
+      "id": "alm-nii",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Net interest income",
+      "consumes": [
+        "Cashflow",
+        "DepositRatePath"
+      ],
+      "produces": [
+        "NiiResult"
+      ],
+      "purpose": "NII aggregation in runoff and static balance-sheet modes, earnings at risk over 12 months at plus and minus 100bp, and Monte Carlo percentile fans.",
+      "critical": "Static mode carries the only new-volume machinery in the library, as vintage replacement at prevailing shocked rates. It has no volume, mix, or target layer."
+    },
+    {
+      "id": "alm-eve",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Economic value of equity",
+      "consumes": [
+        "Cashflow",
+        "ZeroCurve"
+      ],
+      "produces": [
+        "EveResult"
+      ],
+      "purpose": "EVE on the regulatory parallel grid with per-shock cashflow regeneration and behavioral re-leveling, the non-parallel decomposition into projection, discounting and interaction legs, and key-rate durations with an additivity gate.",
+      "critical": "The all-in-curve and risk-free-leg discounting settings are not comparable. Pick one per run and say which."
+    },
+    {
+      "id": "alm-gap-analytics",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Repricing and liquidity gap",
+      "consumes": [
+        "Cashflow",
+        "RepricingSchedule"
+      ],
+      "produces": [
+        "GapResult"
+      ],
+      "purpose": "Reset-bucket repricing gap and maturity-bucket liquidity gap over contractual and behavioral flows. No shock and no vintages, which is what makes it lighter than SEG."
+    },
+    {
+      "id": "alm-seg",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Sensitivity-equivalent gap",
+      "consumes": [
+        "Cashflow",
+        "RatePath"
+      ],
+      "produces": [
+        "SegResult"
+      ],
+      "purpose": "Rate-locked balance from NII sensitivity to a plus or minus 10bp shock under a static balance sheet with vintage replacement.",
+      "critical": "Shipped in the Studio engine as the opt-in seg block: SEG, EBP and constant-balance-sheet NII with the shock from step 1, on the base scenario only, plus or minus 10bp for SEG and plus or minus 200bp for NII. The 10bp shock is a fixed run constant, not a setup field. Costly: about 2 ms per position."
+    },
+    {
+      "id": "alm-ftp",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Funds transfer pricing",
+      "consumes": [
+        "Cashflow",
+        "ZeroCurve"
+      ],
+      "produces": [
+        "FtpResult"
+      ],
+      "purpose": "Par-matched static-strip FTP: the IR component against SOFR, the all-in against SOFR plus TLP, and the liquidity-premium residual. Linear par match, no root finding."
+    },
+    {
+      "id": "alm-ftp-stochastic",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Option-adjusted FTP",
+      "consumes": [
+        "Cashflow",
+        "DiscountFactorPath"
+      ],
+      "produces": [
+        "FtpResult"
+      ],
+      "purpose": "Transfer pricing over Hull-White paths: the path-averaged par-coupon triple and OAS against a static Z-spread. This is what breaks the static-strip equality between FTP and EVE."
+    },
+    {
+      "id": "alm-replicating-portfolio",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Replicating portfolio",
+      "consumes": [
+        "Cashflow",
+        "ZeroCurve"
+      ],
+      "produces": [
+        "ReplicatingPortfolio"
+      ],
+      "purpose": "Synthetic bond portfolio for non-maturity deposits by maturity matching, duration-matching quadratic program, or scenario PV matching, anchored on the seasoned-stock WAL."
+    },
+    {
+      "id": "alm-deposit-tractor",
+      "kind": "metric",
+      "family": "core",
+      "role": "methodology",
+      "label": "Deposit tractor",
+      "consumes": [
+        "Cashflow",
+        "ZeroCurve"
+      ],
+      "produces": [
+        "ReplicatingPortfolio"
+      ],
+      "purpose": "Moving-average pillar replication: the k-month average of the k-month tenor, stock versus flow view, sum-to-one non-negative least squares, minimum-volatility blend, pillar covariance."
+    },
+    {
+      "id": "engine.metric.balance-summary",
+      "kind": "metric",
+      "family": "engine",
+      "role": "demonstration",
+      "label": "Balance summary (demonstration custom metric)",
+      "consumes": [
+        "Cashflow",
+        "Position"
+      ],
+      "produces": [
+        "CustomMetricResult"
+      ],
+      "purpose": "The shipped demonstration of the fifth metric slot: per scenario and per family, the summed balance at the first bucket, the summed balance at the final bucket, and one minus their ratio. Two sums and one ratio, and nothing else.",
+      "critical": "A demonstration of the slot, not a reporting convention. The final-bucket figure is the balance at the START of the final bucket, and a row whose opening balance is zero omits the runoff share rather than reporting 0."
+    },
+    {
+      "id": "engine.metric.wal-gap",
+      "kind": "metric",
+      "family": "engine",
+      "role": "metric",
+      "label": "WAL gap (asset and liability weighted average life)",
+      "consumes": [
+        "Cashflow",
+        "Position"
+      ],
+      "produces": [
+        "CustomMetricResult"
+      ],
+      "purpose": "The second built-in custom metric: per scenario, the principal-weighted average life of the pooled asset families and of the pooled liability families in months, their difference and their ratio, plus each family's own WAL.",
+      "critical": "IN-HORIZON WAL: the fold divides by the in-horizon principal total, so a book that does not fully amortize inside the horizon reports the WAL of its in-horizon runoff, truncated and never extrapolated. A side with no family, or no in-horizon principal, omits its WAL rather than reporting 0, and the gap and the ratio need both sides."
+    },
+    {
+      "id": "engine.metric.survival-horizon",
+      "kind": "metric",
+      "family": "engine",
+      "role": "metric",
+      "label": "Survival horizon (under each scenario's own assumptions)",
+      "consumes": [
+        "Cashflow",
+        "Position"
+      ],
+      "produces": [
+        "CustomMetricResult"
+      ],
+      "purpose": "The third built-in custom metric and the first liquidity metric: per scenario, the buffer of asset families tagged hqla-level after haircuts, the whole months it covers cumulative net outflow as the scenario projects it, the lowest headroom over the horizon, and the buffer over the first month's net outflow.",
+      "critical": "The metric applies NO stress of its own: it reads each scenario's projected flows, so a stress must arrive as a stressed assumption set with a deposit-decay stage (the seeded ILLUSTRATIVE liquidity-stress-demo-v1: 5 and 10 percent a month); under a business-as-usual set it reports business-as-usual survival. A plan needs a decay stage shaped like example-plan.json st-decay-nmd (selector.behavioralClasses decay, disposition M, feeds eve, ir-gap and liq-gap, never nii); the routing gate refuses a decay stage without the class and feeds (R1) and a book whose decay-class positions no stage covers (R4). The workbench run route applies the slate's set and derives the decay stage itself, so it yields stressed NII, EVE and gap, but computes no custom metric: the survival reading needs a plan that names the survival-horizon stage. Metric conventions, not calibrated: haircuts 0, 15 and 50 percent for l1, l2a and l2b; half of ordinary asset principal and interest counts as inflow. Monthly grain. A book with no buffer family, or with any family whose positions are not uniformly tagged, carries no keys."
+    },
+    {
+      "id": "engine.metric.lcr-scenario",
+      "kind": "metric",
+      "family": "engine",
+      "role": "metric",
+      "label": "LCR on scenario flows (under each scenario's own assumptions)",
+      "consumes": [
+        "Cashflow",
+        "Position"
+      ],
+      "produces": [
+        "CustomMetricResult"
+      ],
+      "purpose": "The fourth built-in custom metric: per scenario, HQLA after haircuts and the US Level 2 caps over month-1 net outflow, with outflow read from the scenario's own projected liability flows and inflows capped at 75 percent of outflows.",
+      "critical": "Applies NO stress of its own: under a business-as-usual set it reads business-as-usual flows; a stress arrives as a stressed assumption set with a deposit-decay stage, as for survival-horizon. Thirty days is calendar month 1. Inflows are half of non-buffer asset principal and interest. Outflows come from the liability families only: there is no undrawn-commitment, derivative or collateral outflow category, often the largest non-deposit line in a real US LCR, because the kernel has no such object. Needs a buffer of hqla-level-tagged asset families; without one the row carries no keys."
+    },
+    {
+      "id": "engine.metric.lcr-regulatory",
+      "kind": "metric",
+      "family": "engine",
+      "role": "metric",
+      "label": "LCR, US rule run-off rates (demonstration rates; no peak-day add-on)",
+      "consumes": [
+        "Cashflow",
+        "Position"
+      ],
+      "produces": [
+        "CustomMetricResult"
+      ],
+      "purpose": "The fifth built-in custom metric: the same capped HQLA over month-1 net outflow, with outflow from the US LCR run-off rates on each liability family's lcr-category: rate times the as-of balance for nmd and nmd-b families, rate times month-1 principal for the rest.",
+      "critical": "Rates are public US values used as DEMONSTRATION values: retail-stable 3, retail-other 10, operational 25, secured-gse 25, wholesale-nonfinancial 40, wholesale-financial 100 percent. Not modeled: the peak-day add-on, US tailoring (reduced LCR, Category IV relief), the secured-funding unwind inside the caps. Outflows come from the liability families only: there is no undrawn-commitment, derivative or collateral outflow category, often the largest non-deposit line in a real US LCR, because the kernel has no such object. The month-1 principal a term liability is rated on is the projected flow, not a purely contractual maturity: a cds family's principal[0] carries its business-as-usual early-withdrawal hazard, and a balance stage upstream would change it. Every liability family with positions must carry one known lcr-category on every position, else the row carries no keys. Only synthetic-2500-lcr-v1 carries the tag."
+    },
+    {
+      "id": "engine.liquidity-stress",
+      "kind": "metric",
+      "family": "engine",
+      "role": "metric",
+      "label": "Liquidity stress ladder and survival horizon (stress table on the run setup)",
+      "consumes": [
+        "Cashflow",
+        "Position"
+      ],
+      "produces": [
+        "LiquidityStressResult"
+      ],
+      "purpose": "Shipped. Three scenarios (bau, moderate, severe) over 12 months from a stress table on the run setup: high-yield savings pool and non-interest-bearing pool outflow rates, wholesale renewal and an undrawn-commitment draw rate against a stated buffer. Inflows are asset principal tagged inflow-asset on the base path. Output is the opt-in liquidityStress block: ladders, cumulative net funding, survival horizon interpolated between months (null when the buffer is never pierced) and peak shortfall.",
+      "critical": "Applies its own stress, unlike engine.metric.survival-horizon, which reads each scenario's projected flows. Base scenario only. Needs liquidityRole tags in the dimension bag (inflow-asset, hys-pool, nib-pool, wholesale); a position without a role is not counted. Opt-in through the run setup, not through a plan stage."
+    },
+    {
+      "id": "engine.balance-plan",
+      "kind": "balance-new-business",
+      "family": "engine",
+      "role": "stage",
+      "label": "Balance plan (targets and new business)",
+      "consumes": [
+        "Position",
+        "RatePath",
+        "Cashflow"
+      ],
+      "produces": [
+        "Cashflow"
+      ],
+      "purpose": "Runs each scenario's new business: a static scenario passes its contractual series through, a dynamic one is projected with reinvestment to its balance targets, flat or one steady growth rate per family.",
+      "critical": "Only NII reads this stage's series when the NII stage depends on it; EVE and the gaps keep the contractual series and run the book off. A target the runoff cannot reach is reported as a shortfall, never met by selling."
+    }
+  ],
+  "gaps": [
+    {
+      "stageKind": "balance-new-business",
+      "severity": "closed",
+      "status": "closed by the engine.balance-plan stage",
+      "closedBy": "engine.balance-plan",
+      "finding": "A search of the components for new volume, new business, balance target, growth assumption, reinvestment assumption and origination volume found only two disclaimers in the non-interest-bearing deposit component saying the instrument is runoff-only and new production would be a separate cohort.",
+      "whatExists": "Only implicit machinery: the static-mode vintage replacement inside alm-nii and alm-seg, which replaces runoff at prevailing shocked rates with no volume, mix or target layer.",
+      "nearestAdjacent": "alm-loan-client-rate models the price of new business but not its volume.",
+      "consequence": "Closed: the engine.balance-plan stage (kind balance-new-business) now owns the going-concern earnings run, the model map's new-volume row. A balance target is flat or one steady growth rate per family from the opening balance, and new business feeds NII only; EVE and the gaps still run the book off. The finding above records the components as they stood when the gap was opened."
+    },
+    {
+      "stageKind": "scenario",
+      "severity": "blocking",
+      "status": "no owning component; fragmented across five",
+      "finding": "Shocks are well specified but scattered: the two path classes in alm-conventions, the regulatory grid and key-rate bumps in alm-eve, the earnings-at-risk default in alm-nii, a hard-coded and non-configurable 10bp in alm-seg, a steepener and flattener set mentioned once in alm-replicating-portfolio, and the named regime presets of a deposit forecast.",
+      "whatExists": "Only a deposit forecast owns a named scenario set, and no component here ships one.",
+      "consequence": "There is no scenario schema, no scenario library, no ramp-versus-immediate distinction, and no macro-scenario layer, despite competing-risks consuming an HPI stress path and the mortgage chain producing HPI stress output. A composer needs a scenario object and the library does not define one."
+    },
+    {
+      "stageKind": "market-data",
+      "severity": "material",
+      "status": "thin",
+      "finding": "Covers SOFR OIS, the short-rate and long-yield volatility surfaces, FHLB and TLP only. No HPI, no mortgage survey rate, no equity, FX or credit intake, even though competing-risks needs an HPI path and four-factor CPR needs a mortgage survey rate.",
+      "consequence": "Two behavioral models consume market inputs the market-data layer cannot supply."
+    },
+    {
+      "stageKind": "curve",
+      "severity": "material",
+      "status": "thin",
+      "finding": "Single-curve SOFR OIS bootstrap only. No multi-curve or basis, no dual-curve discounting, no credit spread curve, no curve building from bond prices."
+    },
+    {
+      "stageKind": "contractual-cashflow",
+      "severity": "material",
+      "status": "thin",
+      "finding": "No investment-securities or bond instrument, no callable structure (callable CDs and advances are explicitly unsupported), no derivative or hedge instrument, so no swap, cap, floor or swaption can be held as a book position.",
+      "consequence": "A bank that hedges cannot represent its hedges. That closes off the interest-rate-risk lens at the point where most balance-sheet management actually happens."
+    },
+    {
+      "stageKind": "behavioral",
+      "severity": "material",
+      "status": "asymmetric",
+      "finding": "alm-draw-rate-model asks for calibrated utilization parameters but no utilization calibration component exists. It is the only behavioral family with a forward model and no inverse.",
+      "consequence": "The draw row is the model map's binding liquidity model, and it is the one row that cannot be calibrated from data."
+    },
+    {
+      "stageKind": "metric",
+      "severity": "material",
+      "status": "absent for two of the four lenses",
+      "finding": "Liquidity risk stops at the gap, one survival metric and two LCR metrics: no NSFR, contingency funding plan or runoff stress bucket. The survival horizon exists now reads a deposit run-off stress the engine projects from an ILLUSTRATIVE assumption set. There is no capital metric and no credit-loss or CECL layer.",
+      "consequence": "Balance-sheet optimization across liquidity, interest-rate risk, capital and management strategy needs all four lenses readable off one run. Two of the four have no components at all."
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+/* Govern > Lineage workspace cards (Task E7). Tokens only. */
+.clone-tree { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: grid; gap: var(--sp-2); overflow-wrap: anywhere; }
+.clone-tree [aria-current="true"] { font-weight: 500; }

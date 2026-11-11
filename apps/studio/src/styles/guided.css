@@ -1,0 +1,125 @@
+/* The guided Analysis path and the first screen's start choices (Studio guided flow S2a, ADR-055). Tokens only;
+   imported once, from pages/analysis/AnalysisPage.tsx. */
+
+/* Top bar: the Analysis entry, then a quiet "Advanced" label in front of the seven sections. */
+.mod-analysis { font-weight: 600; }
+.modbar-group { display: inline-flex; align-items: center; height: 32px; padding: 0 var(--sp-2) 0 var(--sp-4); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); border-left: 1px solid var(--line); margin-left: var(--sp-2); }
+.analysis-sheet-head { padding: 0 var(--sp-3); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.analysis-sheet-item { display: block; min-width: 0; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-1); color: var(--ink-2); text-decoration: none; font-size: var(--fs-3); }
+.analysis-sheet-item[aria-current="page"] { background: var(--accent-wash); color: var(--accent); font-weight: 600; }
+
+/* Rail: the Scenario library's pages, indented under it. */
+.rail-subitem { padding-left: var(--sp-6); font-size: var(--fs-2); }
+
+/* Rail: the numbered steps. */
+.rail-step { gap: var(--sp-2); }
+.rail-step-no { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 999px; border: 1px solid var(--line-2); font-size: var(--fs-1); font-variant-numeric: tabular-nums; color: var(--muted); flex: none; }
+.rail-step[aria-current="page"] .rail-step-no { border-color: var(--accent); color: var(--accent); }
+
+/* The progress strip: nine steps, each with its state as a word and a mark, so colour is never the only cue. */
+.guided-strip { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: var(--sp-2); padding: 0; margin: 0; list-style: none; }
+.guided-strip li { min-width: 0; }
+.guided-step { display: grid; gap: 2px; padding: var(--sp-2) var(--sp-3); border: 1px solid var(--line); border-radius: var(--r-1); background: var(--surface); color: var(--ink-2); text-decoration: none; min-height: 56px; }
+.guided-step:hover { background: var(--surface-2); color: var(--ink); }
+.guided-step[aria-current="step"] { border-color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); color: var(--ink); }
+.guided-step-name { font-size: var(--fs-2); font-weight: 600; overflow-wrap: anywhere; }
+.guided-step-state { font-size: var(--fs-1); display: inline-flex; align-items: center; gap: var(--sp-1); }
+.guided-mark { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 999px; font-size: 10px; line-height: 1; flex: none; }
+.guided-state-done .guided-mark { background: var(--pos-wash); color: var(--pos); border: 1px solid var(--pos); }
+.guided-state-attention .guided-mark { background: var(--warn-wash); color: var(--warn); border: 1px solid var(--warn); }
+.guided-state-optional .guided-mark { background: var(--surface-2); color: var(--muted); border: 1px dotted var(--muted); }
+.guided-state-done .guided-step-state { color: var(--pos); }
+.guided-state-attention .guided-step-state { color: var(--warn); }
+.guided-state-optional .guided-step-state { color: var(--muted); }
+
+/* The current step's status card. */
+.guided-status { display: grid; gap: var(--sp-3); }
+.guided-status-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); }
+.guided-missing { margin: 0; padding-left: var(--sp-5); display: grid; gap: var(--sp-1); color: var(--ink); }
+.guided-links { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4); align-items: center; font-size: var(--fs-2); color: var(--muted); }
+.guided-links a { color: var(--ink-2); }
+.guided-details { font-size: var(--fs-1); color: var(--muted); }
+.guided-details summary { cursor: pointer; color: var(--ink-2); }
+.guided-details ul { margin: var(--sp-2) 0 0; padding-left: var(--sp-5); display: grid; gap: var(--sp-1); overflow-wrap: anywhere; }
+
+/* Back and Continue under every step. */
+.guided-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-3); }
+
+/* Notes and badges. */
+.guided-note { margin: 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--surface-2); color: var(--ink-2); }
+.guided-ok { margin: 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--pos); border-radius: var(--r-1); background: var(--pos-wash); color: var(--ink); }
+.guided-warn { margin: 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--warn); border-radius: var(--r-1); background: var(--warn-wash); color: var(--ink); }
+.guided-bad { margin: 0; padding: var(--sp-3) var(--sp-4); border: 1px dashed var(--neg); border-radius: var(--r-1); background: var(--neg-wash); color: var(--ink); }
+.guided-badge { display: inline-flex; align-items: center; min-height: 20px; padding: 0 var(--sp-2); border-radius: 999px; font-size: var(--fs-1); font-weight: 600; white-space: nowrap; color: var(--warn); background: var(--warn-wash); border: 1px solid var(--warn); }
+.guided-badge-quiet { color: var(--ink-2); background: var(--surface-2); border-color: var(--line-2); }
+.guided-later { color: var(--muted); font-size: var(--fs-2); }
+
+/* Forms inside a step. */
+.guided-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-3) var(--sp-4); margin-top: var(--sp-4); }
+.guided-row .field { min-width: 180px; }
+/* S2b-3: a list of saved items, each a sentence with its badges and its action on one wrapping line. */
+.guided-list { margin: var(--sp-3) 0 0; padding: 0; list-style: none; display: grid; gap: var(--sp-2); }
+.guided-list li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+/* S2b-3: the fit chart sits clear of the parameter list; the fit's name takes the card's width. */
+.guided-fit-plot { margin-top: var(--sp-5); }
+.guided-wide-field { margin-top: var(--sp-4); max-width: 640px; }
+.guided-wide-field .input { width: 100%; }
+.guided-fieldset { margin: var(--sp-4) 0 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line); border-radius: var(--r-1); display: grid; gap: var(--sp-2); min-width: 0; }
+.guided-fieldset legend { padding: 0 var(--sp-1); font-weight: 600; color: var(--ink); }
+.guided-option { display: flex; align-items: flex-start; gap: var(--sp-2); color: var(--ink); cursor: pointer; }
+.guided-option input { margin-top: 3px; }
+.guided-option-text { display: grid; gap: 2px; }
+.guided-option-text .field-help { font-size: var(--fs-2); }
+.guided-select { height: 32px; padding: 0 var(--sp-2); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--surface-2); color: var(--ink); font: inherit; font-size: var(--fs-2); max-width: 100%; }
+.guided-textarea { width: 100%; min-height: 96px; padding: var(--sp-2) var(--sp-3); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--surface-2); color: var(--ink); font-family: var(--mono); font-size: var(--fs-2); }
+.guided-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; margin-top: var(--sp-4); }
+.guided-table .input { width: 10ch; }
+.guided-table td { vertical-align: top; }
+.guided-cell-stack { display: grid; gap: var(--sp-1); }
+.table-wrap.guided-tall { max-height: none; }
+.table td.guided-wrap { white-space: normal; min-width: 240px; color: var(--ink-2); }
+/* S2b-2 (ADR-057): the behavior a new-volume product carries, and the small curves beside it. */
+.guided-check { display: inline-flex; align-items: flex-start; gap: var(--sp-2); color: var(--ink); cursor: pointer; font-size: var(--fs-2); }
+.guided-check input { margin-top: 3px; }
+.guided-subcard { display: grid; gap: var(--sp-3); margin-top: var(--sp-4); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line); border-radius: var(--r-1); background: var(--surface-2); min-width: 0; }
+.guided-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-3) var(--sp-4); margin: 0; }
+.guided-pair dt { font-size: var(--fs-2); color: var(--muted); }
+.guided-pair dd { margin: 0; font-size: var(--fs-4); font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* The first screen: three start choices. */
+.start-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-4); margin-top: var(--sp-4); }
+.start-choice { display: grid; align-content: start; gap: var(--sp-2); padding: var(--sp-4); border: 1px solid var(--line); border-radius: var(--r-2); background: var(--surface-2); min-width: 0; }
+.start-choice-title { font-size: var(--fs-4); font-weight: 600; color: var(--ink); }
+.start-choice .btn { justify-self: start; margin-top: var(--sp-2); }
+
+/* Studio slice S3b-1: the Feature demos section on Home, one card per demo. */
+/* Studio slice S3f: the Start here card on Home, a numbered path then More demos. */
+.start-here-path { list-style: none; display: grid; gap: var(--sp-3); margin: var(--sp-4) 0 0; padding: 0; }
+.start-here-step { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line); border-radius: var(--r-2); background: var(--surface-2); min-width: 0; }
+.start-here-more .start-here-step { grid-template-columns: minmax(0, 1fr) auto; }
+.start-here-num { display: inline-grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--accent-wash); color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+.start-here-body { display: grid; gap: var(--sp-1); min-width: 0; }
+.start-here-title { font-size: var(--fs-4); font-weight: 600; color: var(--ink); }
+.start-here-open { align-self: center; }
+.start-here-more-title { margin-top: var(--sp-5); font-size: var(--fs-4); font-weight: 600; color: var(--ink); }
+.start-here-note .ws-actions { margin-top: var(--sp-2); }
+@media (max-width: 640px) {
+  .start-here-step, .start-here-more .start-here-step { grid-template-columns: minmax(0, 1fr); }
+  .start-here-open { justify-self: start; }
+}
+
+.demo-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--sp-4); margin-top: var(--sp-4); }
+.demo-card { display: grid; align-content: start; gap: var(--sp-2); padding: var(--sp-4); border: 1px solid var(--line); border-radius: var(--r-2); background: var(--surface-2); min-width: 0; }
+.demo-card-title { font-size: var(--fs-4); font-weight: 600; color: var(--ink); }
+.demo-card .btn { justify-self: start; margin-top: var(--sp-2); }
+.demo-card-details summary { cursor: pointer; color: var(--ink-2); font-size: var(--fs-2); }
+.demo-card-facts { display: block; margin: var(--sp-2) 0 0; padding-left: var(--sp-4); font-size: var(--fs-2); color: var(--muted); overflow-wrap: anywhere; }
+.demo-card-facts li { display: list-item; margin-top: var(--sp-1); }
+
+@media (max-width: 900px) {
+  .guided-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .modbar-group { display: none; }
+}
+@media (max-width: 480px) {
+  .guided-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

@@ -1,0 +1,124 @@
+{
+  "note": "DEMONSTRATION VALUES. Every limit in this file is illustrative, chosen to exercise the pass, breach and unobservable paths across this file on the shipped demo book; no single lens here exercises all three, and the balance lens breaches on every scenario of that book because it runs off fully inside the horizon. None of it is a calibrated or governed limit, and nothing here is any institution's risk appetite. The capital lens ships with one constraint that is always unobservable: no capital metric exists on the result envelope, and a capital component is a later release. The balance lens reads the shipped demonstration custom metric: on a run whose plan named no custom metric stage it reports unobservable with a reason, which is why it can ship without breaking any existing run. The WAL gap lens added in piece 3c reads the second built-in custom metric, `wal-gap`, and reports unobservable the same way on a run that named no `wal-gap` stage; both of its limits are nonzero, so both are fraction basis and either may set the headline.",
+  "lenses": [
+    {
+      "id": "liquidity-demo-v1",
+      "label": "Liquidity (demonstration limits)",
+      "objective": "liquidity",
+      "constraints": [
+        {
+          "id": "cum-gap-1m",
+          "reader": "cumulativeLiquidityGap",
+          "params": { "band": "0-1M" },
+          "op": "atLeast",
+          "limit": -50000000,
+          "label": "Cumulative liquidity gap through 1 month"
+        },
+        {
+          "id": "cum-gap-3m",
+          "reader": "cumulativeLiquidityGap",
+          "params": { "band": "1-3M" },
+          "op": "atLeast",
+          "limit": -100000000,
+          "label": "Cumulative liquidity gap through 3 months"
+        }
+      ]
+    },
+    {
+      "id": "rate-demo-v1",
+      "label": "Interest-rate risk (demonstration limits)",
+      "objective": "rate",
+      "constraints": [
+        {
+          "id": "eve-15",
+          "reader": "deltaEvePct",
+          "op": "atLeast",
+          "limit": -0.15,
+          "label": "Delta EVE versus base, decimal fraction"
+        },
+        {
+          "id": "nii-12",
+          "reader": "deltaNiiPct",
+          "params": { "horizonMonths": 12 },
+          "op": "atLeast",
+          "limit": -0.1,
+          "label": "Delta NII at 12 months versus base, decimal fraction"
+        }
+      ]
+    },
+    {
+      "id": "capital-demo-v1",
+      "label": "Capital (demonstration limits)",
+      "objective": "capital",
+      "constraints": [
+        {
+          "id": "cet1",
+          "reader": "capitalRatio",
+          "op": "atLeast",
+          "limit": 0.08,
+          "label": "Common equity tier 1 ratio (no component on this envelope)"
+        }
+      ]
+    },
+    {
+      "id": "strategy-demo-v1",
+      "label": "Management strategy (demonstration limits)",
+      "objective": "strategy",
+      "constraints": [
+        {
+          "id": "no-shortfall",
+          "reader": "shortfallCount",
+          "op": "atMost",
+          "limit": 0,
+          "label": "Reinvestment shortfalls reported by the projection"
+        },
+        {
+          "id": "nii-24",
+          "reader": "deltaNiiPct",
+          "params": { "horizonMonths": 24 },
+          "op": "atLeast",
+          "limit": -0.05,
+          "label": "Delta NII at 24 months versus base, decimal fraction"
+        }
+      ]
+    },
+    {
+      "id": "balance-demo-v1",
+      "label": "Balance runoff (demonstration limits, reads the demonstration metric)",
+      "objective": "strategy",
+      "constraints": [
+        {
+          "id": "runoff-50",
+          "reader": "customValue",
+          "params": { "metricId": "balance-summary", "key": "runoff-share" },
+          "op": "atMost",
+          "limit": 0.5,
+          "label": "Share of opening balance run off by the final bucket"
+        }
+      ]
+    },
+    {
+      "id": "wal-gap-demo-v1",
+      "label": "WAL gap (demonstration limits, reads the wal-gap metric)",
+      "objective": "liquidity",
+      "constraints": [
+        {
+          "id": "gap-24",
+          "reader": "customValue",
+          "params": { "metricId": "wal-gap", "key": "wal-gap" },
+          "op": "atMost",
+          "limit": 24,
+          "label": "Asset WAL minus liability WAL, months"
+        },
+        {
+          "id": "ratio-50",
+          "reader": "customValue",
+          "params": { "metricId": "wal-gap", "key": "wal-ratio" },
+          "op": "atLeast",
+          "limit": 0.5,
+          "label": "Liability WAL over asset WAL"
+        }
+      ]
+    }
+  ]
+}

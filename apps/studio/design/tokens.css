@@ -1,0 +1,159 @@
+/* Studio design tokens. Light theme in :root; dark theme in the two blocks below.
+   Pages link this file and use var(--token) only; no raw color literals in pages. */
+
+:root {
+  color-scheme: light;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-1: 12px; --fs-2: 13px; --fs-3: 14px; --fs-4: 16px; --fs-5: 20px; --fs-6: 26px; --fs-7: 34px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+  --r-1: 6px; --r-2: 10px; --r-3: 14px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-2: 0 4px 16px rgba(0,0,0,.08);
+  --t-fast: 120ms cubic-bezier(.2,.8,.2,1);
+  --t-base: 200ms cubic-bezier(.2,.8,.2,1);
+
+  --bg: #F6F6F4;
+  --surface: #FFFFFF;
+  --surface-2: #F0F0EE;
+  --ink: #111315;
+  --ink-2: #4B5560;
+  --muted: #636D78;
+  --line: #E4E6E9;
+  --line-2: #CFD3D8;
+  --accent: #2B5FD9;
+  --accent-ink: #FFFFFF;
+  --accent-wash: rgba(43,95,217,.10);
+  --pos: #17724A;
+  --neg: #B03A28;
+  --warn: #B7791F;
+  --unobs: #5F6975;
+  --stale: #6E44BE;
+  --pos-wash: rgba(23,114,74,.12);
+  --neg-wash: rgba(176,58,40,.12);
+  --warn-wash: rgba(183,121,31,.12);
+  --unobs-wash: rgba(95,105,117,.12);
+  --stale-wash: rgba(110,68,190,.12);
+  --series-1: var(--accent);
+  --series-1-wash: var(--accent-wash);
+  --series-2: #EB6834;
+  --series-3: #1BAF7A;
+  --series-4: #EDA100;
+  --series-5: #E87BA4;
+  --series-6: #008300;
+  --seq-1: #CDE2FB;
+  --seq-2: #9EC5F4;
+  --seq-3: #6DA7EC;
+  --seq-4: #3987E5;
+  --seq-5: #256ABF;
+  --seq-6: #184F95;
+  --seq-7: #0D366B;
+  /* The 3D vol surface's shading ink, laid over a face at up to 50% alpha by how far it turns from the light (Polish 10 T3) */
+  --shade: #000000;
+  --font-num: var(--font);
+  --row-pad: var(--sp-3);
+  /* The pressed segment of a .seg switch: its fill, and a ring that marks it where the fill alone does not (dark) */
+  --seg-on: var(--surface);
+  --seg-ring: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0D1117;
+    --surface: #121925;
+    --surface-2: #1A2332;
+    --ink: #E6E9EF;
+    --ink-2: #B8C1CE;
+    --muted: #8B95A7;
+    --line: #1F2A3A;
+    --line-2: #2C3A4F;
+    --accent: #2DD4BF;
+    --accent-ink: #0D1117;
+    --accent-wash: rgba(45,212,191,.14);
+    --pos: #4ADE80;
+    --neg: #F87171;
+    --warn: #F59E0B;
+    --unobs: #8B95A7;
+    --stale: #B79CF0;
+    --pos-wash: rgba(74,222,128,.12);
+    --neg-wash: rgba(248,113,113,.12);
+    --warn-wash: rgba(245,158,11,.12);
+    --unobs-wash: rgba(139,149,167,.12);
+    --stale-wash: rgba(183,156,240,.12);
+    --series-1: var(--accent);
+    --series-1-wash: var(--accent-wash);
+    --series-2: #D95926;
+    --series-3: #6FA0FF;
+    --series-4: #C98500;
+    --series-5: #D55181;
+    --series-6: #008300;
+    --seq-1: #0B3B36;
+    --seq-2: #0F5A52;
+    --seq-3: #14786D;
+    --seq-4: #1C9A8C;
+    --seq-5: #2DD4BF;
+    --seq-6: #7FE6D8;
+    --seq-7: #C9F5EF;
+    --shade: #000000;
+    --font-num: var(--mono);
+    --row-pad: var(--sp-2);
+    --seg-on: var(--line-2);
+    --seg-ring: var(--muted);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0D1117;
+  --surface: #121925;
+  --surface-2: #1A2332;
+  --ink: #E6E9EF;
+  --ink-2: #B8C1CE;
+  --muted: #8B95A7;
+  --line: #1F2A3A;
+  --line-2: #2C3A4F;
+  --accent: #2DD4BF;
+  --accent-ink: #0D1117;
+  --accent-wash: rgba(45,212,191,.14);
+  --pos: #4ADE80;
+  --neg: #F87171;
+  --warn: #F59E0B;
+  --unobs: #8B95A7;
+  --stale: #B79CF0;
+  --pos-wash: rgba(74,222,128,.12);
+  --neg-wash: rgba(248,113,113,.12);
+  --warn-wash: rgba(245,158,11,.12);
+  --unobs-wash: rgba(139,149,167,.12);
+  --stale-wash: rgba(183,156,240,.12);
+  --series-1: var(--accent);
+  --series-1-wash: var(--accent-wash);
+  --series-2: #D95926;
+  --series-3: #6FA0FF;
+  --series-4: #C98500;
+  --series-5: #D55181;
+  --series-6: #008300;
+  --seq-1: #0B3B36;
+  --seq-2: #0F5A52;
+  --seq-3: #14786D;
+  --seq-4: #1C9A8C;
+  --seq-5: #2DD4BF;
+  --seq-6: #7FE6D8;
+  --seq-7: #C9F5EF;
+  --shade: #000000;
+  --font-num: var(--mono);
+  --row-pad: var(--sp-2);
+  --seg-on: var(--line-2);
+  --seg-ring: var(--muted);
+}
+
+/* Base rules */
+html { font-family: var(--font); font-size: 16px; color: var(--ink); background: var(--bg); font-variant-numeric: tabular-nums; }
+body { margin: 0; background: var(--bg); }
+.num { font-variant-numeric: tabular-nums; }
+.status { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-1); font-weight: 600; border-radius: 999px; padding: 2px var(--sp-2); }
+.status-pass   { color: var(--pos);   background: var(--pos-wash);   border: 1px solid var(--pos); }
+.status-breach { color: var(--neg);   background: var(--neg-wash);   border: 1px dashed var(--neg); }
+.status-unobs  { color: var(--unobs); background: var(--unobs-wash); border: 1px dotted var(--unobs); }
+/* Stale: a 3px double border draws two 1px rules; zero vertical padding keeps the chip the height of the others. */
+.status-stale  { color: var(--stale); background: var(--stale-wash); border: 3px double var(--stale); padding: 0 calc(var(--sp-2) - 2px); }

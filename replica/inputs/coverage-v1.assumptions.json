@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "coverage-illustrative-v1",
+  "label": "Coverage book behavior (round illustrative values, not fitted)",
+  "bindings": [
+    {
+      "familyId": "cv-mortgages",
+      "overlay": {
+        "kind": "prepay",
+        "model": "four-factor-cpr",
+        "params": {
+          "secSpread": 100,
+          "primSpread": 100,
+          "wac": 6.5,
+          "minCpr": 2.0,
+          "maxCpr": 60.0,
+          "steepness": 2.5,
+          "inflection": 50,
+          "seasoningRamp": 24,
+          "seasonalityAmp": 20,
+          "burnoutDecay": 5.0
+        }
+      },
+      "modelVersion": "coverage-v1"
+    },
+    {
+      "familyId": "cv-ib-deposits",
+      "overlay": {
+        "kind": "nmd-decay",
+        "params": {
+          "closureSteady": 0.5,
+          "closureInitial": 1.5,
+          "closureTauMonths": 12,
+          "burnoutLambda": 0.1,
+          "maxRateDecay": 6.0,
+          "maxRateGrowth": -0.5,
+          "logisticK": 0.5,
+          "logisticMidpoint": 2.0,
+          "maPeriod": 12,
+          "regimeAlpha": 1.5,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.3,
+            "gMax": 1.0,
+            "bStar": 500000,
+            "kappaB": 1.5
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 100000,
+              "share": 0.4
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.3
+            },
+            {
+              "label": "Over $1M",
+              "repBalance": 3000000,
+              "share": 0.3
+            }
+          ]
+        }
+      },
+      "modelVersion": "coverage-v1"
+    },
+    {
+      "familyId": "cv-ib-deposits",
+      "overlay": {
+        "kind": "deposit-beta",
+        "params": {
+          "betaMin": 0.3,
+          "betaMax": 0.7,
+          "k": 1.5,
+          "m": 3.5,
+          "lambda": 0.4
+        }
+      },
+      "modelVersion": "coverage-v1"
+    }
+  ]
+}

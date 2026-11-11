@@ -1,0 +1,64 @@
+ALM Studio
+Copyright 2026 Chih Chen
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Third-party data included in this distribution
+
+1. Secured Overnight Financing Rate (SOFR), monthly averages
+   File: examples/sofr-monthly-v1.json
+   Source: Federal Reserve Bank of New York, Secured Overnight Financing
+   Rate [SOFR], retrieved from FRED, Federal Reserve Bank of St. Louis,
+   https://fred.stlouisfed.org/series/SOFR, retrieved 2026-11-03.
+   The SOFR data is subject to the Terms of Use posted at newyorkfed.org.
+   The New York Fed is not responsible for publication of the SOFR data by
+   ALM Studio, does not sanction or endorse any particular republication,
+   and has no liability for your use.
+   (c) 2026 Federal Reserve Bank of New York. Content from the New York Fed
+   subject to the Terms of Use at newyorkfed.org
+   (https://www.newyorkfed.org/privacy/termsofuse).
+   FRED marks this series "Copyrighted: Citation Required"; the citation
+   above is the one FRED suggests.
+   Copies of the same series are embedded in replica/inputs/deposit-forms-v1.json,
+   replica/inputs/feature-demos-v1.json and replica/inputs/survival-path-v1.json,
+   under the same terms; replica/inputs/NOTICE, beside them, carries this
+   notice and citation for those files.
+
+2. U.S. Treasury constant-maturity par yields
+   Files: packages/kernel/public/market_public.json (the curve nodes only,
+   as of 2026-03-31) and packages/kernel/public/rate_history_public.json
+   (month-end history, October 2008 to March 2026, series DGS1MO, DGS3MO,
+   DGS6MO, DGS1, DGS2, DGS3, DGS5, DGS7, DGS10, DGS20, DGS30).
+   Source: Board of Governors of the Federal Reserve System, H.15 Selected
+   Interest Rates, constant-maturity Treasury series, retrieved from FRED,
+   Federal Reserve Bank of St. Louis.
+   The term funding premium and the volatility surfaces in the snapshot,
+   and the term-funding series in the history, are constructed illustrative
+   values and are not market data.
+
+3. Purchase Only House Price Index for the United States
+   File: apps/server/data/macro/HPIPONM226S.csv
+   Citation: U.S. Federal Housing Finance Agency, Purchase Only House Price
+   Index for the United States [HPIPONM226S], retrieved from FRED, Federal
+   Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/HPIPONM226S,
+   2026-10-08. FRED marks the series "Public Domain: Citation Requested".
+
+4. Unemployment Rate
+   File: apps/server/data/macro/UNRATE.csv
+   Citation: U.S. Bureau of Labor Statistics, Unemployment Rate [UNRATE],
+   retrieved from FRED, Federal Reserve Bank of St. Louis;
+   https://fred.stlouisfed.org/series/UNRATE, 2026-10-08. FRED marks the
+   series "Public Domain: Citation Requested".
+
+5. FDIC BankFind Suite, institution financial data (Call Report)
+   Used to tune the balance sheet mix of the synthetic Quillfield Bank
+   (examples/mid-size-bank-v1.json), as docs/oss/mid-size-bank.md records.
+   FDIC data is public U.S. government data. The query returned one row per
+   institution (905 institutions), which were summed; only the sums are
+   used, and no institution's figures are reproduced.
+
+Third-party software
+
+Dependencies are installed by npm from package.json and the package.json of
+each workspace, each under its own license; none is redistributed in this
+repository.

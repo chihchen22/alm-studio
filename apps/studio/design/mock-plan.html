@@ -1,0 +1,255 @@
+<!doctype html>
+<!--
+Stages drawn on this page, from docs/harness/example-plan.json stages[] (id, component, seam = kind or kind/behavioralClass, lane):
+  st-curve  alm-yield-curve  curve  Market
+  st-tlp  alm-tlp-overlay  curve  Market
+  st-term  engine.rate-path  term-structure  Scenarios
+  st-prepay-mortgage  alm-mortgage-prepayment  behavioral/prepayment  Behavior
+  st-prepay-consumer  alm-mortgage-prepayment  behavioral/prepayment  Behavior
+  st-prepay-mbs  alm-mortgage-prepayment  behavioral/prepayment  Behavior
+  st-client-rate  alm-loan-client-rate  behavioral/client-rate-asset  Behavior
+  st-draw  alm-draw-rate-model  behavioral/draw-utilization  Behavior
+  st-decay-nmd  alm-deposit-decay  behavioral/decay  Behavior
+  st-beta-hys  alm-deposit-beta  behavioral/deposit-beta  Behavior
+  st-early-withdrawal  engine.cd-rollover  behavioral/early-withdrawal  Behavior
+  st-cashflow  engine.contractual  contractual-cashflow  Book
+  st-balance-plan  engine.balance-plan  balance-new-business  Balance
+  st-nii  alm-nii  metric  Metrics
+  st-eve  alm-eve  metric  Metrics
+  st-gap  alm-gap-analytics  metric  Metrics
+  st-ftp  engine.metric.ftp  metric  Metrics
+Node and wire coordinates are hand-baked for this mockup, generated off-repo from example-plan.json. They are not a layout contract.
+Shared inputs (ZeroCurve from st-curve, RatePath from st-term, MarketSnapshot from the market file) are drawn as a 24px stub
+ending in a tag at each consumer port, not as wires. The 19 direct stage-to-stage wires run in the column gutters and the empty
+parts of the Balance and Scenarios lanes with soft cubic corners; a script checked every segment against every node rectangle
+and every tag (no hits). 22 wire-over-wire crossings remain, all involving dimmed wires. Wires that do not touch the selected
+stage st-decay-nmd are dimmed to 15 percent. Four wires run right to left because of lane order: st-decay-nmd to st-beta-hys
+wraps through the gutter between the two Behavior rows; st-early-withdrawal to st-cashflow climbs back along the Book lane edge; st-balance-plan to st-nii and st-nii to st-ftp go down the right margin
+and back over the Scenarios lane.
+-->
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Plan</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+/* Plan builder. Three type sizes: fs-1 labels, ports, chips and captions; fs-3 body and node titles; fs-6 the page title.
+   Shell rules live in components.css. Canvas rules below are page-local. Nodes and wires carry no accent:
+   ink, line-2, muted and the status hues only. */
+
+.plan { display: grid; gap: var(--sp-4); min-width: 0; }
+
+/* Canvas card: the only element that scrolls sideways (below 1280px wide) */
+.canvas-card { padding: 0; overflow: hidden; }
+.canvas-scroll { overflow-x: auto; overflow-y: hidden; border-bottom: 1px solid var(--line); overscroll-behavior-x: contain; border-radius: var(--r-2) var(--r-2) 0 0; }
+.canvas { position: relative; width: 100%; min-width: 1072px; background: var(--surface); }
+.canvas-foot { display: grid; gap: var(--sp-2); padding: var(--sp-3) var(--sp-5); font-size: var(--fs-1); color: var(--muted); }
+.canvas-key { display: flex; gap: var(--sp-5); flex-wrap: wrap; align-items: center; }
+.canvas-key span { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.canvas-key .card-title { color: var(--ink); }
+.key-port { display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--muted); background: var(--muted); }
+.key-port.ctx { background: var(--surface); }
+.key-tag { font-style: normal; height: 14px; padding: 0 4px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line-2); line-height: 14px; }
+.key-tag { font-style: normal; height: 14px; padding: 0 4px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line-2); line-height: 14px; }
+.key-line.is-dashed { height: 0; background: none; border-top: 1.5px dashed var(--neg); border-radius: 0; }
+
+/* Lanes: one surface, one hairline between lanes. The label reads bottom to top in a 24px column pinned at the left. */
+.lane { position: absolute; left: 0; width: 100%; border-bottom: 1px solid var(--line); }
+.lane:last-of-type { border-bottom: 0; }
+.lane-label { position: sticky; left: 0; z-index: 4; display: flex; align-items: center; justify-content: center; width: 24px; height: 100%; background: var(--surface); border-right: 1px solid var(--line); writing-mode: vertical-rl; transform: rotate(180deg); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+
+/* Wires: direct stage-to-stage only, soft cubic corners in the gutters. Wires that do not touch the selected stage are
+   dimmed to 15 percent. The selected stage's wires keep a surface casing, so they bridge over the dimmed ones. */
+.wires { position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none; overflow: visible; }
+.wire { fill: none; stroke: var(--line-2); stroke-width: 1.5; }
+.wire.is-dim { opacity: .15; }
+.casing { fill: none; stroke: var(--surface); stroke-width: 5; }
+/* Shared inputs: a 24px stub from the consumer port ending in a small rounded tag that names the type */
+.stub { fill: none; stroke: var(--line-2); stroke-width: 1; }
+.bus-tag { position: absolute; z-index: 1; transform: translate(-100%, -50%); height: 14px; padding: 0 4px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line-2); font-size: var(--fs-1); line-height: 14px; color: var(--muted); white-space: nowrap; }
+.wire-breach { stroke: var(--neg); stroke-dasharray: 6 4; }
+.wire-flag { position: absolute; z-index: 3; display: grid; justify-items: start; gap: var(--sp-1); padding: var(--sp-2); background: var(--neg-wash); border-radius: var(--r-1); }
+.flag-text { font-size: var(--fs-1); color: var(--neg); white-space: nowrap; }
+.flag-src { font-size: var(--fs-1); line-height: 16px; color: var(--ink-2); white-space: nowrap; }
+
+/* Nodes: title fs-3 500, subtitle fs-1 mono, a chip row, then 14px port rows */
+.node { position: absolute; z-index: 2; width: 172px; padding: 4px; background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-2); }
+.node.is-selected { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.node-title { font-size: var(--fs-3); font-weight: 500; line-height: 16px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.node-sub { font-size: var(--fs-1); line-height: 14px; letter-spacing: -.02em; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.node-chips { display: flex; align-items: center; gap: var(--sp-1); margin-top: 2px; }
+.node-chips .chip, .node-chips .status { min-height: 18px; padding-top: 0; padding-bottom: 0; line-height: 16px; }
+/* The seam chip that owns the open swap menu carries an up chevron */
+.chip-open::after { content: ""; width: 5px; height: 5px; margin: 3px 0 0 2px; border-left: 1.5px solid var(--ink-2); border-top: 1.5px solid var(--ink-2); transform: rotate(45deg); }
+.port { position: absolute; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; border: 1.5px solid var(--muted); background: var(--muted); }
+.port.in { left: -5px; }
+.port.out { right: -5px; }
+.port.ctx { background: var(--surface); }
+.port.top { top: -5px; margin: 0 0 0 -4px; }
+.port.breach { border-color: var(--neg); background: var(--surface); }
+.port-name { position: absolute; margin-top: -7px; font-size: var(--fs-1); line-height: 14px; color: var(--muted); white-space: nowrap; }
+.port-name.in { left: 7px; }
+.port-name.out { right: 7px; }
+
+/* Swap menu: alternatives on the same seam, opened from the selected node's seam chip */
+.menu { position: absolute; z-index: 5; width: 404px; padding: var(--sp-1); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-2); box-shadow: var(--shadow-1); }
+.menu-head { padding: var(--sp-1) var(--sp-3); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.menu-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--sp-2); padding: var(--sp-1) var(--sp-3); border-radius: var(--r-1); cursor: pointer; transition: background var(--t-fast); }
+.menu-item:hover, .menu-item:focus-visible { background: var(--surface-2); }
+.menu-item.is-current { cursor: default; }
+.menu-id { grid-column: 1; font-size: var(--fs-1); line-height: 16px; color: var(--ink); overflow-wrap: anywhere; }
+.menu-side { grid-column: 2; align-self: center; }
+.menu-chips { display: flex; gap: var(--sp-1); }
+.menu-foot { margin: var(--sp-1) 0 0; padding: var(--sp-2) var(--sp-3); border-top: 1px solid var(--line); font-size: var(--fs-1); line-height: 16px; color: var(--ink-2); }
+
+/* Inspectors: under the canvas at every width, label above value, read only */
+.inspectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--sp-4); align-items: start; }
+.insp-kv { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--sp-3) var(--sp-5); }
+.insp-kv dt { font-size: var(--fs-1); font-weight: 600; }
+.insp-kv dd.mono { font-size: var(--fs-1); overflow-wrap: anywhere; line-height: 20px; }
+.insp-section { margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--line); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.insp-section + .insp-kv { margin-top: var(--sp-3); }
+.insp-gate { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-4); padding-top: var(--sp-4); border-top: 1px solid var(--line); color: var(--ink-2); font-size: var(--fs-1); }
+</style>
+</head>
+<body>
+<div class="app app-strip">
+
+<aside class="rail">
+  <div class="rail-brand">Studio</div>
+  <nav aria-label="Workflow">
+    <div class="rail-group">
+      <a class="rail-item" href="#">Home</a>
+    </div>
+    <div class="rail-group">
+      <div class="rail-group-label">Inputs</div>
+      <a class="rail-item" href="#">Balance Sheet</a>
+      <a class="rail-item" href="#">Market</a>
+      <a class="rail-item" href="#">Assumptions</a>
+      <a class="rail-item" href="#">Scenarios</a>
+    </div>
+    <div class="rail-group">
+      <div class="rail-group-label">Compose</div>
+      <a class="rail-item" href="#" aria-current="page">Plan</a>
+      <a class="rail-item" href="#">Run</a>
+    </div>
+    <div class="rail-group">
+      <div class="rail-group-label">Read</div>
+      <a class="rail-item" href="#">Results</a>
+      <a class="rail-item" href="#">Compare</a>
+    </div>
+  </nav>
+  <div class="rail-foot">
+    <span class="field-label muted">Theme</span>
+    <div class="seg" role="group" aria-label="Theme">
+      <button type="button" data-theme-set="system" aria-pressed="true">System</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="head-band">
+    <h1 class="page-title">Plan</h1>
+    <div class="head-chips">
+      <button class="pill pill-select" type="button" aria-haspopup="listbox"><span class="pill-key">Plan</span><span class="mono">PLAN-EXAMPLE-IRRBB-1</span></button><!-- source: example-plan.json planId -->
+      <span class="pill" role="note"><span class="pill-key">As of</span><span class="num">2026-03-31</span></span><!-- source: example-plan.json asOf -->
+      <span class="pill" role="note"><span class="pill-key">Horizon</span><span><span class="num">360</span> months</span></span><!-- source: example-plan.json grid.horizonMonths -->
+      <button class="pill pill-quiet pill-action" type="button">Validate</button>
+      <button class="pill pill-primary" type="button">Save plan</button>
+    </div>
+    <p class="head-meta">Example quarterly IRRBB run<!-- source: example-plan.json label -->, <span class="num">17</span> stages, <span class="num">5</span> scenarios<!-- source: example-plan.json stages[], scenarios[] --></p>
+  </header>
+
+  <div class="content">
+    <div class="plan">
+      <section class="card canvas-card" aria-label="Stage graph">
+        <div class="canvas-scroll" tabindex="0" aria-label="Stage graph, scrolls sideways">
+          <div class="canvas" style="height: 744px;"><div class="lane" style="top: 0px; height: 94px;"><span class="lane-label">Market</span></div><div class="lane" style="top: 94px; height: 94px;"><span class="lane-label">Book</span></div><div class="lane" style="top: 188px; height: 204px;"><span class="lane-label">Behavior</span></div><div class="lane" style="top: 392px; height: 108px;"><span class="lane-label">Balance</span></div><div class="lane" style="top: 500px; height: 94px;"><span class="lane-label">Scenarios</span></div><div class="lane" style="top: 594px; height: 150px;"><span class="lane-label">Metrics</span></div><svg class="wires" width="1072" height="744" viewBox="0 0 1072 744" role="img" aria-label="Stage graph: 19 typed wires between stages, shared inputs drawn as tagged stubs at each consumer port, wires not touching the selected stage st-decay-nmd dimmed; one draft route from st-decay-nmd to st-nii refused by R1"><path class="stub" d="M155 65H131"/><path class="stub" d="M155 79H131"/><path class="stub" d="M483 65H459"/><path class="stub" d="M367 159H343"/><path class="stub" d="M109 267H85"/><path class="stub" d="M367 267H343"/><path class="stub" d="M625 267H601"/><path class="stub" d="M883 267H859"/><path class="stub" d="M109 363H85"/><path class="stub" d="M367 363H343"/><path class="stub" d="M625 363H601"/><path class="stub" d="M883 363H859"/><path class="stub" d="M883 485H859"/><path class="stub" d="M123 565H99"/><path class="stub" d="M123 701H99"/><path class="stub" d="M619 715H595"/><path class="stub" d="M619 729H595"/><path class="wire is-dim" d="M286 253L364 253"><title>st-prepay-mortgage Position to st-prepay-consumer</title></path><path class="wire is-dim" d="M544 253L622 253"><title>st-prepay-consumer Position to st-prepay-mbs</title></path><path class="wire is-dim" d="M286 349L364 349"><title>st-beta-hys Position to st-early-withdrawal</title></path><path class="wire is-dim" d="M544 349L594 349C599.5 349 604 344.5 604 339L604 198C604 192.5 599.5 188 594 188L365.5 188C361.4 188 358 184.6 358 180.5L358 179C358 175.7 360.7 173 364 173L364 173"><title>st-early-withdrawal Position to st-cashflow, back over the Book lane edge</title></path><path class="wire is-dim" d="M544 349L594 349C599.5 349 604 353.5 604 359L604 461C604 466.5 608.5 471 614 471L880 471"><title>st-early-withdrawal Position to st-balance-plan</title></path><path class="wire is-dim" d="M544 349L594 349C599.5 349 604 353.5 604 359L604 677C604 682.5 608.5 687 614 687L616 687"><title>st-early-withdrawal Position to st-ftp</title></path><path class="wire is-dim" d="M544 349L594 349C599.5 349 604 353.5 604 359L604 418C604 423.5 599.5 428 594 428L334 428C328.5 428 324 432.5 324 438L324 677C324 682.5 328.5 687 334 687L336 687"><title>st-early-withdrawal Position to st-gap</title></path><path class="wire is-dim" d="M544 349L594 349C599.5 349 604 353.5 604 359L604 418C604 423.5 599.5 428 594 428L118 428C112.5 428 108 432.5 108 438L108 663C108 668.5 112.5 673 118 673L120 673"><title>st-early-withdrawal Position to st-eve</title></path><path class="wire is-dim" d="M544 159L604 159C609.5 159 614 163.5 614 169L614 447C614 452.5 618.5 457 624 457L880 457"><title>st-cashflow Cashflow to st-balance-plan</title></path><path class="wire is-dim" d="M544 159L604 159C609.5 159 614 163.5 614 169L614 417C614 418.7 612.7 420 611 420L611 420C609.3 420 608 421.3 608 423L608 665C608 669.4 611.6 673 616 673L616 673"><title>st-cashflow Cashflow to st-ftp</title></path><path class="wire is-dim" d="M544 159L604 159C609.5 159 614 163.5 614 169L614 410C614 415.5 609.5 420 604 420L342 420C336.5 420 332 424.5 332 430L332 655C332 657.2 333.8 659 336 659L336 659"><title>st-cashflow Cashflow to st-gap</title></path><path class="wire is-dim" d="M544 159L604 159C609.5 159 614 163.5 614 169L614 410C614 415.5 609.5 420 604 420L114 420C108.5 420 104 424.5 104 430L104 677C104 682.5 108.5 687 114 687L120 687"><title>st-cashflow Cashflow to st-eve</title></path><path class="wire is-dim" d="M544 173L600 173C605.5 173 610 177.5 610 183L610 402C610 407.5 605.5 412 600 412L338 412C332.5 412 328 416.5 328 422L328 665C328 669.4 331.6 673 336 673L336 673"><title>st-cashflow RepricingSchedule to st-gap</title></path><path class="wire is-dim" d="M332 65L340 65C345.5 65 350 69.5 350 75L350 394C350 399.5 345.5 404 340 404L122 404C116.5 404 112 408.5 112 414L112 651C112 655.4 115.6 659 120 659L120 659"><title>st-tlp FundingCurve to st-eve</title></path><path class="wire is-dim" d="M332 65L340 65C345.5 65 350 69.5 350 75L350 394C350 399.5 354.5 404 360 404L590 404C595.5 404 600 408.5 600 414L600 691C600 696.5 604.5 701 610 701L616 701"><title>st-tlp FundingCurve to st-ftp</title></path><path class="wire is-dim" d="M1060 457L1060 457C1062.2 457 1064 458.8 1064 461L1064 560C1064 565.5 1059.5 570 1054 570L878 570C872.5 570 868 574.5 868 580L868 649C868 654.5 872.5 659 878 659L880 659"><title>st-balance-plan Cashflow to st-nii, down the right margin</title></path><path class="wire is-dim" d="M1060 659L1060 659C1064.4 659 1068 655.4 1068 651L1068 592C1068 586.5 1063.5 582 1058 582L622 582C616.5 582 612 586.5 612 592L612 655C612 657.2 613.8 659 616 659L616 659"><title>st-nii NiiResult to st-ftp, back over the Scenarios lane</title></path><g><path class="casing" d="M802 253L880 253"/><path class="wire" d="M802 253L880 253"><title>st-prepay-mbs Position to st-decay-nmd</title></path></g><g><path class="casing" d="M1060 253L1060 253C1061.7 253 1063 254.3 1063 256L1063 273C1063 278.5 1058.5 283 1053 283L106 283C100.5 283 96 287.5 96 293L96 339C96 344.5 100.5 349 106 349L106 349"/><path class="wire" d="M1060 253L1060 253C1061.7 253 1063 254.3 1063 256L1063 273C1063 278.5 1058.5 283 1053 283L106 283C100.5 283 96 287.5 96 293L96 339C96 344.5 100.5 349 106 349L106 349"><title>st-decay-nmd Position to st-beta-hys, wrapping to the second Behavior row</title></path></g><g><path class="casing" d="M1060 253L1060 253C1065 253 1069 257 1069 262L1069 580C1069 585.5 1064.5 590 1059 590L1038 590C1035.8 590 1034 591.8 1034 594L1034 594"/><path class="wire wire-breach" d="M1060 253L1060 253C1065 253 1069 257 1069 262L1069 580C1069 585.5 1064.5 590 1059 590L1038 590C1035.8 590 1034 591.8 1034 594L1034 594"><title>Draft route st-decay-nmd to st-nii, refused by R1</title></path></g></svg><span class="bus-tag" style="left: 131px; top: 65px;" title="Shared input ZeroCurve, published once to every consumer">ZeroCurve</span><span class="bus-tag" style="left: 131px; top: 79px;" title="Shared input MarketSnapshot, published once to every consumer">MarketSnapshot</span><span class="bus-tag" style="left: 459px; top: 65px;" title="Shared input MarketSnapshot, published once to every consumer">MarketSnapshot</span><span class="bus-tag" style="left: 343px; top: 159px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 85px; top: 267px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 343px; top: 267px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 601px; top: 267px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 859px; top: 267px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 85px; top: 363px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 343px; top: 363px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 601px; top: 363px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 859px; top: 363px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 859px; top: 485px;" title="Shared input RatePath, published once to every consumer">RatePath</span><span class="bus-tag" style="left: 99px; top: 565px;" title="Shared input ZeroCurve, published once to every consumer">ZeroCurve</span><span class="bus-tag" style="left: 99px; top: 701px;" title="Shared input ZeroCurve, published once to every consumer">ZeroCurve</span><span class="bus-tag" style="left: 595px; top: 715px;" title="Shared input ZeroCurve, published once to every consumer">ZeroCurve</span><span class="bus-tag" style="left: 595px; top: 729px;" title="Shared input RatePath, published once to every consumer">RatePath</span><div class="node" id="n-st-tlp" style="left: 156px; top: 4px; height: 86px;"><div class="node-title">st-tlp</div><div class="node-sub mono">alm-tlp-overlay</div><div class="node-chips"><span class="chip">curve</span></div><span class="port in ctx" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">ZeroCurve</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">MarketSnapshot</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">FundingCurve</span></div><div class="node" id="n-st-curve" style="left: 484px; top: 4px; height: 86px;"><div class="node-title">st-curve</div><div class="node-sub mono">alm-yield-curve</div><div class="node-chips"><span class="chip">curve</span></div><span class="port in ctx" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">MarketSnapshot</span><span class="port out" style="top: 75px;"></span><span class="port-name out" style="top: 75px;">ZeroCurve</span></div><div class="node" id="n-st-cashflow" style="left: 368px; top: 98px; height: 86px;"><div class="node-title">st-cashflow</div><div class="node-sub mono">engine.contractual</div><div class="node-chips"><span class="chip">contractual-cashflow</span></div><span class="port in ctx" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">RatePath</span><span class="port in" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">Position</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Cashflow</span><span class="port out" style="top: 75px;"></span><span class="port-name out" style="top: 75px;">RepricingSchedule</span></div><div class="node" id="n-st-prepay-mortgage" style="left: 110px; top: 192px; height: 86px;"><div class="node-title">st-prepay-mortgage</div><div class="node-sub mono">alm-mortgage-prepayment</div><div class="node-chips"><span class="chip">prepayment</span></div><span class="port in ctx" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Position</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Position</span></div><div class="node" id="n-st-prepay-consumer" style="left: 368px; top: 192px; height: 86px;"><div class="node-title">st-prepay-consumer</div><div class="node-sub mono">alm-mortgage-prepayment</div><div class="node-chips"><span class="chip">prepayment</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Position</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Position</span></div><div class="node" id="n-st-prepay-mbs" style="left: 626px; top: 192px; height: 86px;"><div class="node-title">st-prepay-mbs</div><div class="node-sub mono">alm-mortgage-prepayment</div><div class="node-chips"><span class="chip">prepayment</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Position</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Position</span></div><div class="node is-selected" id="n-st-decay-nmd" style="left: 884px; top: 192px; height: 86px;" aria-current="true"><div class="node-title">st-decay-nmd</div><div class="node-sub mono">alm-deposit-decay</div><div class="node-chips"><span class="chip chip-open" aria-expanded="true">decay</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Position</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Position</span></div><div class="node" id="n-st-beta-hys" style="left: 110px; top: 288px; height: 86px;"><div class="node-title">st-beta-hys</div><div class="node-sub mono">alm-deposit-beta</div><div class="node-chips"><span class="chip">deposit-beta</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Position</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Position</span></div><div class="node" id="n-st-early-withdrawal" style="left: 368px; top: 288px; height: 86px;"><div class="node-title">st-early-withdrawal</div><div class="node-sub mono">engine.cd-rollover</div><div class="node-chips"><span class="chip">early-withdrawal</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Position</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Position</span></div><div class="node" id="n-st-client-rate" style="left: 626px; top: 288px; height: 86px;"><div class="node-title">st-client-rate</div><div class="node-sub mono">alm-loan-client-rate</div><div class="node-chips"><span class="chip">client-rate-asset</span></div><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">ClientRatePath</span></div><div class="node" id="n-st-draw" style="left: 884px; top: 288px; height: 100px;"><div class="node-title">st-draw</div><div class="node-sub mono">alm-draw-rate-model</div><div class="node-chips"><span class="chip">draw-utilization</span></div><span class="port in ctx" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Position</span><span class="port in ctx" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RatePath</span><span class="port out" style="top: 89px;"></span><span class="port-name out" style="top: 89px;">CommitmentSchedule</span></div><div class="node" id="n-st-balance-plan" style="left: 884px; top: 396px; height: 100px;"><div class="node-title">st-balance-plan</div><div class="node-sub mono">engine.balance-plan</div><div class="node-chips"><span class="chip">balance-new-business</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Cashflow</span><span class="port in" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">Position</span><span class="port in ctx" style="top: 89px;"></span><span class="port-name in" style="top: 89px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">Cashflow</span></div><div class="node" id="n-st-term" style="left: 124px; top: 504px; height: 86px;"><div class="node-title">st-term</div><div class="node-sub mono">engine.rate-path</div><div class="node-chips"><span class="chip">term-structure</span></div><span class="port in ctx" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">ZeroCurve</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">RatePath</span><span class="port out" style="top: 75px;"></span><span class="port-name out" style="top: 75px;">DiscountFactorPath</span></div><div class="node" id="n-st-eve" style="left: 124px; top: 598px; height: 114px;"><div class="node-title">st-eve</div><div class="node-sub mono">alm-eve</div><div class="node-chips"><span class="chip">metric</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">FundingCurve</span><span class="port in" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">Position</span><span class="port in" style="top: 89px;"></span><span class="port-name in" style="top: 89px;">Cashflow</span><span class="port in ctx" style="top: 103px;"></span><span class="port-name in" style="top: 103px;">ZeroCurve</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">EveResult</span></div><div class="node" id="n-st-gap" style="left: 340px; top: 598px; height: 100px;"><div class="node-title">st-gap</div><div class="node-sub mono">alm-gap-analytics</div><div class="node-chips"><span class="chip">metric</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Cashflow</span><span class="port in" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">RepricingSchedule</span><span class="port in" style="top: 89px;"></span><span class="port-name in" style="top: 89px;">Position</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">GapResult</span></div><div class="node" id="n-st-ftp" style="left: 620px; top: 598px; height: 142px;"><div class="node-title">st-ftp</div><div class="node-sub mono">engine.metric.ftp</div><div class="node-chips"><span class="chip">metric</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">NiiResult</span><span class="port in" style="top: 75px;"></span><span class="port-name in" style="top: 75px;">Cashflow</span><span class="port in" style="top: 89px;"></span><span class="port-name in" style="top: 89px;">Position</span><span class="port in" style="top: 103px;"></span><span class="port-name in" style="top: 103px;">FundingCurve</span><span class="port in ctx" style="top: 117px;"></span><span class="port-name in" style="top: 117px;">ZeroCurve</span><span class="port in ctx" style="top: 131px;"></span><span class="port-name in" style="top: 131px;">RatePath</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">FtpResult</span></div><div class="node" id="n-st-nii" style="left: 884px; top: 598px; height: 72px;"><div class="node-title">st-nii</div><div class="node-sub mono">alm-nii</div><div class="node-chips"><span class="chip">metric</span></div><span class="port in" style="top: 61px;"></span><span class="port-name in" style="top: 61px;">Cashflow</span><span class="port out" style="top: 61px;"></span><span class="port-name out" style="top: 61px;">NiiResult</span><span class="port top breach" style="left: 150px;"></span></div><div class="wire-flag" style="left: 700px; top: 504px;" title="R1 For each behavioral stage, every metric in feeds[] must be non-none for that stage&#x27;s behavioral class in the routing policy."><span class="status status-breach">Breach</span><span class="flag-text">R1: decay may not feed NII</span><span class="flag-src">from example-plan.json validationRules, not a gate response</span></div><!-- rule: example-plan.json validationRules.routingGate[0] (R1); policy: model-map.json classes[decay].routing.nii = "none" --><div class="menu" role="menu" aria-label="Decay seam alternatives" style="left: 664px; bottom: calc(100% - 188px);"><!-- source: catalog.json components[] on the decay seam (kind behavioral, behavioralClass decay) that consume Position and RatePath. Both alternatives produce Cashflow, and the mounted alm-deposit-decay row consumes and produces Cashflow, while the plan wires this stage as Position in and Position out. No row has been run through the gate, so each is marked Unvalidated rather than given a gate result. --><div class="menu-head">Decay seam</div><div class="menu-item is-current" role="menuitemradio" aria-checked="true" title="NMD decay kernel"><span class="menu-id mono">alm-deposit-decay</span><span class="menu-side menu-chips"><span class="chip">Mounted</span><span class="status status-unobs">Unvalidated</span></span></div><div class="menu-item" role="menuitemradio" aria-checked="false" tabindex="0" title="NMD-A, non-interest bearing"><span class="menu-id mono">alm-nmd-noninterest-bearing</span><span class="status status-unobs menu-side">Unvalidated</span></div><div class="menu-item" role="menuitemradio" aria-checked="false" tabindex="0" title="NMD-B, interest bearing"><span class="menu-id mono">alm-nmd-interest-bearing</span><span class="status status-unobs menu-side">Unvalidated</span></div><p class="menu-foot">Every row, the mounted one included: catalog types disagree with the plan (Cashflow vs Position); not run through the gate</p></div></div>
+        </div>
+        <div class="canvas-foot">
+          <div class="canvas-key">
+            <span class="card-title">Stage graph</span>
+            <span><i class="key-port"></i>Wired from an upstream stage</span>
+            <span><i class="key-port ctx"></i>Context file or shared input</span>
+            <span><i class="key-tag">RatePath</i>Shared input, tagged at each consumer</span>
+            <span><i class="key-line" style="background: var(--line-2)"></i>Typed wire</span>
+            <span><i class="key-line is-dashed"></i>Refused by a gate</span>
+          </div>
+          <p>Each stage mounts one component. The type gate and the routing gate check every wire. Shared inputs (ZeroCurve, RatePath, MarketSnapshot) are published once and tagged at each consumer port; only direct stage-to-stage wires are drawn, and those that do not touch the selected stage are dimmed.</p>
+          <p>Typed wires only; two order-only dependencies (st-client-rate to st-nii, st-draw to st-gap) are not drawn. st-early-withdrawal to st-cashflow climbs back along the Book lane edge; st-balance-plan to st-nii and st-nii to st-ftp run down the right margin and back over the Scenarios lane. Nothing runs from this page.</p>
+        </div>
+      </section>
+      
+      <div class="inspectors">
+      <section class="card inspector" aria-labelledby="insp-decay">
+        <div class="card-title" id="insp-decay">st-decay-nmd</div>
+        <p class="card-desc">Selected stage. Read only.</p>
+        <!-- source: example-plan.json stages[st-decay-nmd].component, .kind, .selector, .disposition, .tier, .feeds, .dependsOn. This stage has no params key; its selector is its parameter surface. -->
+        <dl class="kv insp-kv">
+          <div><dt>Component</dt><dd class="mono">alm-deposit-decay</dd></div>
+          <div><dt>Kind</dt><dd>behavioral</dd></div>
+          <div><dt>Disposition</dt><dd>M</dd></div>
+          <div><dt>Tier</dt><dd>Tier 1</dd></div>
+          <div><dt>Feeds</dt><dd class="mono">eve, ir-gap, liq-gap</dd></div>
+          <div><dt>Depends on</dt><dd class="mono">st-prepay-mbs, st-term</dd></div>
+        </dl>
+        <div class="insp-section">Selector</div>
+        <!-- source: example-plan.json stages[st-decay-nmd].selector.behavioralClasses, .selector.dimensions.segment -->
+        <dl class="kv insp-kv">
+          <div><dt>Behavioral class</dt><dd class="mono">decay</dd></div>
+          <div><dt>Segment</dt><dd>Rate shoppers, Relationship, Whole book</dd></div>
+        </dl>
+        <div class="insp-gate"><span class="status status-breach">Breach</span><span>Draft route to st-nii fails R1 (from example-plan.json validationRules, not a gate response)</span></div>
+      </section>
+      <section class="card inspector" aria-labelledby="insp-curve">
+        <div class="card-title" id="insp-curve">st-curve</div>
+        <p class="card-desc">A stage with parameters, for comparison. Read only.</p>
+        <!-- source: example-plan.json stages[st-curve].component, .kind, .consumes, .produces -->
+        <dl class="kv insp-kv">
+          <div><dt>Component</dt><dd class="mono">alm-yield-curve</dd></div>
+          <div><dt>Kind</dt><dd>curve</dd></div>
+          <div><dt>Consumes</dt><dd>MarketSnapshot</dd></div>
+          <div><dt>Produces</dt><dd>ZeroCurve</dd></div>
+        </dl>
+        <div class="insp-section">Parameters</div>
+        <!-- source: example-plan.json stages[st-curve].params -->
+        <dl class="kv insp-kv">
+          <div><dt>index</dt><dd class="mono">SOFR-OIS</dd></div>
+          <div><dt>dayCount</dt><dd class="mono">ACT/360</dd></div>
+          <div><dt>interpolation</dt><dd class="mono">linear-in-zero</dd></div>
+        </dl>
+      </section>
+    </div>
+    </div>
+  </div>
+</main>
+
+<!-- Collapsed assistant rail (design-system.md Section 5): a canvas page gives its width to the graph. No provider configured;
+     expanded, the rail would offer: author a plan from a sentence, swap a component and revalidate, explain a gate failure. -->
+<aside class="assist-strip" aria-label="Assistant, collapsed. No provider configured.">
+  <span class="assist-strip-label">Assistant</span>
+  <label class="drop-chip" title="Drop a balance sheet, curve or assumption file">
+    <input type="file">
+    <span>Drop file</span>
+  </label>
+</aside>
+
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var buttons = document.querySelectorAll("[data-theme-set]");
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      root.setAttribute("data-theme", b.getAttribute("data-theme-set"));
+      buttons.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+{
+ "run": {
+  "value": "run-20260923-163546-001557f",
+  "source": "provenance.runId"
+ },
+ "book": {
+  "value": "synthetic-2500-v1",
+  "source": "provenance.portfolioId"
+ },
+ "asOf": {
+  "value": "2026-03-31",
+  "source": "cashflows.grid.asOf"
+ },
+ "engineVersion": {
+  "value": "0.1.0",
+  "source": "provenance.engineVersion"
+ },
+ "scenarioCount": {
+  "value": 5,
+  "source": "provenance.scenarioIds (count)"
+ },
+ "finishedAt": {
+  "value": "2026-09-23T16:35:47.898Z",
+  "source": "provenance.timestamps.finishedAt"
+ },
+ "eve": [
+  {
+   "scenarioId": "S-200",
+   "pvAssets": 5686960812.5599,
+   "pvLiabilities": 5249060967.990419,
+   "eve": 437899844.5694809,
+   "deltaEveVsBase": -185436304.61403465,
+   "deltaEvePct": -0.29749005389296074,
+   "source": "eve.byScenario[S-200].pvAssets, .pvLiabilities, .eve, .deltaEveVsBase, .deltaEvePct"
+  },
+  {
+   "scenarioId": "S-100",
+   "pvAssets": 5591949470.741148,
+   "pvLiabilities": 5075975205.206562,
+   "eve": 515974265.53458595,
+   "deltaEveVsBase": -107361883.6489296,
+   "deltaEvePct": -0.17223753794731603,
+   "source": "eve.byScenario[S-100].pvAssets, .pvLiabilities, .eve, .deltaEveVsBase, .deltaEvePct"
+  },
+  {
+   "scenarioId": "S0",
+   "pvAssets": 5535670258.586731,
+   "pvLiabilities": 4912334109.403215,
+   "eve": 623336149.1835155,
+   "deltaEveVsBase": 0,
+   "deltaEvePct": 0,
+   "source": "eve.byScenario[S0].pvAssets, .pvLiabilities, .eve, .deltaEveVsBase, .deltaEvePct"
+  },
+  {
+   "scenarioId": "S100",
+   "pvAssets": 5304434801.033321,
+   "pvLiabilities": 4757315106.482122,
+   "eve": 547119694.551199,
+   "deltaEveVsBase": -76216454.63231659,
+   "deltaEvePct": -0.12227183475906162,
+   "source": "eve.byScenario[S100].pvAssets, .pvLiabilities, .eve, .deltaEveVsBase, .deltaEvePct"
+  },
+  {
+   "scenarioId": "S200",
+   "pvAssets": 5051707186.4254265,
+   "pvLiabilities": 4613318904.956926,
+   "eve": 438388281.46850014,
+   "deltaEveVsBase": -184947867.7150154,
+   "deltaEvePct": -0.29670646882468094,
+   "source": "eve.byScenario[S200].pvAssets, .pvLiabilities, .eve, .deltaEveVsBase, .deltaEvePct"
+  }
+ ],
+ "eveDurationMode": {
+  "value": "base-only",
+  "source": "eve.durationMode"
+ },
+ "nii": [
+  {
+   "scenarioId": "S-200",
+   "totalNet12": -23942696.810464486,
+   "totalNet24": -91675739.61667219,
+   "source": "nii.byScenario[S-200].totalNet12, .totalNet24"
+  },
+  {
+   "scenarioId": "S-100",
+   "totalNet12": -11437836.729154542,
+   "totalNet24": -63617266.22600308,
+   "source": "nii.byScenario[S-100].totalNet12, .totalNet24"
+  },
+  {
+   "scenarioId": "S0",
+   "totalNet12": 13942069.425553694,
+   "totalNet24": 11239864.335110337,
+   "source": "nii.byScenario[S0].totalNet12, .totalNet24"
+  },
+  {
+   "scenarioId": "S100",
+   "totalNet12": 27584980.721177474,
+   "totalNet24": 51576500.517235845,
+   "source": "nii.byScenario[S100].totalNet12, .totalNet24"
+  },
+  {
+   "scenarioId": "S200",
+   "totalNet12": 34590012.56766032,
+   "totalNet24": 65874135.14278647,
+   "source": "nii.byScenario[S200].totalNet12, .totalNet24"
+  }
+ ],
+ "repricingGapBase": {
+  "path": "gap.repricing[0] (scenarioId S0).rows[0:8]",
+  "rows": [
+   {
+    "band": "0-1M",
+    "assets": 975939161.8475299,
+    "liabilities": 102746986.72859819,
+    "gap": 873192175.1189317,
+    "source": "gap.repricing[0].rows[0].gap (band.label 0-1M)"
+   },
+   {
+    "band": "1-3M",
+    "assets": 581386194.5496285,
+    "liabilities": 84636677.17180195,
+    "gap": 496749517.3778266,
+    "source": "gap.repricing[0].rows[1].gap (band.label 1-3M)"
+   },
+   {
+    "band": "3-6M",
+    "assets": 124500954.57839829,
+    "liabilities": 16411202.59333253,
+    "gap": 108089751.98506576,
+    "source": "gap.repricing[0].rows[2].gap (band.label 3-6M)"
+   },
+   {
+    "band": "6-12M",
+    "assets": 239463312.75120905,
+    "liabilities": 23075422.01075353,
+    "gap": 216387890.7404555,
+    "source": "gap.repricing[0].rows[3].gap (band.label 6-12M)"
+   },
+   {
+    "band": "1-2Y",
+    "assets": 478277061.211389,
+    "liabilities": 1466233210.8695402,
+    "gap": -987956149.6581511,
+    "source": "gap.repricing[0].rows[4].gap (band.label 1-2Y)"
+   },
+   {
+    "band": "2-3Y",
+    "assets": 445726891.1595766,
+    "liabilities": 797072590.5983636,
+    "gap": -351345699.43878704,
+    "source": "gap.repricing[0].rows[5].gap (band.label 2-3Y)"
+   },
+   {
+    "band": "3-5Y",
+    "assets": 703407188.8440161,
+    "liabilities": 1426403313.1067967,
+    "gap": -722996124.2627807,
+    "source": "gap.repricing[0].rows[6].gap (band.label 3-5Y)"
+   },
+   {
+    "band": "5-10Y",
+    "assets": 1234357612.4105554,
+    "liabilities": 861508374.9684242,
+    "gap": 372849237.44213116,
+    "source": "gap.repricing[0].rows[7].gap (band.label 5-10Y)"
+   }
+  ]
+ },
+ "attributionEveS200": {
+  "path": "attribution.headlines[11] (metric eve, scenarioId S200)",
+  "baseValue": {
+   "value": 623336149.1835155,
+   "source": "attribution.headlines[11].baseValue"
+  },
+  "scenarioValue": {
+   "value": 438388281.46850014,
+   "source": "attribution.headlines[11].scenarioValue"
+  },
+  "totalDelta": {
+   "value": -184947867.7150154,
+   "source": "attribution.headlines[11].totalDelta"
+  },
+  "families": [
+   {
+    "familyId": "cash",
+    "amount": -2371427.774371624,
+    "source": "attribution.headlines[11].contributions[familyId=cash], summed over drivers"
+   },
+   {
+    "familyId": "investments",
+    "amount": -120997376.45793939,
+    "source": "attribution.headlines[11].contributions[familyId=investments], summed over drivers"
+   },
+   {
+    "familyId": "fixed-loans",
+    "amount": -21568199.156466484,
+    "source": "attribution.headlines[11].contributions[familyId=fixed-loans], summed over drivers"
+   },
+   {
+    "familyId": "floating-loans",
+    "amount": -779373.7143346071,
+    "source": "attribution.headlines[11].contributions[familyId=floating-loans], summed over drivers"
+   },
+   {
+    "familyId": "mortgages",
+    "amount": -43954709.58175254,
+    "source": "attribution.headlines[11].contributions[familyId=mortgages], summed over drivers"
+   },
+   {
+    "familyId": "mbs",
+    "amount": -294291985.4764404,
+    "source": "attribution.headlines[11].contributions[familyId=mbs], summed over drivers"
+   },
+   {
+    "familyId": "dda",
+    "amount": 4451676.462553829,
+    "source": "attribution.headlines[11].contributions[familyId=dda], summed over drivers"
+   },
+   {
+    "familyId": "mma",
+    "amount": -2387039.324767053,
+    "source": "attribution.headlines[11].contributions[familyId=mma], summed over drivers"
+   },
+   {
+    "familyId": "cds",
+    "amount": 759251.5792749524,
+    "source": "attribution.headlines[11].contributions[familyId=cds], summed over drivers"
+   },
+   {
+    "familyId": "fhlb",
+    "amount": 142374866.18563366,
+    "source": "attribution.headlines[11].contributions[familyId=fhlb], summed over drivers"
+   },
+   {
+    "familyId": "borrowings",
+    "amount": 153816449.54359412,
+    "source": "attribution.headlines[11].contributions[familyId=borrowings], summed over drivers"
+   }
+  ],
+  "residual": {
+   "value": 1.1920928955078125e-07,
+   "source": "attribution.headlines[11].totalDelta minus sum of contributions[*].amount",
+   "engineResidualField": -1.1920928955078125e-07
+  }
+ },
+ "provenance": {
+  "runId": {
+   "value": "run-20260923-163546-001557f",
+   "source": "provenance.runId"
+  },
+  "engineVersion": {
+   "value": "0.1.0",
+   "source": "provenance.engineVersion"
+  },
+  "inputsHash": {
+   "value": "e0834800ca9b889187f7c3e67a5e48c6628ee13c09dc3a213f2b146eec84c25a",
+   "source": "provenance.inputsHash"
+  },
+  "profileHash": {
+   "value": "902a64599cde9f55511ba45c86d3402e6f4717bc74d2d0ec25e3271261fcfc07",
+   "source": "provenance.profileHash"
+  },
+  "seed": {
+   "value": "platform-0",
+   "source": "provenance.seed"
+  },
+  "scenarioIds": {
+   "value": [
+    "S0",
+    "S-200",
+    "S-100",
+    "S100",
+    "S200"
+   ],
+   "source": "provenance.scenarioIds"
+  },
+  "kernel.provenanceFileHash": {
+   "value": "cb91d804f741df078718a7fbe4015c0e1027910de2a4b1cce75fe07790448752",
+   "source": "provenance.kernel.provenanceFileHash"
+  },
+  "kernel.sourceCommit": {
+   "value": "cccccccccccccccccccccccccccccccccccccccc",
+   "source": "provenance.kernel.sourceCommit"
+  },
+  "timestamps.startedAt": {
+   "value": "2026-09-23T16:35:47.027Z",
+   "source": "provenance.timestamps.startedAt"
+  },
+  "timestamps.finishedAt": {
+   "value": "2026-09-23T16:35:47.898Z",
+   "source": "provenance.timestamps.finishedAt"
+  },
+  "assumptionSets[0].id": {
+   "value": "vanilla-empty-v1",
+   "source": "provenance.assumptionSets[0].id"
+  }
+ }
+}

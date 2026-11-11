@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "bp-vanilla-book-v1-edit-1",
+  "label": "bp-vanilla-book-v1-edit-1",
+  "asOf": "2026-03-31",
+  "targets": [
+    {
+      "familyId": "cash",
+      "path": [
+        {
+          "month": 1,
+          "balance": 150000000
+        }
+      ],
+      "newBusinessPricing": {
+        "spreadOverIndexBp": 100,
+        "termMonths": 12
+      }
+    },
+    {
+      "familyId": "fixed-loans",
+      "path": [
+        {
+          "month": 24,
+          "balance": 700000000
+        }
+      ],
+      "newBusinessPricing": {
+        "spreadOverIndexBp": 150,
+        "termMonths": 60
+      }
+    }
+  ],
+  "unlistedFamilies": "runoff"
+}

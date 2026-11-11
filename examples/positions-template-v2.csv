@@ -1,0 +1,15 @@
+position_id,family_id,coa_node_id,terms_type,label,notional,maturityMonths,originationOffsetMonths,amortType,side,coupon,indexTenorMonths,margin,resetFrequencyMonths,noteRate,originalTermMonths,originalBalance,ageMonths,depositRate,beta,direction,fixedRate,floatMargin,termMonths,contractRate,drawRampRates,drawSteadyRate,dim.liquidityRole
+cash-1,mb-cash,mb-cash,fixed-loan,Fed funds sold,40000000,1,0,bullet,asset,0.0375,,,,,,,,,,,,,,,,,hqla-stock
+prem-1,mb-non-earning,mb-non-earning,non-rate-sensitive,Premises and equipment,10000000,360,0,bullet,,,,,,,,,,,,,,,,,,,
+ust-1,mb-treasuries,mb-treasuries,fixed-loan,Two-year Treasury notes,30000000,24,0,bullet,asset,0.0375,,,,,,,,,,,,,,,,,hqla-stock
+mbs-1,mb-agency-mbs,mb-agency-mbs,mortgage,Agency MBS pool,40000000,324,0,level-pay,asset,,,,,0.05,360,45000000,36,,,,,,,,,,hqla-stock
+ci-1,mb-ci-floating,mb-ci-floating,floating-loan,C&I line,60000000,36,0,bullet,asset,,1,0.025,1,,,,,,,,,,,,,,inflow-asset
+cre-1,mb-cre-fixed,mb-cre-fixed,fixed-loan,CRE three-year balloon,110000000,36,0,bullet,asset,0.06,,,,,,,,,,,,,,,,,inflow-asset
+lines-1,mb-commitments,mb-commitments,commitment,Undrawn lines,50000000,24,0,bullet,,,,,,,,,,,,,,,,,0.02|0.02|0.02,0.01,
+dda-1,mb-nib-checking,mb-nib-checking,nmd,Non-interest checking,90000000,360,0,level-pay,liability,,,,,,,,,0,0,,,,,,,,nib-pool
+mma-1,mb-mma,mb-mma,nmd-b,Money market accounts,100000000,360,0,level-pay,liability,,,,,,,,,,,,,,,,,,hys-pool
+cd-1,mb-cds,mb-cds,cd,Certificates of deposit,20000000,4,0,bullet,liability,,,,,,,,,,,,,,6,0.04,,,
+cd-1,mb-cds,mb-cds,cd,,30000000,7,0,bullet,liability,,,,,,,,,,,,,,12,0.041,,,
+cd-1,mb-cds,mb-cds,cd,,10000000,26,0,bullet,liability,,,,,,,,,,,,,,36,0.038,,,
+fhlb-1,mb-fhlb-floating,mb-fhlb-floating,floating-loan,Floating FHLB advance,10000000,24,0,bullet,liability,,1,0.0025,1,,,,,,,,,,,,,,wholesale
+swap-1,mb-swaps,mb-swaps,swap,Five-year pay-fixed swap,25000000,60,0,bullet,,,,,,,,,,,,pay-fixed,0.039,,,,,,

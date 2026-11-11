@@ -1,0 +1,12 @@
+{
+  "id": "cd-illustrative-v3",
+  "label": "CD early-withdrawal parameters the bank's cd cohort book runs on (round, hand-set, nothing fitted)",
+  "source": "In-repo source of record: docs/oss/mid-size-bank.md, 'The CD parameters', which restates the illustrative deposit parameterization, version 3, Section 3.3 (slider table and non-slider structure). Only the run-off arm is read: no renewal or offer value is used.",
+  "hazard": { "const": -5.5, "b1Moneyness": 40, "bLogTtmStd": 0.4, "bLogBalStd": 0.2 },
+  "standardization": { "lnTtmMean": 2.2, "lnTtmStd": 0.9, "lnBalMean": 15, "lnBalStd": 1.0 },
+  "severity": { "tbShort": 0.85, "tbMedium": 0.6, "betaMoneyness": 10, "betaLogBal": -0.3, "eSevPartial": 0.4 },
+  "logitClip": 15,
+  "minLiveBalance": 1000,
+  "walkScale": 500000,
+  "termBuckets": { "SHORT": [1, 12], "MEDIUM": [18, 24], "LONG": [36, 60] }
+}

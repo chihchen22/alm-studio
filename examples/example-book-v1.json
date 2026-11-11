@@ -1,0 +1,464 @@
+{
+  "id": "example-book-v1",
+  "label": "Example book (synthetic, round illustrative numbers)",
+  "asOf": "2026-03-31",
+  "coa": {
+    "schemaVersion": "1.0.0",
+    "nodes": [
+      {
+        "id": "ex-assets",
+        "label": "Total Assets",
+        "parentId": null,
+        "side": "asset",
+        "isLeaf": false,
+        "order": 0
+      },
+      {
+        "id": "ex-cash",
+        "label": "Cash and Placements",
+        "parentId": "ex-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "ex-cash",
+        "order": 0
+      },
+      {
+        "id": "ex-securities",
+        "label": "Securities",
+        "parentId": "ex-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "ex-securities",
+        "order": 1
+      },
+      {
+        "id": "ex-term-loans",
+        "label": "Fixed-Rate Term Loans",
+        "parentId": "ex-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "ex-term-loans",
+        "order": 2
+      },
+      {
+        "id": "ex-floaters",
+        "label": "Floating-Rate Loans",
+        "parentId": "ex-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "ex-floaters",
+        "order": 3
+      },
+      {
+        "id": "ex-mortgages",
+        "label": "Residential Mortgages",
+        "parentId": "ex-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "ex-mortgages",
+        "order": 4
+      },
+      {
+        "id": "ex-liab-equity",
+        "label": "Total Liabilities and Equity",
+        "parentId": null,
+        "side": "liability",
+        "isLeaf": false,
+        "order": 1
+      },
+      {
+        "id": "ex-checking",
+        "label": "Non-Interest Checking",
+        "parentId": "ex-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "ex-checking",
+        "order": 0
+      },
+      {
+        "id": "ex-savings",
+        "label": "Money Market and Savings",
+        "parentId": "ex-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "ex-savings",
+        "order": 1
+      },
+      {
+        "id": "ex-term-deposits",
+        "label": "Term Deposits",
+        "parentId": "ex-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "ex-term-deposits",
+        "order": 2
+      },
+      {
+        "id": "ex-wholesale",
+        "label": "Wholesale Term Funding",
+        "parentId": "ex-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "ex-wholesale",
+        "order": 3
+      },
+      {
+        "id": "ex-equity",
+        "label": "Equity (plug)",
+        "parentId": "ex-liab-equity",
+        "side": "equity",
+        "isLeaf": false,
+        "order": 4
+      }
+    ],
+    "families": [
+      {
+        "id": "ex-cash",
+        "label": "Cash and Placements",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "ex-cash"
+      },
+      {
+        "id": "ex-securities",
+        "label": "Securities",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "ex-securities"
+      },
+      {
+        "id": "ex-term-loans",
+        "label": "Fixed-Rate Term Loans",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "ex-term-loans"
+      },
+      {
+        "id": "ex-floaters",
+        "label": "Floating-Rate Loans",
+        "side": "asset",
+        "instrumentType": "floating-loan",
+        "coaNodeId": "ex-floaters"
+      },
+      {
+        "id": "ex-mortgages",
+        "label": "Residential Mortgages",
+        "side": "asset",
+        "instrumentType": "mortgage",
+        "coaNodeId": "ex-mortgages"
+      },
+      {
+        "id": "ex-checking",
+        "label": "Non-Interest Checking",
+        "side": "liability",
+        "instrumentType": "nmd",
+        "coaNodeId": "ex-checking"
+      },
+      {
+        "id": "ex-savings",
+        "label": "Money Market and Savings",
+        "side": "liability",
+        "instrumentType": "nmd-b",
+        "coaNodeId": "ex-savings"
+      },
+      {
+        "id": "ex-term-deposits",
+        "label": "Term Deposits",
+        "side": "liability",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "ex-term-deposits"
+      },
+      {
+        "id": "ex-wholesale",
+        "label": "Wholesale Term Funding",
+        "side": "liability",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "ex-wholesale"
+      }
+    ]
+  },
+  "positions": [
+    {
+      "id": "ex-cash-1",
+      "familyId": "ex-cash",
+      "coaNodeId": "ex-cash",
+      "terms": {
+        "id": "ex-cash-1",
+        "type": "fixed-loan",
+        "label": "One-month placement",
+        "notional": 50000000,
+        "maturityMonths": 1,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.04
+      }
+    },
+    {
+      "id": "ex-sec-1",
+      "familyId": "ex-securities",
+      "coaNodeId": "ex-securities",
+      "terms": {
+        "id": "ex-sec-1",
+        "type": "fixed-loan",
+        "label": "Two-year note",
+        "notional": 75000000,
+        "maturityMonths": 24,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.0375
+      }
+    },
+    {
+      "id": "ex-sec-2",
+      "familyId": "ex-securities",
+      "coaNodeId": "ex-securities",
+      "terms": {
+        "id": "ex-sec-2",
+        "type": "fixed-loan",
+        "label": "Five-year note",
+        "notional": 75000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "coupon": 0.04
+      }
+    },
+    {
+      "id": "ex-loan-1",
+      "familyId": "ex-term-loans",
+      "coaNodeId": "ex-term-loans",
+      "terms": {
+        "id": "ex-loan-1",
+        "type": "fixed-loan",
+        "label": "Three-year amortizing loan",
+        "notional": 100000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "coupon": 0.06
+      }
+    },
+    {
+      "id": "ex-loan-2",
+      "familyId": "ex-term-loans",
+      "coaNodeId": "ex-term-loans",
+      "terms": {
+        "id": "ex-loan-2",
+        "type": "fixed-loan",
+        "label": "Seven-year amortizing loan",
+        "notional": 100000000,
+        "maturityMonths": 84,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "coupon": 0.065
+      }
+    },
+    {
+      "id": "ex-float-1",
+      "familyId": "ex-floaters",
+      "coaNodeId": "ex-floaters",
+      "terms": {
+        "id": "ex-float-1",
+        "type": "floating-loan",
+        "label": "Three-year floater, one-month index",
+        "notional": 100000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "indexTenorMonths": 1,
+        "margin": 0.02,
+        "resetFrequencyMonths": 1
+      }
+    },
+    {
+      "id": "ex-mtg-1",
+      "familyId": "ex-mortgages",
+      "coaNodeId": "ex-mortgages",
+      "terms": {
+        "id": "ex-mtg-1",
+        "type": "mortgage",
+        "label": "30-year fixed pool, two years seasoned",
+        "notional": 150000000,
+        "maturityMonths": 336,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "noteRate": 0.06,
+        "originalTermMonths": 360,
+        "originalBalance": 160000000,
+        "ageMonths": 24,
+        "cprParams": {
+          "secSpread": 120,
+          "primSpread": 130,
+          "wac": 6.5,
+          "minCpr": 2,
+          "maxCpr": 65,
+          "steepness": 2.5,
+          "inflection": 50,
+          "seasoningRamp": 30,
+          "seasonalityAmp": 20,
+          "burnoutDecay": 0.1
+        }
+      }
+    },
+    {
+      "id": "ex-dda-1",
+      "familyId": "ex-checking",
+      "coaNodeId": "ex-checking",
+      "terms": {
+        "id": "ex-dda-1",
+        "type": "nmd",
+        "label": "Non-interest checking",
+        "notional": 150000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "depositRate": 0,
+        "beta": 0,
+        "nmdParams": {
+          "closureSteady": 0.75,
+          "closureInitial": 2,
+          "closureTauMonths": 24,
+          "burnoutLambda": 0.1,
+          "maxRateDecay": 3,
+          "maxRateGrowth": -1,
+          "logisticK": 2,
+          "logisticMidpoint": 0,
+          "maPeriod": 24,
+          "regimeAlpha": 2,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.15,
+            "gMax": 1,
+            "bStar": 1100000,
+            "kappaB": 1.3
+          },
+          "buckets": [
+            {
+              "label": "≤ $250k",
+              "repBalance": 100000,
+              "share": 0.45
+            },
+            {
+              "label": "$250k–$1M",
+              "repBalance": 500000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M–$5M",
+              "repBalance": 2500000,
+              "share": 0.2
+            },
+            {
+              "label": "> $5M",
+              "repBalance": 10000000,
+              "share": 0.1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ex-mma-1",
+      "familyId": "ex-savings",
+      "coaNodeId": "ex-savings",
+      "terms": {
+        "id": "ex-mma-1",
+        "type": "nmd-b",
+        "label": "Money market and savings",
+        "notional": 200000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "sCurve": {
+          "betaMin": 0.45,
+          "betaMax": 0.8,
+          "k": 0.55,
+          "m": 4,
+          "lambda": 1
+        },
+        "nmdParams": {
+          "closureSteady": 0.75,
+          "closureInitial": 2,
+          "closureTauMonths": 24,
+          "burnoutLambda": 0.1,
+          "maxRateDecay": 3,
+          "maxRateGrowth": -1,
+          "logisticK": 2,
+          "logisticMidpoint": 0,
+          "maPeriod": 24,
+          "regimeAlpha": 2,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.15,
+            "gMax": 1,
+            "bStar": 1100000,
+            "kappaB": 1.3
+          },
+          "buckets": [
+            {
+              "label": "≤ $250k",
+              "repBalance": 150000,
+              "share": 0.2
+            },
+            {
+              "label": "$250k–$1M",
+              "repBalance": 600000,
+              "share": 0.25
+            },
+            {
+              "label": "$1M–$5M",
+              "repBalance": 2500000,
+              "share": 0.3
+            },
+            {
+              "label": "> $5M",
+              "repBalance": 15000000,
+              "share": 0.25
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ex-cd-1",
+      "familyId": "ex-term-deposits",
+      "coaNodeId": "ex-term-deposits",
+      "terms": {
+        "id": "ex-cd-1",
+        "type": "fixed-loan",
+        "label": "One-year term deposit",
+        "notional": 100000000,
+        "maturityMonths": 12,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "liability",
+        "coupon": 0.0425
+      }
+    },
+    {
+      "id": "ex-fund-1",
+      "familyId": "ex-wholesale",
+      "coaNodeId": "ex-wholesale",
+      "terms": {
+        "id": "ex-fund-1",
+        "type": "fixed-loan",
+        "label": "Three-year term advance",
+        "notional": 150000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "liability",
+        "coupon": 0.045
+      }
+    }
+  ]
+}

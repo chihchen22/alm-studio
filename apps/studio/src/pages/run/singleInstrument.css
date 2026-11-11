@@ -1,0 +1,27 @@
+/* Run > Single instrument (ALM Studio A+E Slice 1, Task E6). Tokens only; the page's own classes carry the si- prefix. */
+
+.si-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--sp-4); margin-top: var(--sp-4); align-items: start; }
+.si-picker, .si-typed, .si-scenarios { display: grid; gap: var(--sp-3); margin-top: var(--sp-4); }
+.si-scenarios .field { max-width: 360px; }
+.si-library { display: grid; gap: var(--sp-3); }
+
+.si-options { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); max-height: 320px; overflow-y: auto; border: 1px solid var(--line); border-radius: var(--r-2); background: var(--surface); }
+.si-option { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-2) var(--sp-4); width: 100%; padding: var(--sp-2) var(--sp-3); border: 0; border-radius: var(--r-1); background: transparent; color: var(--ink); font: inherit; font-family: var(--mono); font-size: var(--fs-3); text-align: left; cursor: pointer; transition: background var(--t-fast); }
+.si-option:hover { background: var(--surface-2); }
+.si-option[aria-selected="true"] { background: var(--accent-wash); box-shadow: inset 2px 0 0 var(--accent); }
+.si-opt-meta { font-family: inherit; font-size: var(--fs-1); color: var(--muted); }
+
+.si-pager { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.si-pager .head-meta { margin-right: auto; }
+
+.si-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
+.si-error { margin-top: var(--sp-3); color: var(--neg); }
+.si-lock { margin-top: var(--sp-3); color: var(--ink-2); }
+.si-meta { margin-top: var(--sp-2); }
+.si-asof { margin-top: var(--sp-3); color: var(--ink-2); }
+.si-note { margin-top: var(--sp-3); color: var(--ink-2); }
+.si-export { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin: var(--sp-4) 0; }
+.si-export .btn { text-decoration: none; }
+.si-result > .card-title { margin-top: var(--sp-5); }
+.si-result > .table-wrap, .si-result > .tabs { margin-top: var(--sp-4); }
+.si-figure { margin: var(--sp-4) 0 0; }

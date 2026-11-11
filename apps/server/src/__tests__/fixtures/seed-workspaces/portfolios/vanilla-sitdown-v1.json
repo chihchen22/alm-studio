@@ -1,0 +1,349 @@
+{
+  "id": "vanilla-sitdown-v1",
+  "label": "Vanilla Balance Sheet (cash / term loans / term funding)",
+  "asOf": "2026-03-31",
+  "coa": {
+    "schemaVersion": "1.0.0",
+    "nodes": [
+      {
+        "id": "coa-assets",
+        "label": "Total Assets",
+        "parentId": null,
+        "side": "asset",
+        "isLeaf": false,
+        "order": 0
+      },
+      {
+        "id": "coa-cash",
+        "label": "Cash & Equivalents",
+        "parentId": "coa-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "cash",
+        "order": 0
+      },
+      {
+        "id": "coa-investments",
+        "label": "Investments / Treasuries",
+        "parentId": "coa-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "investments",
+        "order": 1
+      },
+      {
+        "id": "coa-fixed-loans",
+        "label": "Fixed-Rate Loans",
+        "parentId": "coa-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "fixed-loans",
+        "order": 2
+      },
+      {
+        "id": "coa-floating-loans",
+        "label": "Floating / C&I Loans",
+        "parentId": "coa-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "floating-loans",
+        "order": 3
+      },
+      {
+        "id": "coa-mortgages",
+        "label": "Residential Mortgages",
+        "parentId": "coa-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mortgages",
+        "order": 4
+      },
+      {
+        "id": "coa-mbs",
+        "label": "MBS",
+        "parentId": "coa-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "mbs",
+        "order": 5
+      },
+      {
+        "id": "coa-liab-equity",
+        "label": "Total Liabilities & Equity",
+        "parentId": null,
+        "side": "liability",
+        "isLeaf": false,
+        "order": 1
+      },
+      {
+        "id": "coa-dda",
+        "label": "DDA (Non-Interest)",
+        "parentId": "coa-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "dda",
+        "order": 0
+      },
+      {
+        "id": "coa-mma",
+        "label": "MMA / Savings",
+        "parentId": "coa-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "mma",
+        "order": 1
+      },
+      {
+        "id": "coa-cds",
+        "label": "CDs",
+        "parentId": "coa-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "cds",
+        "order": 2
+      },
+      {
+        "id": "coa-fhlb",
+        "label": "FHLB Advances",
+        "parentId": "coa-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "fhlb",
+        "order": 3
+      },
+      {
+        "id": "coa-borrowings",
+        "label": "Borrowings",
+        "parentId": "coa-liab-equity",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "borrowings",
+        "order": 4
+      },
+      {
+        "id": "coa-equity",
+        "label": "Equity (plug)",
+        "parentId": "coa-liab-equity",
+        "side": "equity",
+        "isLeaf": false,
+        "order": 5
+      }
+    ],
+    "families": [
+      {
+        "id": "cash",
+        "label": "Cash & Equivalents",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "coa-cash"
+      },
+      {
+        "id": "investments",
+        "label": "Investments / Treasuries",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "coa-investments"
+      },
+      {
+        "id": "fixed-loans",
+        "label": "Fixed-Rate Loans",
+        "side": "asset",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "coa-fixed-loans"
+      },
+      {
+        "id": "floating-loans",
+        "label": "Floating / C&I Loans",
+        "side": "asset",
+        "instrumentType": "floating-loan",
+        "coaNodeId": "coa-floating-loans"
+      },
+      {
+        "id": "mortgages",
+        "label": "Residential Mortgages",
+        "side": "asset",
+        "instrumentType": "mortgage",
+        "coaNodeId": "coa-mortgages"
+      },
+      {
+        "id": "mbs",
+        "label": "MBS",
+        "side": "asset",
+        "instrumentType": "mortgage",
+        "coaNodeId": "coa-mbs"
+      },
+      {
+        "id": "dda",
+        "label": "DDA (Non-Interest)",
+        "side": "liability",
+        "instrumentType": "nmd",
+        "coaNodeId": "coa-dda"
+      },
+      {
+        "id": "mma",
+        "label": "MMA / Savings",
+        "side": "liability",
+        "instrumentType": "nmd-b",
+        "coaNodeId": "coa-mma"
+      },
+      {
+        "id": "cds",
+        "label": "CDs",
+        "side": "liability",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "coa-cds"
+      },
+      {
+        "id": "fhlb",
+        "label": "FHLB Advances",
+        "side": "liability",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "coa-fhlb"
+      },
+      {
+        "id": "borrowings",
+        "label": "Borrowings",
+        "side": "liability",
+        "instrumentType": "fixed-loan",
+        "coaNodeId": "coa-borrowings"
+      }
+    ]
+  },
+  "positions": [
+    {
+      "id": "cash-1",
+      "familyId": "cash",
+      "coaNodeId": "coa-cash",
+      "terms": {
+        "id": "cash-1",
+        "type": "fixed-loan",
+        "label": "Overnight/1m cash placement",
+        "notional": 150000000,
+        "maturityMonths": 1,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "coupon": 0.043
+      }
+    },
+    {
+      "id": "loan-1",
+      "familyId": "fixed-loans",
+      "coaNodeId": "coa-fixed-loans",
+      "terms": {
+        "id": "loan-1",
+        "type": "fixed-loan",
+        "label": "Term loan 3y",
+        "notional": 100000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "coupon": 0.06
+      }
+    },
+    {
+      "id": "loan-2",
+      "familyId": "fixed-loans",
+      "coaNodeId": "coa-fixed-loans",
+      "terms": {
+        "id": "loan-2",
+        "type": "fixed-loan",
+        "label": "Term loan 5y",
+        "notional": 150000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "coupon": 0.0625
+      }
+    },
+    {
+      "id": "loan-3",
+      "familyId": "fixed-loans",
+      "coaNodeId": "coa-fixed-loans",
+      "terms": {
+        "id": "loan-3",
+        "type": "fixed-loan",
+        "label": "Term loan 7y",
+        "notional": 150000000,
+        "maturityMonths": 84,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "coupon": 0.065
+      }
+    },
+    {
+      "id": "loan-4",
+      "familyId": "fixed-loans",
+      "coaNodeId": "coa-fixed-loans",
+      "terms": {
+        "id": "loan-4",
+        "type": "fixed-loan",
+        "label": "Term loan 10y",
+        "notional": 150000000,
+        "maturityMonths": 120,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "coupon": 0.0675
+      }
+    },
+    {
+      "id": "loan-5",
+      "familyId": "fixed-loans",
+      "coaNodeId": "coa-fixed-loans",
+      "terms": {
+        "id": "loan-5",
+        "type": "fixed-loan",
+        "label": "Term loan 10y",
+        "notional": 100000000,
+        "maturityMonths": 120,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "coupon": 0.07
+      }
+    },
+    {
+      "id": "fund-1",
+      "familyId": "fhlb",
+      "coaNodeId": "coa-fhlb",
+      "terms": {
+        "id": "fund-1",
+        "type": "fixed-loan",
+        "label": "Term advance 6m",
+        "notional": 220000000,
+        "maturityMonths": 6,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "coupon": 0.044
+      }
+    },
+    {
+      "id": "fund-2",
+      "familyId": "fhlb",
+      "coaNodeId": "coa-fhlb",
+      "terms": {
+        "id": "fund-2",
+        "type": "fixed-loan",
+        "label": "Term advance 2y",
+        "notional": 250000000,
+        "maturityMonths": 24,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "coupon": 0.046
+      }
+    },
+    {
+      "id": "fund-3",
+      "familyId": "fhlb",
+      "coaNodeId": "coa-fhlb",
+      "terms": {
+        "id": "fund-3",
+        "type": "fixed-loan",
+        "label": "Term advance 5y",
+        "notional": 250000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "coupon": 0.048
+      }
+    }
+  ]
+}

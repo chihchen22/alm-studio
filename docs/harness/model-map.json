@@ -1,0 +1,234 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "model-map-default-v1",
+  "label": "Behavioral model routing policy (worked example)",
+  "source": "Illustrative routing of behavioral model classes to metrics, shipped for the demo stores.",
+  "note": "Institution-specific policy, not engine code. A bank whose FTP framework diverges from its EVE valuation, or whose stress responses differ in kind from its NII model, edits this file and the gate enforces the bank's map.",
+  "dispositions": {
+    "M": "Model in the SR 26-2 sense: a calibrated quantitative method.",
+    "A": "Management or qualitative assumption.",
+    "none": "This class does not feed this metric. Routing a component here fails the gate."
+  },
+  "metrics": [
+    {
+      "id": "nii",
+      "label": "Net interest income",
+      "basis": "going-concern earnings projection"
+    },
+    {
+      "id": "eve",
+      "label": "Economic value of equity",
+      "basis": "static runoff valuation"
+    },
+    {
+      "id": "ir-gap",
+      "label": "Repricing (IR) gap",
+      "basis": "runoff repricing ladder"
+    },
+    {
+      "id": "liq-gap",
+      "label": "Liquidity gap",
+      "basis": "runoff principal ladder"
+    }
+  ],
+  "inherited": [
+    {
+      "id": "ftp",
+      "label": "Funds transfer pricing",
+      "inheritsFrom": "eve",
+      "condition": "Holds while funding is priced on a static strip. A framework that prices contingent-liquidity and term-premium components explicitly breaks the equality and FTP gains its own column."
+    },
+    {
+      "id": "stress",
+      "label": "Stress testing",
+      "inheritsFrom": "nii",
+      "condition": "Holds while stress is the NII model run with more severe inputs. A stress framework whose behavioral responses differ in kind, not degree, breaks the equality."
+    }
+  ],
+  "classes": [
+    {
+      "id": "prepayment",
+      "label": "Prepayment and early exercise",
+      "side": "asset",
+      "routing": {
+        "nii": "M",
+        "eve": "M",
+        "ir-gap": "M",
+        "liq-gap": "A"
+      },
+      "rationale": "Refinance and turnover speed sets the asset's behavioral life and convexity; liquidity timing is a downstream assumption."
+    },
+    {
+      "id": "client-rate-asset",
+      "label": "Client / reinvestment rate (asset)",
+      "side": "asset",
+      "routing": {
+        "nii": "M",
+        "eve": "none",
+        "ir-gap": "none",
+        "liq-gap": "none"
+      },
+      "rationale": "Reinvestment rate on maturing assets drives earnings only; no valuation or runoff role. The EVE blank is a consequence of the static-runoff valuation convention, not a universal law: a bank defining EVE on a going-concern basis routes reinvestment into valuation."
+    },
+    {
+      "id": "draw-utilization",
+      "label": "Draw / utilization",
+      "side": "asset",
+      "routing": {
+        "nii": "A",
+        "eve": "A",
+        "ir-gap": "A",
+        "liq-gap": "M"
+      },
+      "rationale": "Utilization is a qualitative overlay on rate metrics; the contingent draw is the binding liquidity model. Whether a given book warrants a built model is the granularity decision, which for thin-data draw books lands on a management assumption."
+    },
+    {
+      "id": "product-mix",
+      "label": "Product mix (volume effect)",
+      "side": "both",
+      "routing": {
+        "nii": "A",
+        "eve": "none",
+        "ir-gap": "none",
+        "liq-gap": "none"
+      },
+      "rationale": "A static-balance override of the earnings run; touches NII only. A mix assumption reaching EVE would double-count a forward composition change into a runoff valuation."
+    },
+    {
+      "id": "new-volume",
+      "label": "New volume / target balance",
+      "side": "both",
+      "routing": {
+        "nii": "A",
+        "eve": "none",
+        "ir-gap": "none",
+        "liq-gap": "none"
+      },
+      "rationale": "Sets the earning balance for the NII run; does not enter the runoff view. EVE values the existing book, so new business is out of scope for it."
+    },
+    {
+      "id": "decay",
+      "label": "Decay / attrition",
+      "side": "liability",
+      "routing": {
+        "nii": "none",
+        "eve": "M",
+        "ir-gap": "M",
+        "liq-gap": "M"
+      },
+      "rationale": "The behavioral runoff that is discounted for EVE, positioned for the IR gap, and stressed for the liquidity gap. Blank on NII because the going-concern earnings run takes its balance from the new-volume model, not from decay. Routing decay to NII, or new volume to the liquidity gap, is the canonical routing error."
+    },
+    {
+      "id": "early-withdrawal",
+      "label": "Early withdrawal (term deposits)",
+      "side": "liability",
+      "routing": {
+        "nii": "M",
+        "eve": "M",
+        "ir-gap": "M",
+        "liq-gap": "M"
+      },
+      "rationale": "Early redemption changes the earnings run, the valuation, the repricing position, and the outflow schedule. The funding-side twin of asset prepayment."
+    },
+    {
+      "id": "deposit-beta",
+      "label": "Deposit beta / client rate (liability)",
+      "side": "liability",
+      "routing": {
+        "nii": "M",
+        "eve": "M",
+        "ir-gap": "none",
+        "liq-gap": "none"
+      },
+      "rationale": "Repricing behavior drives earnings and valuation; a runoff gap does not reprice dynamically. The NII use wants the physical pass-through and the EVE use wants the valuation-consistent repricing duration, so a single parameter serving both is a documented compromise, not a free lunch."
+    }
+  ],
+  "purposes": [
+    {
+      "id": "fair-value",
+      "label": "Fair-value estimation",
+      "feeds": [
+        "eve"
+      ],
+      "calibrationTarget": "Market-consistent value",
+      "parameterRegime": "Risk-neutral discounting paired with empirical, suboptimal exercise",
+      "validation": "Valuation consistency with market",
+      "conflationError": "Using the earnings beta as the valuation parameter"
+    },
+    {
+      "id": "cashflow-projection",
+      "label": "Cash-flow projection",
+      "feeds": [
+        "nii",
+        "ir-gap",
+        "liq-gap"
+      ],
+      "calibrationTarget": "Realized historical behavior",
+      "parameterRegime": "Physical",
+      "validation": "Backtest against realized cash flows",
+      "conflationError": "Using a market-consistent parameter to forecast earnings"
+    },
+    {
+      "id": "scenario-analysis",
+      "label": "Scenario analysis",
+      "feeds": [
+        "stress"
+      ],
+      "calibrationTarget": "Plausibility under shock",
+      "parameterRegime": "Physical, stress-stable",
+      "validation": "Stability and economic sense at the tail",
+      "conflationError": "Trusting a central-fit model at the tail"
+    },
+    {
+      "id": "optimization",
+      "label": "Optimization",
+      "feeds": [
+        "ftp"
+      ],
+      "calibrationTarget": "Well-conditioned program input",
+      "parameterRegime": "Inherited from the consuming metric",
+      "validation": "Output stability to small parameter changes",
+      "conflationError": "Feeding a pathologically sensitive output to a solver"
+    }
+  ],
+  "granularityRules": {
+    "axes": [
+      "materiality (position size x metric sensitivity)",
+      "data sufficiency and model stability"
+    ],
+    "quadrants": [
+      {
+        "id": "build",
+        "materiality": "high",
+        "data": "high",
+        "prescription": "Build a model."
+      },
+      {
+        "id": "data-thin",
+        "materiality": "high",
+        "data": "low",
+        "prescription": "Management assumption, documented. Forcing a model onto thin data produces false precision."
+      },
+      {
+        "id": "simplify",
+        "materiality": "low",
+        "data": "high",
+        "prescription": "Simplify. A granular model here changes no decision."
+      },
+      {
+        "id": "monitor",
+        "materiality": "low",
+        "data": "any",
+        "prescription": "Monitor, no model."
+      }
+    ],
+    "driverTest": {
+      "question": "Is the behavior driven by external customer and market response, or by internal management strategy?",
+      "effect": "Applied as a gate after the quadrant. If the driver is internal, drop to a management assumption regardless of what the quadrant said, because the history records the bank's past choices rather than a stable external response.",
+      "examples": [
+        "Brokered deposit rollover is a funding-mix decision",
+        "Promotional repricing is a pricing-strategy choice"
+      ]
+    }
+  }
+}

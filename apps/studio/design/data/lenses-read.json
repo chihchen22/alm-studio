@@ -1,0 +1,830 @@
+{
+ "note": "Engine lens read. Produced by a one-off script, read-lenses.mts (not committed), which calls packages/engine/src/report/readLens over every var/store/lens/*.json definition (validateLens first, ascending id, base scenario from the stored request as GET /api/runs/:id/lenses derives it) against var/store/runs/run-20260923-163546-001557f/result.json. Output saved verbatim.",
+ "run": "run-20260923-163546-001557f",
+ "baseScenarioId": "S0",
+ "lenses": [
+  {
+   "id": "balance-demo-v1",
+   "objective": "strategy",
+   "status": "unobservable",
+   "headline": null,
+   "worst": null,
+   "byScenario": [
+    {
+     "scenarioId": "S0",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "runoff-50",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"balance-summary\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-200",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "runoff-50",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"balance-summary\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-100",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "runoff-50",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"balance-summary\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S100",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "runoff-50",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"balance-summary\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S200",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "runoff-50",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"balance-summary\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "capital-demo-v1",
+   "objective": "capital",
+   "status": "unobservable",
+   "headline": null,
+   "worst": null,
+   "byScenario": [
+    {
+     "scenarioId": "S0",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "cet1",
+       "reader": "capitalRatio",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.08,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no capital metric on the envelope; a capital component is a later release"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-200",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "cet1",
+       "reader": "capitalRatio",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.08,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no capital metric on the envelope; a capital component is a later release"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-100",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "cet1",
+       "reader": "capitalRatio",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.08,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no capital metric on the envelope; a capital component is a later release"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S100",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "cet1",
+       "reader": "capitalRatio",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.08,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no capital metric on the envelope; a capital component is a later release"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S200",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "cet1",
+       "reader": "capitalRatio",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.08,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no capital metric on the envelope; a capital component is a later release"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "liquidity-demo-v1",
+   "objective": "liquidity",
+   "status": "pass",
+   "headline": 4.19585555821205,
+   "worst": {
+    "scenarioId": "S200",
+    "constraintId": "cum-gap-1m"
+   },
+   "byScenario": [
+    {
+     "scenarioId": "S0",
+     "status": "pass",
+     "headline": 4.885321788344528,
+     "worstConstraintId": "cum-gap-1m",
+     "constraints": [
+      {
+       "constraintId": "cum-gap-1m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 194266089.41722637,
+       "limit": -50000000,
+       "headroom": 4.885321788344528,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      },
+      {
+       "constraintId": "cum-gap-3m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 717248788.1587665,
+       "limit": -100000000,
+       "headroom": 8.172487881587665,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-200",
+     "status": "pass",
+     "headline": 7.003428954368045,
+     "worstConstraintId": "cum-gap-1m",
+     "constraints": [
+      {
+       "constraintId": "cum-gap-1m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 300171447.7184022,
+       "limit": -50000000,
+       "headroom": 7.003428954368045,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      },
+      {
+       "constraintId": "cum-gap-3m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 1009259913.8883879,
+       "limit": -100000000,
+       "headroom": 11.092599138883878,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-100",
+     "status": "pass",
+     "headline": 6.396893244954145,
+     "worstConstraintId": "cum-gap-1m",
+     "constraints": [
+      {
+       "constraintId": "cum-gap-1m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 269844662.24770725,
+       "limit": -50000000,
+       "headroom": 6.396893244954145,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      },
+      {
+       "constraintId": "cum-gap-3m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 929749066.2076117,
+       "limit": -100000000,
+       "headroom": 10.297490662076116,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S100",
+     "status": "pass",
+     "headline": 4.363513310715191,
+     "worstConstraintId": "cum-gap-1m",
+     "constraints": [
+      {
+       "constraintId": "cum-gap-1m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 168175665.53575954,
+       "limit": -50000000,
+       "headroom": 4.363513310715191,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      },
+      {
+       "constraintId": "cum-gap-3m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 640071222.2885336,
+       "limit": -100000000,
+       "headroom": 7.4007122228853355,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S200",
+     "status": "pass",
+     "headline": 4.19585555821205,
+     "worstConstraintId": "cum-gap-1m",
+     "constraints": [
+      {
+       "constraintId": "cum-gap-1m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 159792777.91060248,
+       "limit": -50000000,
+       "headroom": 4.19585555821205,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      },
+      {
+       "constraintId": "cum-gap-3m",
+       "reader": "cumulativeLiquidityGap",
+       "op": "atLeast",
+       "value": 620061345.4153148,
+       "limit": -100000000,
+       "headroom": 7.200613454153148,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rate-demo-v1",
+   "objective": "rate",
+   "status": "breach",
+   "headline": -26.172986362111466,
+   "worst": {
+    "scenarioId": "S-200",
+    "constraintId": "nii-12"
+   },
+   "byScenario": [
+    {
+     "scenarioId": "S0",
+     "status": "pass",
+     "headline": 1,
+     "worstConstraintId": "eve-15",
+     "constraints": [
+      {
+       "constraintId": "eve-15",
+       "reader": "deltaEvePct",
+       "op": "atLeast",
+       "value": 0,
+       "limit": -0.15,
+       "headroom": 1,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      },
+      {
+       "constraintId": "nii-12",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": 0,
+       "limit": -0.1,
+       "headroom": 1,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-200",
+     "status": "breach",
+     "headline": -26.172986362111466,
+     "worstConstraintId": "nii-12",
+     "constraints": [
+      {
+       "constraintId": "eve-15",
+       "reader": "deltaEvePct",
+       "op": "atLeast",
+       "value": -0.29749005389296074,
+       "limit": -0.15,
+       "headroom": -0.9832670259530717,
+       "headroomBasis": "fraction",
+       "status": "breach"
+      },
+      {
+       "constraintId": "nii-12",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": -2.717298636211147,
+       "limit": -0.1,
+       "headroom": -26.172986362111466,
+       "headroomBasis": "fraction",
+       "status": "breach"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-100",
+     "status": "breach",
+     "headline": -17.203829991113604,
+     "worstConstraintId": "nii-12",
+     "constraints": [
+      {
+       "constraintId": "eve-15",
+       "reader": "deltaEvePct",
+       "op": "atLeast",
+       "value": -0.17223753794731603,
+       "limit": -0.15,
+       "headroom": -0.1482502529821069,
+       "headroomBasis": "fraction",
+       "status": "breach"
+      },
+      {
+       "constraintId": "nii-12",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": -1.8203829991113605,
+       "limit": -0.1,
+       "headroom": -17.203829991113604,
+       "headroomBasis": "fraction",
+       "status": "breach"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S100",
+     "status": "pass",
+     "headline": 0.1848544349395892,
+     "worstConstraintId": "eve-15",
+     "constraints": [
+      {
+       "constraintId": "eve-15",
+       "reader": "deltaEvePct",
+       "op": "atLeast",
+       "value": -0.12227183475906162,
+       "limit": -0.15,
+       "headroom": 0.1848544349395892,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      },
+      {
+       "constraintId": "nii-12",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": 0.9785427743329406,
+       "limit": -0.1,
+       "headroom": 10.785427743329405,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S200",
+     "status": "breach",
+     "headline": -0.978043125497873,
+     "worstConstraintId": "eve-15",
+     "constraints": [
+      {
+       "constraintId": "eve-15",
+       "reader": "deltaEvePct",
+       "op": "atLeast",
+       "value": -0.29670646882468094,
+       "limit": -0.15,
+       "headroom": -0.978043125497873,
+       "headroomBasis": "fraction",
+       "status": "breach"
+      },
+      {
+       "constraintId": "nii-12",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": 1.4809812311120816,
+       "limit": -0.1,
+       "headroom": 15.809812311120815,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "strategy-demo-v1",
+   "objective": "strategy",
+   "status": "breach",
+   "headline": -182.12606074844095,
+   "worst": {
+    "scenarioId": "S-200",
+    "constraintId": "nii-24"
+   },
+   "byScenario": [
+    {
+     "scenarioId": "S0",
+     "status": "pass",
+     "headline": 1,
+     "worstConstraintId": "nii-24",
+     "constraints": [
+      {
+       "constraintId": "no-shortfall",
+       "reader": "shortfallCount",
+       "op": "atMost",
+       "value": 0,
+       "limit": 0,
+       "headroom": 0,
+       "headroomBasis": "absolute",
+       "status": "pass"
+      },
+      {
+       "constraintId": "nii-24",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": 0,
+       "limit": -0.05,
+       "headroom": 1,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-200",
+     "status": "breach",
+     "headline": -182.12606074844095,
+     "worstConstraintId": "nii-24",
+     "constraints": [
+      {
+       "constraintId": "no-shortfall",
+       "reader": "shortfallCount",
+       "op": "atMost",
+       "value": 0,
+       "limit": 0,
+       "headroom": 0,
+       "headroomBasis": "absolute",
+       "status": "pass"
+      },
+      {
+       "constraintId": "nii-24",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": -9.156303037422049,
+       "limit": -0.05,
+       "headroom": -182.12606074844095,
+       "headroomBasis": "fraction",
+       "status": "breach"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-100",
+     "status": "breach",
+     "headline": -132.19934890544846,
+     "worstConstraintId": "nii-24",
+     "constraints": [
+      {
+       "constraintId": "no-shortfall",
+       "reader": "shortfallCount",
+       "op": "atMost",
+       "value": 0,
+       "limit": 0,
+       "headroom": 0,
+       "headroomBasis": "absolute",
+       "status": "pass"
+      },
+      {
+       "constraintId": "nii-24",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": -6.659967445272423,
+       "limit": -0.05,
+       "headroom": -132.19934890544846,
+       "headroomBasis": "fraction",
+       "status": "breach"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S100",
+     "status": "pass",
+     "headline": 72.77424029242883,
+     "worstConstraintId": "nii-24",
+     "constraints": [
+      {
+       "constraintId": "no-shortfall",
+       "reader": "shortfallCount",
+       "op": "atMost",
+       "value": 0,
+       "limit": 0,
+       "headroom": 0,
+       "headroomBasis": "absolute",
+       "status": "pass"
+      },
+      {
+       "constraintId": "nii-24",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": 3.588712014621442,
+       "limit": -0.05,
+       "headroom": 72.77424029242883,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S200",
+     "status": "pass",
+     "headline": 98.21517836654532,
+     "worstConstraintId": "nii-24",
+     "constraints": [
+      {
+       "constraintId": "no-shortfall",
+       "reader": "shortfallCount",
+       "op": "atMost",
+       "value": 0,
+       "limit": 0,
+       "headroom": 0,
+       "headroomBasis": "absolute",
+       "status": "pass"
+      },
+      {
+       "constraintId": "nii-24",
+       "reader": "deltaNiiPct",
+       "op": "atLeast",
+       "value": 4.860758918327266,
+       "limit": -0.05,
+       "headroom": 98.21517836654532,
+       "headroomBasis": "fraction",
+       "status": "pass"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "wal-gap-demo-v1",
+   "objective": "liquidity",
+   "status": "unobservable",
+   "headline": null,
+   "worst": null,
+   "byScenario": [
+    {
+     "scenarioId": "S0",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "gap-24",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 24,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      },
+      {
+       "constraintId": "ratio-50",
+       "reader": "customValue",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-200",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "gap-24",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 24,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      },
+      {
+       "constraintId": "ratio-50",
+       "reader": "customValue",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S-100",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "gap-24",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 24,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      },
+      {
+       "constraintId": "ratio-50",
+       "reader": "customValue",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S100",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "gap-24",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 24,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      },
+      {
+       "constraintId": "ratio-50",
+       "reader": "customValue",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    },
+    {
+     "scenarioId": "S200",
+     "status": "unobservable",
+     "headline": null,
+     "worstConstraintId": null,
+     "constraints": [
+      {
+       "constraintId": "gap-24",
+       "reader": "customValue",
+       "op": "atMost",
+       "value": null,
+       "limit": 24,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      },
+      {
+       "constraintId": "ratio-50",
+       "reader": "customValue",
+       "op": "atLeast",
+       "value": null,
+       "limit": 0.5,
+       "headroom": null,
+       "headroomBasis": null,
+       "status": "unobservable",
+       "reason": "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

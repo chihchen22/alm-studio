@@ -1,0 +1,338 @@
+{
+  "id": "coverage-v1",
+  "label": "Coverage book for the replica tie-out (synthetic, round illustrative values)",
+  "asOf": "2026-03-31",
+  "coa": {
+    "schemaVersion": "1.0.0",
+    "nodes": [
+      {
+        "id": "cv-assets",
+        "label": "Total Assets",
+        "parentId": null,
+        "side": "asset",
+        "isLeaf": false,
+        "order": 0
+      },
+      {
+        "id": "cv-mortgages",
+        "label": "Mortgages, young and part-year aged",
+        "parentId": "cv-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "cv-mortgages",
+        "order": 0
+      },
+      {
+        "id": "cv-floaters",
+        "label": "Floating loans, quarterly and annual resets",
+        "parentId": "cv-assets",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "cv-floaters",
+        "order": 1
+      },
+      {
+        "id": "cv-off-balance",
+        "label": "Off Balance Sheet",
+        "parentId": null,
+        "side": "asset",
+        "isLeaf": false,
+        "order": 1
+      },
+      {
+        "id": "cv-lines",
+        "label": "Undrawn lines with a month of no draw",
+        "parentId": "cv-off-balance",
+        "side": "asset",
+        "isLeaf": true,
+        "familyId": "cv-lines",
+        "order": 0
+      },
+      {
+        "id": "cv-liabilities",
+        "label": "Total Liabilities",
+        "parentId": null,
+        "side": "liability",
+        "isLeaf": false,
+        "order": 2
+      },
+      {
+        "id": "cv-ib-deposits",
+        "label": "Interest-bearing deposits, live beta",
+        "parentId": "cv-liabilities",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "cv-ib-deposits",
+        "order": 0
+      },
+      {
+        "id": "cv-cds",
+        "label": "Certificates of deposit with a cohort below the minimum",
+        "parentId": "cv-liabilities",
+        "side": "liability",
+        "isLeaf": true,
+        "familyId": "cv-cds",
+        "order": 1
+      }
+    ],
+    "families": [
+      {
+        "id": "cv-mortgages",
+        "label": "Mortgages, young and part-year aged",
+        "side": "asset",
+        "instrumentType": "mortgage",
+        "coaNodeId": "cv-mortgages"
+      },
+      {
+        "id": "cv-floaters",
+        "label": "Floating loans, quarterly and annual resets",
+        "side": "asset",
+        "instrumentType": "floating-loan",
+        "coaNodeId": "cv-floaters"
+      },
+      {
+        "id": "cv-lines",
+        "label": "Undrawn lines with a month of no draw",
+        "side": "asset",
+        "instrumentType": "commitment",
+        "coaNodeId": "cv-lines"
+      },
+      {
+        "id": "cv-ib-deposits",
+        "label": "Interest-bearing deposits, live beta",
+        "side": "liability",
+        "instrumentType": "nmd-b",
+        "coaNodeId": "cv-ib-deposits"
+      },
+      {
+        "id": "cv-cds",
+        "label": "Certificates of deposit with a cohort below the minimum",
+        "side": "liability",
+        "instrumentType": "cd",
+        "coaNodeId": "cv-cds"
+      }
+    ]
+  },
+  "positions": [
+    {
+      "id": "cv-mtg-young",
+      "familyId": "cv-mortgages",
+      "coaNodeId": "cv-mortgages",
+      "terms": {
+        "id": "cv-mtg-young",
+        "type": "mortgage",
+        "label": "30-year mortgages, seven months seasoned",
+        "notional": 100000000,
+        "maturityMonths": 353,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "noteRate": 0.065,
+        "originalTermMonths": 360,
+        "originalBalance": 101000000,
+        "ageMonths": 7,
+        "cprParams": {
+          "secSpread": 100,
+          "primSpread": 100,
+          "wac": 6.5,
+          "minCpr": 2.0,
+          "maxCpr": 60.0,
+          "steepness": 2.5,
+          "inflection": 50,
+          "seasoningRamp": 24,
+          "seasonalityAmp": 20,
+          "burnoutDecay": 5.0
+        }
+      }
+    },
+    {
+      "id": "cv-mtg-mid",
+      "familyId": "cv-mortgages",
+      "coaNodeId": "cv-mortgages",
+      "terms": {
+        "id": "cv-mtg-mid",
+        "type": "mortgage",
+        "label": "30-year mortgages, two and a half years seasoned",
+        "notional": 80000000,
+        "maturityMonths": 330,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "noteRate": 0.07,
+        "originalTermMonths": 360,
+        "originalBalance": 84000000,
+        "ageMonths": 30,
+        "cprParams": {
+          "secSpread": 100,
+          "primSpread": 100,
+          "wac": 6.5,
+          "minCpr": 2.0,
+          "maxCpr": 60.0,
+          "steepness": 2.5,
+          "inflection": 50,
+          "seasoningRamp": 24,
+          "seasonalityAmp": 20,
+          "burnoutDecay": 5.0
+        }
+      }
+    },
+    {
+      "id": "cv-flt-q",
+      "familyId": "cv-floaters",
+      "coaNodeId": "cv-floaters",
+      "terms": {
+        "id": "cv-flt-q",
+        "type": "floating-loan",
+        "label": "Five-year level-pay floater, quarterly reset",
+        "notional": 50000000,
+        "maturityMonths": 60,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "asset",
+        "indexTenorMonths": 1,
+        "margin": 0.02,
+        "resetFrequencyMonths": 3
+      }
+    },
+    {
+      "id": "cv-flt-a",
+      "familyId": "cv-floaters",
+      "coaNodeId": "cv-floaters",
+      "terms": {
+        "id": "cv-flt-a",
+        "type": "floating-loan",
+        "label": "Three-year bullet floater, annual reset",
+        "notional": 40000000,
+        "maturityMonths": 36,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "indexTenorMonths": 1,
+        "margin": 0.015,
+        "resetFrequencyMonths": 12
+      }
+    },
+    {
+      "id": "cv-lines-1",
+      "familyId": "cv-lines",
+      "coaNodeId": "cv-lines",
+      "terms": {
+        "id": "cv-lines-1",
+        "type": "commitment",
+        "label": "Undrawn lines, no draw in month 2",
+        "notional": 200000000,
+        "maturityMonths": 12,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "asset",
+        "draw": {
+          "rampRates": [
+            0.05,
+            0.0,
+            0.03
+          ],
+          "steadyRate": 0.01
+        }
+      }
+    },
+    {
+      "id": "cv-ib-1",
+      "familyId": "cv-ib-deposits",
+      "coaNodeId": "cv-ib-deposits",
+      "terms": {
+        "id": "cv-ib-1",
+        "type": "nmd-b",
+        "label": "Interest-bearing deposits, live beta and regime amplifier",
+        "notional": 300000000,
+        "maturityMonths": 360,
+        "originationOffsetMonths": 0,
+        "amortType": "level-pay",
+        "side": "liability",
+        "sCurve": {
+          "betaMin": 0.3,
+          "betaMax": 0.7,
+          "k": 1.5,
+          "m": 3.5,
+          "lambda": 0.4
+        },
+        "nmdParams": {
+          "closureSteady": 0.5,
+          "closureInitial": 1.5,
+          "closureTauMonths": 12,
+          "burnoutLambda": 0.1,
+          "maxRateDecay": 6.0,
+          "maxRateGrowth": -0.5,
+          "logisticK": 0.5,
+          "logisticMidpoint": 2.0,
+          "maPeriod": 12,
+          "regimeAlpha": 1.5,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.3,
+            "gMax": 1.0,
+            "bStar": 500000,
+            "kappaB": 1.5
+          },
+          "buckets": [
+            {
+              "label": "Up to $250k",
+              "repBalance": 100000,
+              "share": 0.4
+            },
+            {
+              "label": "$250k to $1M",
+              "repBalance": 500000,
+              "share": 0.3
+            },
+            {
+              "label": "Over $1M",
+              "repBalance": 3000000,
+              "share": 0.3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cv-cds-1",
+      "familyId": "cv-cds",
+      "coaNodeId": "cv-cds",
+      "terms": {
+        "id": "cv-cds-1",
+        "type": "cd",
+        "label": "CD cohort book, one cohort of $500",
+        "notional": 45000500,
+        "maturityMonths": 30,
+        "originationOffsetMonths": 0,
+        "amortType": "bullet",
+        "side": "liability",
+        "cohorts": [
+          {
+            "termMonths": 3,
+            "monthsToMaturity": 2,
+            "balance": 20.0,
+            "contractRate": 0.04
+          },
+          {
+            "termMonths": 12,
+            "monthsToMaturity": 6,
+            "balance": 40.0,
+            "contractRate": 0.041
+          },
+          {
+            "termMonths": 24,
+            "monthsToMaturity": 10,
+            "balance": 0.001,
+            "contractRate": 0.039
+          },
+          {
+            "termMonths": 60,
+            "monthsToMaturity": 30,
+            "balance": 30.0,
+            "contractRate": 0.0375
+          }
+        ]
+      }
+    }
+  ]
+}

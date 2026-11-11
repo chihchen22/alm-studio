@@ -1,0 +1,20 @@
+{
+  "name": "@alm/data",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "demo": "tsx src/demo/demo.ts",
+    "walkthrough": "tsx src/examples/walkthrough.ts",
+    "vanilla": "tsx src/examples/vanilla.ts"
+  },
+  "dependencies": {
+    "@alm/ai": "*",
+    "@alm/engine": "*",
+    "@alm/kernel": "*"
+  }
+}

@@ -1,0 +1,497 @@
+/* Studio app layout that components.css lacks. Tokens only. */
+.content { display: grid; gap: var(--sp-6); }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-5); }
+@media (max-width: 1024px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.src { font-family: var(--mono); font-size: var(--fs-1); color: var(--muted); overflow-wrap: anywhere; }
+.table-wrap { overflow: auto; max-height: 560px; }
+.table-wrap thead th { position: sticky; top: 0; background: var(--surface); }
+/* A body row header (<th scope="row">: the EVE tab's scenario, node and sum cells, an Edit-a-set month or row, Polish
+   15 item 1) names its row, and it looks like the body's first cell, not a column header: the body face and size, the
+   first cell's ink and weight, the body padding, rule and hover. ".table .num" still sets a figure's edge and face. The
+   phone pins the first column with "th:first-child" and "td:first-child" alike; there a body row header keeps the body
+   cell's layer (1) under the pinned corner header (3). Unpositioned at wider widths, the layer does nothing there. */
+.table tbody th { font-size: inherit; font-weight: 500; text-transform: none; letter-spacing: normal; color: var(--ink); padding: var(--row-pad) var(--sp-3); border-bottom: 1px solid var(--line); white-space: normal; transition: background var(--t-fast); }
+.table tbody tr:last-child th { border-bottom: 0; }
+.table tbody tr:hover th { background: var(--surface-2); }
+.table-wrap .table tbody th:first-child, .viz-table .table tbody th:first-child { z-index: 1; }
+/* The other tables' row headers (Row header scope: Balance, NII, Metrics, Gap, FTP, Market, Rates, Govern, the shock
+   knots, a chart's Show table; Row header scope 2: Dashboard, Compare, CoA, Targets, the instrument schedule,
+   Assumptions, By kind, Attribution, Lenses, Overview, the shock builder and preview, BarPairs) keep each rule their td
+   took that names td: a mono id's size and one line
+   (components.css .table td.mono), a selected row's wash, the inventory's baseline and its meta and purpose lines.
+   Each twin restates its td rule's declarations; the phone's twins follow their td rules in the phone block. */
+.table tbody th.mono { white-space: nowrap; font-size: var(--fs-1); }
+.table .row-link.is-selected th { background: var(--accent-wash); }
+.table tbody th .inv-meta, .table tbody th .purpose { display: block; margin-top: var(--sp-1); font-size: var(--fs-2); font-weight: 400; }
+.table tbody th .purpose { max-width: 52ch; text-wrap: pretty; }
+.inventory tbody th { vertical-align: baseline; }
+/* Data > Assumptions, By kind (pages/assumptions/ByKindPage.tsx, Polish 6 T2). Family, Selector and Parameter stay in
+   view while the set columns scroll sideways inside .table-wrap: each is sticky at a width in whole px, and its left
+   offset is the sum of the widths before it. min-width holds the width when the set columns overflow the table (a
+   table squeezed to its min-content widths ignores width alone); width keeps spare room for the set columns when they
+   do not. Each page sets the widths on its table as --w1, --w2 and --w3, from its own longest Family, Selector and
+   Parameter text, header label included, with the cell padding and, on Parameter, the line on its right edge
+   (byKindModel.ts identityWidths; Task 6 fix I2). 240, 168 and 232 px, the widest seeded values on any page, are the
+   fallbacks. The opaque background hides the set cells passing under them; the row hover still reaches them
+   (.table tbody tr:hover td outranks it). Their header cells, sticky to the top above, sit over the set headers. A set
+   header wraps at its hyphens and puts Edit on its own line, so a set column is as wide as its longest id segment or
+   value. */
+.by-kind th:nth-child(-n+3), .by-kind td:nth-child(-n+3) { position: sticky; z-index: 1; background: var(--surface); }
+.by-kind th:nth-child(-n+3) { z-index: 2; }
+.by-kind th:nth-child(1), .by-kind td:nth-child(1) { left: 0; width: var(--w1, 240px); min-width: var(--w1, 240px); }
+.by-kind th:nth-child(2), .by-kind td:nth-child(2) { left: var(--w1, 240px); width: var(--w2, 168px); min-width: var(--w2, 168px); }
+.by-kind th:nth-child(3), .by-kind td:nth-child(3) { left: calc(var(--w1, 240px) + var(--w2, 168px)); width: var(--w3, 232px); min-width: var(--w3, 232px); border-right: 1px solid var(--line-2); }
+.by-kind th:nth-child(n+4) { white-space: normal; }
+.by-kind th:nth-child(n+4) a { display: block; }
+/* Every By kind header cell sits on the band's floor, so each Edit is on one line just above the hairline and each
+   identity label sits beside it, however many lines a set id takes (Task 6 fix M1). */
+.by-kind th { vertical-align: bottom; }
+/* The family row header (Row header scope 2) is a body cell, so it keeps the body td's middle line, not the band's
+   floor. Its sticky left, width and layer are the first column's: the nth-child rules above name th and td alike, and
+   ".table-wrap .table tbody th:first-child" puts it back on the body cell's layer (1) under the header cells (2). */
+.by-kind tbody th { vertical-align: middle; }
+
+/* Selector pill popup (header band, no native select). */
+.pill-menu-wrap { position: relative; display: inline-flex; }
+.pill-menu { position: absolute; top: calc(100% + var(--sp-1)); left: 0; z-index: 10; min-width: 100%; margin: 0; padding: var(--sp-1); list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-1); box-shadow: var(--shadow-1); }
+.pill-menu a { display: block; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-1); color: var(--ink); text-decoration: none; white-space: nowrap; font-size: var(--fs-3); }
+.pill-menu a:hover, .pill-menu a:focus-visible { background: var(--surface-2); }
+.pill-menu a[aria-current="true"] { font-weight: 500; background: var(--surface-2); }
+
+/* Home: Last run action row and the Lenses list (markup from design/mock-home.html). */
+.run-actions { margin-top: var(--sp-4); }
+.lenses { list-style: none; padding: 0; margin: var(--sp-4) 0 0; display: grid; gap: var(--sp-4); }
+.lens { display: grid; gap: var(--sp-1); }
+.lens-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); }
+.lens-name { color: var(--ink); font-weight: 500; overflow-wrap: anywhere; }
+.lens-note { color: var(--ink-2); }
+.lens-action { justify-self: start; }
+
+/* Balance Sheet: treemap (charts/TreemapChart.tsx). Area is the only encoding: one neutral fill for every cell on a
+   hairline; the in-cell HTML label carries identity. */
+.treemap { position: relative; width: 100%; border-radius: var(--r-1); overflow: hidden; background: var(--surface); }
+.treemap-cell { position: absolute; box-sizing: border-box; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; padding: var(--sp-1) var(--sp-2); }
+.treemap-label { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-size: var(--fs-1); line-height: 16px; }
+.treemap-key { font-family: var(--mono); }
+.treemap-omitted { font-size: var(--fs-1); color: var(--muted); }
+
+/* LinePlot (charts/LinePlot.tsx, Polish 10 T1): an SVG at its real width. Y tick numbers and x tick labels in the muted
+   ink at 11 px in the figure face, grid lines in the hairline, 2 px lines with round joins, hollow markers on stored
+   points. The legend chips hide a series (pressed off: faded, a dashed empty key) and lift one on hover. The tooltip
+   is HTML over the plot, placed by the chart after it is drawn. */
+.lp { display: grid; gap: var(--sp-2); min-width: 0; }
+.lp-legend { display: flex; flex-wrap: wrap; gap: var(--sp-1) 6px; }
+.lp-chip { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: var(--fs-1); color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px 3px 7px; cursor: pointer; transition: opacity var(--t-fast), border-color var(--t-fast); }
+.lp-chip:hover { border-color: var(--line-2); color: var(--ink); }
+.lp-chip[aria-pressed="false"] { opacity: .45; }
+.lp-chip[aria-pressed="false"] .key-line { background: transparent !important; outline: 1px dashed var(--muted); }
+.lp-unit { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); min-height: 22px; font-size: var(--fs-1); color: var(--muted); }
+.lp-reset { font: inherit; font-size: var(--fs-1); color: var(--ink-2); background: var(--surface); border: 1px solid var(--line-2); border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+.lp-plot { position: relative; min-width: 0; }
+.lp-plot svg { display: block; width: 100%; touch-action: none; }
+.lp-plot svg:focus { outline: none; }
+.lp-plot svg text { -webkit-user-select: none; user-select: none; }
+.lp-plot svg:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-1); }
+.lp-ax { fill: var(--muted); font-size: 11px; font-family: var(--font-num); }
+.lp-grid { stroke: var(--line); stroke-width: 1; shape-rendering: crispEdges; }
+.lp-grid-x { opacity: .55; }
+.lp-zero { stroke: var(--line-2); stroke-width: 1; shape-rendering: crispEdges; }
+.lp-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; transition: opacity var(--t-fast); }
+.lp-ctx { fill: none; stroke: var(--muted); stroke-width: 1; opacity: .28; }
+.lp-mark { fill: var(--surface); stroke-width: 1.5; }
+.lp-xh { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.lp-dot { stroke: var(--surface); stroke-width: 2; }
+.lp-band { fill: var(--accent-wash); stroke: var(--accent); stroke-width: 1; }
+.lp-tip { position: absolute; top: 0; left: 0; z-index: 5; pointer-events: none; min-width: 150px; padding: var(--sp-2) 10px; font-size: var(--fs-1); background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-2); box-shadow: var(--shadow-2); }
+.lp-tip-head { margin-bottom: 5px; font-size: var(--fs-2); font-weight: 600; color: var(--ink); }
+.lp-tip table { width: 100%; border-collapse: collapse; }
+.lp-tip td, .lp-tip th { padding: 1.5px 0; color: var(--ink-2); font-weight: 400; white-space: nowrap; }
+.lp-tip td:first-child { white-space: normal; }
+.lp-tip .key-line { display: inline-block; margin: 0 6px 3px 0; }
+.lp-tip .lp-v { padding-left: 14px; text-align: right; color: var(--ink); font-family: var(--font-num); font-weight: 600; }
+.lp-tip .lp-d { padding-left: 10px; text-align: right; color: var(--muted); font-family: var(--font-num); }
+.lp-tip .lp-dim { opacity: .4; }
+
+/* The 3D vol surface (charts/Surface3D.tsx, Polish 10 T3): the view switch over a canvas at the card's width and
+   440 px tall, the grab cursor on it; its tooltip is the LinePlot tooltip with a hint line. */
+.s3 { display: grid; gap: var(--sp-2); min-width: 0; }
+.s3-views { justify-self: start; }
+.s3-plot { position: relative; min-width: 0; }
+.s3-canvas { display: block; width: 100%; height: 440px; cursor: grab; touch-action: none; border-radius: var(--r-2); }
+.s3-canvas:active { cursor: grabbing; }
+.s3-hint { margin-top: 5px; color: var(--muted); }
+
+/* Link pills in a chip row (group-by and family filter): the selected one carries the accent wash. */
+a.pill { color: var(--ink); text-decoration: none; }
+.chip-row .pill[aria-current="true"] { background: var(--accent-wash); border-color: var(--accent); }
+
+/* Link-buttons, app-wide: any .btn that is a link (it writes the hash) reads as a button, not underlined text. */
+a.btn { text-decoration: none; }
+
+/* Positions table: head with filters, clickable rows, pager foot. */
+.table-head { display: grid; gap: var(--sp-3); padding: var(--sp-2) var(--sp-3) var(--sp-3); }
+.filter-row { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: end; }
+.filter-row .field { width: 220px; max-width: 100%; }
+.row-link { cursor: pointer; }
+.row-link a { color: inherit; text-decoration: none; }
+.row-link a:hover, .row-link a:focus-visible { text-decoration: underline; }
+.table .row-link.is-selected td { background: var(--accent-wash); }
+.table-pager { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.pager { display: flex; gap: var(--sp-2); }
+.table-card .card-foot { padding: 0 var(--sp-3) var(--sp-2); }
+/* Rate indices: the open History panel's card sits below the indices table, clear of its scrollbar (B3b walk). */
+.history-slot { margin-top: var(--sp-4); }
+
+/* Instrument drawer: the S0 .sheet pinned to the right of the viewport. */
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 20; display: flex; align-items: stretch; padding: var(--sp-4); pointer-events: none; }
+.drawer-sheet { pointer-events: auto; width: 600px; max-width: calc(100vw - 2 * var(--sp-4)); max-height: 100%; overflow: auto; }
+.drawer-block { display: grid; gap: var(--sp-2); }
+.drawer-table { max-height: 360px; }
+.drawer-error { color: var(--ink); overflow-wrap: anywhere; }
+
+/* Market heatmaps (charts/Heatmap.tsx): the .hm grid scrolls sideways inside its card rather than squeezing a
+   printed bp value below its width; the ramp legend sits under it. A missing quote carries the Unobservable chip. */
+.hm-block { display: grid; gap: var(--sp-3); min-width: 0; }
+.hm-scroll { overflow-x: auto; }
+.hm-scroll > .hm { grid-template-columns: max-content repeat(var(--hm-cols), minmax(44px, 1fr)); min-width: max-content; }
+.hm-cell.unobs { background: var(--unobs-wash); }
+.hm-cell .status { padding: 0 var(--sp-1); font-weight: 500; max-width: 100%; overflow: hidden; }
+/* The linked grid (Polish 10 T4): the selected quote rings in the ink, its row and column headers highlight, and while
+   the pointer is on the grid the cells off its row and column dim to 55%. The ATM column selects nothing. */
+.hm-cell[data-j] { cursor: crosshair; transition: opacity var(--t-fast), box-shadow var(--t-fast); }
+.hm-hov .hm-cell { opacity: .55; }
+.hm-hov .hm-cell.hm-x { opacity: 1; }
+.hm-cell.hm-at { position: relative; z-index: 1; opacity: 1; box-shadow: 0 0 0 2px var(--ink), 0 0 0 4px var(--surface); }
+.hm-col.hm-on, .hm-row.hm-on { color: var(--ink); background: var(--surface-2); border-radius: 2px; }
+
+/* The vol surface explorer (charts/VolExplorer.tsx, Polish 10 T4): the 3D surface and the two slices side by side,
+   stacked below 820 px of card width, the grid under them. */
+.vx { display: grid; gap: var(--sp-4); min-width: 0; container-type: inline-size; }
+.vx-top { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: var(--sp-4); align-items: start; }
+@container (max-width: 820px) { .vx-top { grid-template-columns: minmax(0, 1fr); } }
+.vx-surface, .vx-slices, .vx-slice { display: grid; gap: var(--sp-2); min-width: 0; align-content: start; }
+.vx-slices { gap: var(--sp-4); }
+.vx-slice-title { font-size: var(--fs-2); font-weight: 600; color: var(--ink); }
+.vx-pin { margin: 0; font-size: var(--fs-1); color: var(--muted); }
+.vx-pin strong { color: var(--ink); font-weight: 600; }
+
+/* Plan builder (S2) */
+/* The canvas: lane bands behind, stage nodes on top, pan and zoom only. xyflow's structural CSS is
+   vendored beside PlanCanvas (pages/plan/xyflow-base.css) with its colour defaults already on tokens. */
+.plan-canvas { position: relative; height: max(640px, calc(100vh - 300px)); background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-2); overflow: hidden; }
+
+/* A lane band: an inert background node spanning the lane, its name in the column left of the stages.
+   Clicks and drags pass through it to the pane. */
+.plan-canvas .react-flow__node-lane { pointer-events: none; }
+.lane-node { width: 100%; height: 100%; padding: var(--sp-2) var(--sp-3); background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-2); }
+.lane-label { font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+
+/* A stage node. Catalog-only stages draw a dashed border: the non-colour cue next to the chip word.
+   Its height is fixed inline from LAYOUT.card (toFlow.ts); every row is one line and long text ends in an
+   ellipsis (the full text is in the title), so the five rows always fit. */
+.stage-node { width: 200px; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--sp-1); padding: var(--sp-2) var(--sp-3); background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-2); box-shadow: var(--shadow-1); color: var(--ink); font-size: var(--fs-2); cursor: pointer; transition: border-color var(--t-fast), box-shadow var(--t-fast); }
+.stage-node-catalog { border-style: dashed; }
+.stage-node.is-selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-2); }
+.stage-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.stage-head .chip { flex: none; }
+.stage-id { min-width: 0; font-size: var(--fs-1); color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stage-label { font-size: var(--fs-3); font-weight: 600; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stage-meta { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; font-size: var(--fs-1); }
+.stage-meta .chip { flex: none; }
+.stage-plugin { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stage-ports { display: grid; min-width: 0; font-size: var(--fs-1); line-height: 1.4; }
+.stage-ports span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stage-node .status { justify-self: start; max-width: 100%; overflow: hidden; white-space: nowrap; }
+.chip-runs { color: var(--pos); border-color: var(--pos); background: var(--pos-wash); }
+.chip-catalog { color: var(--unobs); border-style: dashed; border-color: var(--unobs); background: var(--unobs-wash); }
+.chip-edited { color: var(--accent); border-color: var(--accent); background: var(--accent-wash); }
+
+/* xyflow's own parts that the vendored base.css leaves uncoloured or unsized */
+.plan-canvas .react-flow__edge.edge-untyped .react-flow__edge-path { stroke: var(--warn); stroke-dasharray: 6 4; }
+.plan-canvas .react-flow__edge-textbg { fill: var(--surface); }
+.plan-canvas .react-flow__edge-text { fill: var(--ink-2); font-family: var(--mono); font-size: var(--fs-1); }
+/* A handle's size and offset come inline from LAYOUT (StageNode); only its look is set here. */
+.plan-canvas .react-flow__handle { background: var(--ink-2); border: 1px solid var(--surface); border-radius: 999px; }
+.plan-canvas .react-flow__handle.connectingto.valid { background: var(--pos); }
+.plan-canvas .react-flow__controls { box-shadow: var(--shadow-1); border: 1px solid var(--line); border-radius: var(--r-1); overflow: hidden; }
+.plan-canvas .react-flow__controls-button { background: var(--surface); color: var(--ink-2); border: 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.plan-canvas .react-flow__controls-button:last-child { border-bottom: 0; }
+.plan-canvas .react-flow__controls-button:hover { background: var(--surface-2); color: var(--ink); }
+
+/* The Plan page above the canvas: toolbar, gate verdicts, unattributed refusals and notes */
+.plan-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); margin-bottom: var(--sp-3); font-size: var(--fs-2); }
+/* Selects in a .field share the toolbar look; a native select sizes to its longest option, so cap it at the container width */
+.plan-toolbar select, .field select, .table td select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-1); padding: var(--sp-1) var(--sp-2); }
+.field select { max-width: 100%; min-width: 0; }
+/* Toolbar and table-row selects match the 32 px inputs beside them (Targets and new business) */
+.plan-toolbar select, .table td select { height: 32px; padding-top: 0; padding-bottom: 0; }
+/* The Plan picker's option leads with the plan id, so a cap keeps the id and the toolbar holds one line; a label past the cap ends in an ellipsis and the select's title carries it whole */
+.plan-toolbar select { max-width: 36ch; text-overflow: ellipsis; }
+.gate-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-3); font-size: var(--fs-2); color: var(--ink-2); }
+.plan-banner, .plan-notes { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-3); font-size: var(--fs-2); }
+.plan-notes .mono { font-size: var(--fs-1); color: var(--ink-2); }
+
+/* The swap menu: a card pinned to the canvas's top right */
+.swap-menu { position: absolute; right: 16px; top: 16px; width: 360px; max-height: calc(100% - 32px); overflow: auto; z-index: 10; padding: var(--sp-4); box-shadow: var(--shadow-2); }
+.swap-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); font-weight: 600; }
+.swap-list { list-style: none; padding: 0; margin: var(--sp-3) 0 0; display: grid; gap: var(--sp-2); }
+.swap-item { width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); padding: var(--sp-2) var(--sp-3); text-align: left; font: inherit; font-size: var(--fs-2); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-1); cursor: pointer; transition: background var(--t-fast), border-color var(--t-fast); }
+.swap-item:hover { background: var(--surface-2); border-color: var(--line-2); }
+.swap-item:disabled, .swap-item:disabled:hover { background: var(--surface-2); border-color: var(--line); cursor: default; }
+.swap-label { font-weight: 600; flex: 1 1 100%; }
+.swap-item .mono { font-size: var(--fs-1); }
+
+/* Run page (S3a): confirm sheet, progress card, lists */
+.run-sub { margin-top: var(--sp-4); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.sheet-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); margin-top: var(--sp-4); font-size: var(--fs-2); }
+.run-log { margin: var(--sp-2) 0 0; max-height: 240px; overflow: auto; padding: var(--sp-2) var(--sp-3); font-family: var(--mono); font-size: var(--fs-1); color: var(--ink-2); background: var(--surface-2); border-radius: var(--r-1); white-space: pre-wrap; }
+.run-list { list-style: none; padding: 0; margin: var(--sp-3) 0 0; display: grid; gap: var(--sp-2); }
+.run-list li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); font-size: var(--fs-2); }
+.diff-list { margin: var(--sp-2) 0 0; padding-left: var(--sp-5); font-family: var(--mono); font-size: var(--fs-1); }
+
+/* Results (S3a): notImplemented banner, tab links */
+.tabs a.tab { text-decoration: none; }
+
+/* The run strip (pages/results/ResultsPage.tsx RunStrip): the run in view above the figures, not a card; its
+   source routes are the strip's title. */
+.run-strip { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); font-size: var(--fs-2); color: var(--muted); }
+.run-strip .mono { font-size: var(--fs-1); color: var(--ink-2); overflow-wrap: anywhere; }
+/* The label is first in the strip and takes a line of its own, wrapping a long label rather than cutting it
+   (Studio Polish 1 F3); the ids and chips follow on the next line. */
+.run-strip-label { flex: 1 0 100%; color: var(--ink); white-space: normal; overflow-wrap: anywhere; }
+.run-strip .pill { height: 28px; font-size: var(--fs-2); }
+/* The curve the run built on (B4 Task 9): last, on a line of its own, wrapping a long fallback reason rather than
+   widening the page. */
+.run-strip-curve { flex: 1 0 100%; color: var(--ink-2); overflow-wrap: anywhere; }
+/* The same line under the head of the stochastic run (StochasticRunViews.tsx). */
+.run-curve { color: var(--ink-2); overflow-wrap: anywhere; }
+/* The shock preview while a new form is checked: the previous form's curve dimmed; its caption, ticks and table keep full
+   strength so every text stays at 4.5:1 or more in both themes (Studio Polish 1 S1, Task 8 fix contrast). */
+.preview-stale .lp-plot svg { opacity: 0.6; }
+/* A pill whose list could not be read is a status chip, not a menu (Studio Polish 1 F1, Task 8 fix), in the Unobservable
+   tone of .status-unobs: dotted border, wash and ink (Polish 2 Task 8 critic I3). */
+.pill-status { cursor: default; border: 1px dotted var(--unobs); background: var(--unobs-wash); }
+.pill-status:hover { border-color: var(--unobs); }
+.pill-status .pill-value { color: var(--unobs); }
+/* Its reason, drawn under it while it has focus (final review M3) or the pointer is on the chip or the reason; the chip
+   has no title (Polish 2 C6). The reveal is on the wrapper and ::before bridges the gap, so the pointer can move onto
+   the reason without it closing (WCAG 1.4.13). */
+.pill-status-reason { display: none; position: absolute; top: calc(100% + var(--sp-1)); right: 0; z-index: 10; width: max-content; max-width: 320px; padding: var(--sp-2) var(--sp-3); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-1); box-shadow: var(--shadow-1); color: var(--ink); font-size: var(--fs-2); white-space: normal; }
+.pill-status-reason::before { content: ""; position: absolute; left: 0; right: 0; top: calc(-1 * var(--sp-1) - 1px); height: calc(var(--sp-1) + 1px); }
+.pill-status:focus + .pill-status-reason, .pill-menu-wrap:hover > .pill-status-reason { display: block; }
+/* A button off while the page waits keeps its focus (aria-disabled, not disabled) and looks off (final review M4). */
+.btn[aria-disabled="true"], .btn[aria-disabled="true"]:hover { background: var(--surface-2); border-color: var(--line); color: var(--muted); cursor: not-allowed; }
+.nimpl-list { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-2); }
+.nimpl-list .mono { font-size: var(--fs-1); color: var(--ink-2); }
+
+/* Attribution waterfall (charts/Waterfall.tsx): one HTML row per bar; the bar is placed in percent of the track. */
+.wf { display: grid; gap: var(--sp-1); max-height: 560px; overflow: auto; }
+.wf-row { display: grid; grid-template-columns: minmax(120px, 220px) minmax(0, 1fr) max-content; align-items: center; gap: var(--sp-3); font-size: var(--fs-1); }
+.wf-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); }
+.wf-track { position: relative; height: 12px; background: var(--surface-2); border-radius: var(--r-1); }
+.wf-bar { position: absolute; top: 0; bottom: 0; min-width: 2px; border-radius: var(--r-1); }
+.wf-zero { position: absolute; top: -2px; bottom: -2px; width: 1px; background: var(--line-2); }
+.wf-up { background: var(--pos); }
+.wf-down { background: var(--neg); }
+.wf-anchor { background: var(--ink-2); }
+
+/* Views pivot (pages/results/ViewsTab.tsx): an open group's cell rows sit on the second surface, one step smaller. */
+.table .cell-row td { background: var(--surface-2); font-size: var(--fs-2); }
+
+/* Results measure layers (pages/results/ResultsPage.tsx ResultsLayerBody): the CSV export links. */
+.export-bar { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+/* Analyze Dashboard (pages/dashboard/DashboardPage.tsx): four headline cards, the by-scenario table beside the Limit use card.
+   A negative card figure and its sub line print in the --neg token (spec Section 7 item 4); the rule is scoped to .dash-cards,
+   loads after components.css and overrides its ink rule there only. Table delta cells take components.css .table td.neg / td.pos. */
+.dash-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
+.dash-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--sp-4); align-items: start; }
+.dash-cards .stat-value.is-neg, .dash-cards .stat-note.neg { color: var(--neg); }
+/* A card with no stored figure prints the Not in this run chip at its own width, not a headline figure. */
+.dash-cards .stat > .status { align-self: flex-start; }
+@media (max-width: 1280px) { .dash-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dash-row { grid-template-columns: minmax(0, 1fr); } }
+
+/* Govern > Model inventory (pages/govern/GovernPages.tsx InventoryView): the port lists, and the kind on the Component
+   cell's meta line, wrap only between ids or at an id's word joint: each id, with its comma, is one unit (Polish 6 T3), and a wbr
+   marks each joint inside it, after a hyphen or before an interior capital (Task 6 fix I1, ruling). No rule
+   lets a line break anywhere else, so an id never breaks inside a word, and a column is at least as wide as its
+   longest word. The Component cell prints the name and the id, then a meta line (the kind, then the role) and Purpose,
+   each a muted block in the body weight at 13 px, one step under the 14 px name (Polish 7 T2, Polish 8 T1):
+   four columns, so the table fits the card at 1024, 1280 and 1440. On the meta line the kind, mono and one
+   unit, prints at 12 px, the port ids' size; the role stays 13 px. The id never breaks inside itself: it carries no
+   wbr and does not wrap, so a long id drops whole to its own line under the name. No column-width rule and no media
+   query come with it, as a measured rebalance was rejected; the auto layout gives the Component column what the
+   unbroken id needs (Polish 9, ruling 2026-09-29). Purpose holds at most about 75 characters a
+   line at 1440, measured, and avoids a lone last word where the browser can. */
+.table td.mono.wrap { white-space: normal; min-width: 14ch; }
+.table td .inv-meta, .table td .purpose { display: block; margin-top: var(--sp-1); font-size: var(--fs-2); font-weight: 400; }
+.inv-meta .mono { font-size: var(--fs-1); }
+.inventory .inv-id { white-space: nowrap; }
+.table td .purpose { max-width: 52ch; text-wrap: pretty; }
+/* The Component cell is the row's anchor, so Status, Consumes and Produces sit on its first baseline, level
+   with the component name, rather than at the middle of the Purpose paragraph (Polish 7 Task 4 I1). Baseline, not top:
+   measured live at 1280 and 1440 px, both themes, every first-line baseline in the row is 0 px from the name's and each
+   cell's cap top is 0 to 1.4 px below the name's; top would put the 12 px mono cells 3 px above the name's baseline.
+   Scoped to the inventory table; no other table moves. */
+.inventory td { vertical-align: baseline; }
+
+/* Data > Scenario sets: the side column sits at the top of its row instead of stretching to the scenario stack, so
+   the balance plan card stays under the default set card; a card head holds the title and its actions (the builder link and Remove scenario).
+   The actions wrap under the title, and inside themselves, at every width: the Copy shock and Remove scenario pair
+   ran past a narrow scenario card up to 919px (band 900). */
+.scen-side { align-self: start; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.card-head .btn { flex: none; }
+.card-head-actions { display: flex; align-items: center; gap: var(--sp-2); flex: 0 1 auto; flex-wrap: wrap; min-width: 0; }
+/* The shock picture stands clear of the key-value list above it, so its unit does not read as a fifth key. */
+article.card > .plot { margin-top: var(--sp-4); }
+
+/* Data > Scenarios > Custom rate shocks (Piece 3): each card keeps its own height, so the form does not move while the
+   preview changes; the shape switch and the number fields take their content's width; the Start from select matches
+   the 36 px inputs under it (a .card.stack is the builder alone); a refusal clears the card title; a field's message
+   and its input read as an error; a read-only input reads as text, not as a field to type in. */
+.shock-grid { align-items: start; }
+.stack > .seg { justify-self: start; }
+.field > .input-wrap { width: 16ch; }
+.card.stack > .field > select { height: 36px; background: var(--surface-2); }
+.card-title + [role="alert"] { margin-top: var(--sp-2); }
+.field-error { color: var(--neg); }
+.input[aria-invalid="true"] { border-color: var(--neg); }
+.input[readonly] { background: transparent; border-color: var(--line); cursor: default; }
+
+/* Analyze measure layers: the engine text behind a collapsed attribution line */
+.nimpl-detail { margin-top: var(--sp-1); }
+.nimpl-detail summary { cursor: pointer; color: var(--muted); font-size: var(--fs-1); }
+
+/* Data > Assumptions > Edit a set (Piece 4a): number fields share a grid of cards, each field starting at the top of its
+   row so the inputs in a row sit level however long each help line runs; the unit follows its input and never sits over
+   the typed value; a bucket label reads left to right in its row. Tokens only. */
+.param-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-4); align-items: start; }
+.param-input { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); }
+.param-input .input { width: 16ch; }
+.param-unit { font-size: var(--fs-1); color: var(--muted); }
+.param-rows .table td .input-text { text-align: left; }
+/* The fields Save waits on, under its off reason: one button each, wrapping as a row, in the neutral wash at the label
+   size, so a lone grouped line still reads as a control (Polish 2 Task 8 critic I1). */
+.fix-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-2); }
+.fix-list .btn-quiet { background: var(--surface-2); color: var(--ink); font-size: var(--fs-2); font-weight: 400; }
+/* Its rest state already holds the quiet hover wash, so hover draws the stronger hairline a washed pill takes (final review M5). */
+.fix-list .btn-quiet:hover { border-color: var(--line-2); }
+/* Piece 4b: the model switch sits on one row under the card head; a select in a field grid matches the 36 px inputs
+   beside it; the selector chips are pressed buttons, a pressed one carrying the accent wash like a selected link pill;
+   the chip fieldset draws no box of its own. Tokens only. */
+.switch-row { display: flex; flex-wrap: wrap; align-items: end; gap: var(--sp-2) var(--sp-3); }
+.switch-row select, .param-grid > .field > select { height: 36px; background: var(--surface-2); }
+/* The switch row's start select offers a few short choices, so it is capped (Polish 2 Task 8 critic M1). */
+.switch-row select { max-width: 320px; }
+.chip-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.chip-row button.pill[aria-pressed="true"] { background: var(--accent-wash); border-color: var(--accent); font-weight: 500; }
+/* The pressed chip's non-colour cue (Task 8 critic I2): a check before its label, hidden from assistive tech. */
+.chip-check { margin-right: var(--sp-1); color: var(--accent); }
+
+/* Workspace switcher, type badge, readiness chip and the head band's title row (Piece E2). Tokens only. The pill
+   reuses .pill-menu-wrap and .pill-select; the name gives way first, the badge and the cut-off keep their size. */
+.switcher-pill { gap: var(--sp-2); }
+.switcher-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.switcher-cutoff { flex: none; color: var(--muted); font-size: var(--fs-1); white-space: nowrap; }
+.type-badge { display: inline-flex; flex: none; align-items: center; min-height: 20px; padding: 0 var(--sp-2); border: 1px solid var(--line-2); border-radius: 999px; font-size: var(--fs-1); font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+.type-badge-production { color: var(--accent); border-color: var(--accent); background: var(--accent-wash); }
+.type-badge-stress { color: var(--warn); border-color: var(--warn); background: var(--warn-wash); }
+.switcher-menu { min-width: 320px; max-height: 70vh; overflow-y: auto; }
+.switcher-menu ul { margin: 0; padding: 0; list-style: none; }
+.switcher-menu a { display: flex; align-items: center; gap: var(--sp-2); }
+.switcher-row-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.switcher-group-label { padding: var(--sp-2) var(--sp-3) var(--sp-1); font-size: var(--fs-1); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.switcher-foot { margin-top: var(--sp-1); padding-top: var(--sp-1); border-top: 1px solid var(--line); }
+.head-title-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); }
+.chip-readiness { white-space: nowrap; }
+.chip-readiness-valid { color: var(--pos); background: var(--pos-wash); border: 1px solid var(--pos); }
+.chip-readiness-warning { color: var(--warn); background: var(--warn-wash); border: 1px solid var(--warn); }
+.chip-readiness-error { color: var(--neg); background: var(--neg-wash); border: 1px dashed var(--neg); }
+.chip-readiness-not-set { color: var(--unobs); background: var(--unobs-wash); border: 1px dotted var(--unobs); }
+.chip-readiness-draft { color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line-2); }
+/* Stale keeps the double border of .status-stale: zero vertical padding holds the chip the height of the others. */
+.chip-readiness-stale { color: var(--stale); background: var(--stale-wash); border: 3px double var(--stale); padding: 0 calc(var(--sp-2) - 2px); }
+
+/* The plug-in harness frame (Task E4): the instances beside the selected instance's regions; the two wrap into one column on a narrow box, so no media query is needed. */
+.harness-grid { display: flex; flex-wrap: wrap; gap: var(--sp-5); align-items: flex-start; margin-top: var(--sp-3); }
+.harness-list { flex: 1 1 180px; min-width: 0; }
+.harness-body { display: grid; gap: var(--sp-4); flex: 3 1 360px; min-width: 0; }
+.harness-list .list a[aria-current="true"], .harness-list .list span[aria-current="true"] { font-weight: 600; }
+.harness-body li[aria-current="true"] { background: var(--accent-wash); }
+/* A long id or value breaks inside the panel instead of widening the page; a chip's words wrap rather than hold one line. */
+.harness-body li, .harness-body dd { overflow-wrap: anywhere; min-width: 0; }
+.harness-body .chip { white-space: normal; }
+/* A method row wraps its parts (label, id, chips, note) onto further lines, so a long note never squeezes a chip's word. */
+.harness-methods li { flex-wrap: wrap; justify-content: flex-start; gap: var(--sp-1) var(--sp-2); }
+/* A source line and a legend chip carry stored ids with no space in them; they break rather than widen the page. */
+.card-foot, .viz figcaption { overflow-wrap: anywhere; }
+.lp-chip { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+
+/* The pages on a phone, up to 900px (ALM Studio phone 1 Task 2, band 900). The shell's own phone block is in
+   components.css; this one is the last rule block of the last stylesheet, so it wins over both at equal weight. */
+@media (max-width: 900px) {
+  /* Grids of two or more columns drop to one and half-width cards take the row; a key-value list stacks, label above
+     value. Long mono ids and hashes wrap anywhere outside tables; a button's id wraps inside the button while its
+     words stay on one line. */
+  .grid-2, .grid-3 { grid-template-columns: minmax(0, 1fr); }
+  .content > .side, .content > .half { grid-column: 1 / -1; }
+  .kv { grid-template-columns: minmax(0, 1fr); gap: var(--sp-1) 0; }
+  .kv dd + dt { margin-top: var(--sp-2); }
+  .kv dd.mono, .kv dd .mono, .card-foot .mono, .card-title .mono, .card-desc .mono, .head-meta .mono, figcaption .mono, .btn .mono { overflow-wrap: anywhere; min-width: 0; }
+  .content .btn { max-width: 100%; height: auto; min-height: 32px; padding-top: var(--sp-1); padding-bottom: var(--sp-1); text-align: left; }
+  .content .btn .mono { white-space: normal; line-height: 1.3; }
+  /* Table cells keep one line and the table scrolls sideways inside its .table-wrap (or its Show table, whose table
+     leaves the layout while closed), the first column sticky on the card's surface, a selected row keeping its wash.
+     The sticky column wraps (a mono id anywhere) and is at most calc(45vw - 16px), under 55% of the narrowest
+     scroller (a 24 px padded card's) from 360 to 900 px, so it never covers the value columns (final review Finding
+     1). It takes its content's width under that cap (phone 2): the table is laid out at its max-content width, so it
+     is never squeezed, which would take the wrapping column to a letter a line, and every column takes its one-line
+     width, the first clamped by its max-width. Only an auto-width table cell's max-content contribution honours
+     max-width (measured in Chrome; WebKit clamps a cell's preferred widths by a fixed max-width too); its min-content one and any spare width do not, so the table is
+     never wider than its columns and a table narrower than its card stays at its content's width. The inventory keeps
+     the phone 1 layout, full width with its first column fixed at the cap, since its Consumes and Produces wrap
+     between ids and would take one line at max-content. The inventory's purpose wraps inside it, and its id wraps at
+     its hyphens first and inside a segment only where one cannot fit (engine.metric.balance- is wider than the
+     column), so no id is cut (Finding 2).
+     The inventory's rows are tall here, so its box takes no height cap and runs the page's length, not a nested scroller of one
+     row; useWholeRows reads the cap of none as non-finite and leaves the box alone (fix round 2).
+     A By kind table keeps only Family sticky, so the set columns have room, and a set header reads on one line with
+     its Edit, level with the identity headers, so the next column's header meets the card edge on their line. */
+  .table-wrap .table th, .table-wrap .table td { white-space: nowrap; }
+  .viz-table { overflow-x: auto; }
+  .viz-table:not([open]) > :not(summary) { display: none; }
+  .table-wrap .table th:first-child, .viz-table .table th:first-child { position: sticky; left: 0; z-index: 3; background: var(--surface); }
+  .table-wrap .table td:first-child, .viz-table .table td:first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); }
+  .table-wrap .table .row-link.is-selected td:first-child { background: linear-gradient(var(--accent-wash), var(--accent-wash)), var(--surface); }
+  .table-wrap .table .row-link.is-selected th:first-child { background: linear-gradient(var(--accent-wash), var(--accent-wash)), var(--surface); }
+  .table-wrap .table:not(.inventory), .viz-table .table { width: max-content; }
+  .table-wrap .table th:first-child, .table-wrap .table td:first-child, .viz-table .table th:first-child, .viz-table .table td:first-child { width: auto; min-width: 0; max-width: calc(45vw - 16px); white-space: normal; overflow-wrap: anywhere; }
+  .table-wrap .inventory th:first-child, .table-wrap .inventory td:first-child { width: calc(45vw - 16px); min-width: calc(45vw - 16px); }
+  /* The audit log's Run column is 14 mono characters wide, a run id's longest piece (183526-001e52d after the break
+     at run-20260927-), plus the left pad and a 4 px slack for its right pad: 116.8 px, 35% of the 332 px scroller at
+     390, not 48%; the id reads on two lines (phone 2). */
+  .table-wrap .table.audit-log th:first-child, .table-wrap .table.audit-log td:first-child { max-width: calc(14ch + var(--sp-3) + var(--sp-1)); padding-right: 0; }
+  .inventory .inv-id { white-space: normal; overflow-wrap: anywhere; }
+  .table td .purpose { max-width: 100%; white-space: normal; }
+  .table tbody th .purpose { max-width: 100%; white-space: normal; }
+  .table-wrap:has(> .inventory) { max-height: none; }
+  .by-kind th:nth-child(2), .by-kind td:nth-child(2), .by-kind th:nth-child(3), .by-kind td:nth-child(3) { position: static; }
+  .by-kind th:nth-child(n+4) a { display: inline; }
+  /* The heatmap scrolls inside its card with the expiry column held, and its ramp legend takes the card's width. The
+     treemap becomes a ranked list of bars, each as long as its share of the largest (--share, set by TreemapChart),
+     since a 358 px card leaves most squarified cells too small to label; the inline geometry is overridden, hence
+     !important. */
+  .hm-scroll .hm-row, .hm-scroll .hm-col:first-child { position: sticky; left: 0; z-index: 2; background: var(--surface); }
+  .ramp-legend .ramp, .ramp-legend .ramp-names { width: auto; flex: 1 1 160px; }
+  .treemap { display: grid; gap: var(--sp-1); height: auto !important; overflow: visible; background: transparent; }
+  .treemap-cell { position: static; width: auto !important; height: auto !important; padding: var(--sp-1) var(--sp-2); border-radius: var(--r-1); background: linear-gradient(to right, var(--surface-2) var(--share), transparent var(--share)); }
+  /* While the context sheet is open the body carries ctx-sheet-open (shell/phone.ts sheetBodyClass, set and cleared by
+     Shell's effect), so the page behind the sheet holds still: the body's overflow, which the viewport takes, is
+     hidden, which keeps the scroll position where it was; the root keeps its scrollbar gutter, so a window with a
+     classic scrollbar does not shift sideways; and a drag that starts on the open scrim pans nothing (phone 1 final
+     review Finding 3). The sheet keeps its own scroll, contained. */
+  body.ctx-sheet-open { overflow: hidden; overscroll-behavior: none; }
+  :root:has(> body.ctx-sheet-open) { scrollbar-gutter: stable; }
+  .ctx-scrim[data-open="true"] { touch-action: none; }
+}

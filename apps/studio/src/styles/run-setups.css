@@ -1,0 +1,67 @@
+/* Run > Run setups (Task E5): the setup list, the editor cards, the summary strip, the compiled chain panel and the
+   Launch strip. Design tokens only; the shared vocabulary (.card, .field, .input, .btn, .chip, .tabs) is components.css. */
+
+.setups-layout { display: grid; grid-template-columns: minmax(220px, 280px) minmax(0, 1fr); gap: var(--sp-5); align-items: start; }
+.setups-list { display: grid; gap: var(--sp-3); }
+.setups-items { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.setups-item { display: grid; gap: var(--sp-1); padding: var(--sp-3); border: 1px solid var(--line); border-radius: var(--r-1); background: var(--surface); }
+.setups-item a { color: var(--ink); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+.setups-item a:hover { text-decoration: underline; }
+.setups-item-on { border-color: var(--accent); background: var(--accent-wash); }
+.setups-new { display: grid; gap: var(--sp-2); padding-top: var(--sp-3); border-top: 1px solid var(--line); }
+.setups-editor { display: grid; gap: var(--sp-5); min-width: 0; }
+
+.setup-editor { min-width: 0; }
+.setup-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
+.setup-message { margin: var(--sp-3) 0 0; color: var(--ink); overflow-wrap: anywhere; }
+.setup-card { display: grid; gap: var(--sp-4); align-content: start; }
+.setup-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.setup-measures { align-items: start; }
+/* A native select cuts its selected label at the card's inner width, so the cards take columns of at least 300px: a 250px
+   select (300 less 48px of padding and the 2px border) holds every enabled EVE valuation and Gap bucket label, the longest
+   needing 234px. A reserved label may cut in the closed select; the opened list shows it whole. The guard keeps this
+   selector from overriding the phone block's one column at 900px and under. */
+@media (min-width: 901px) {
+  .grid-3.setup-measures { grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+}
+.setup-switch, .setup-check, .setup-radio { display: flex; align-items: flex-start; gap: var(--sp-2); color: var(--ink-2); font-size: var(--fs-3); }
+.setup-switch input, .setup-check input, .setup-radio input { margin-top: var(--sp-1); flex: none; }
+.setup-basis { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: var(--sp-2); }
+.setup-basis legend { padding: 0; margin-bottom: var(--sp-2); }
+.setup-note { margin: 0; padding: var(--sp-3); border-radius: var(--r-1); background: var(--warn-wash); color: var(--ink); font-size: var(--fs-2); overflow-wrap: anywhere; }
+.setup-sub { display: grid; gap: var(--sp-3); padding-top: var(--sp-3); border-top: 1px solid var(--line); }
+.setup-sub-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.setup-nodes { display: grid; gap: var(--sp-2); }
+.setup-lib { display: grid; gap: var(--sp-2); }
+.setup-scenarios { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.setup-scenarios li { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-2); }
+.setup-batch-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--sp-3); align-items: end; padding-bottom: var(--sp-4); border-bottom: 1px solid var(--line); }
+.setup-summary { display: grid; gap: var(--sp-5); }
+
+.chain-panel { display: grid; gap: var(--sp-3); }
+.chain-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.chain-stage { padding: var(--sp-3); border: 1px solid var(--line); border-radius: var(--r-1); background: var(--surface-2); }
+.chain-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.chain-component { color: var(--ink-2); font-size: var(--fs-2); overflow-wrap: anywhere; }
+.chain-meta { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sp-1) var(--sp-4); margin: var(--sp-2) 0 0; font-size: var(--fs-2); }
+.chain-meta dt { color: var(--muted); }
+.chain-meta dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+.chain-gates { display: grid; gap: var(--sp-3); }
+.chain-gate-head { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: baseline; }
+.chain-gate-list { margin: var(--sp-1) 0 0; padding-left: var(--sp-5); font-size: var(--fs-2); overflow-wrap: anywhere; }
+
+.launch-strip { display: grid; gap: var(--sp-3); }
+.launch-blocking { margin: 0; color: var(--neg); font-weight: 600; overflow-wrap: anywhere; }
+.launch-ack { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.launch-ack label { display: flex; align-items: flex-start; gap: var(--sp-2); color: var(--ink-2); font-size: var(--fs-3); }
+.launch-ack input { margin-top: var(--sp-1); flex: none; }
+.launch-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+.launch-message { align-self: center; flex: 1 1 220px; min-width: 0; color: var(--ink); overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+  .setups-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+.batches-list { list-style: none; margin: var(--sp-4) 0 0; padding: 0; display: grid; gap: var(--sp-3); }
+.batches-row { padding: var(--sp-3); border: 1px solid var(--line); border-radius: var(--r-1); background: var(--surface-2); }
+.batches-row .kv { margin-top: var(--sp-2); }

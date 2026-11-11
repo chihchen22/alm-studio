@@ -1,0 +1,21 @@
+{
+  "name": "@alm/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "smoke": "tsx scripts/smoke.ts",
+    "seed": "tsx scripts/seed-store.ts"
+  },
+  "dependencies": {
+    "@alm/ai": "*",
+    "@alm/data": "*",
+    "@alm/engine": "*",
+    "@alm/harness": "*",
+    "@alm/kernel": "*",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  }
+}

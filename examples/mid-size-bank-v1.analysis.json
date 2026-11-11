@@ -1,0 +1,735 @@
+{
+  "schemaVersion": "1.0.0",
+  "bookId": "mid-size-bank-v1",
+  "label": "The finished example analysis: illustrative behavior, every balance held flat, the parallel grid, the SOFR deposit history",
+  "behavior": {
+    "label": "Illustrative behavior models (round values, not fitted)",
+    "modelVersion": "illustrative-v1",
+    "bindings": [
+      {
+        "familyId": "mb-agency-mbs",
+        "overlay": {
+          "kind": "prepay",
+          "model": "four-factor-cpr",
+          "params": {
+            "secSpread": 100,
+            "primSpread": 100,
+            "wac": 5.0,
+            "minCpr": 4.0,
+            "maxCpr": 45.0,
+            "steepness": 2.0,
+            "inflection": 60,
+            "seasoningRamp": 24,
+            "seasonalityAmp": 10,
+            "burnoutDecay": 0.05
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-resi-mortgages",
+        "overlay": {
+          "kind": "prepay",
+          "model": "four-factor-cpr",
+          "params": {
+            "secSpread": 100,
+            "primSpread": 120,
+            "wac": 6.0,
+            "minCpr": 3.0,
+            "maxCpr": 50.0,
+            "steepness": 2.0,
+            "inflection": 75,
+            "seasoningRamp": 24,
+            "seasonalityAmp": 15,
+            "burnoutDecay": 0.05
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-nib-checking",
+        "overlay": {
+          "kind": "nmd-decay",
+          "params": {
+            "closureSteady": 0.6,
+            "closureInitial": 1.5,
+            "closureTauMonths": 18,
+            "burnoutLambda": 0.05,
+            "maxRateDecay": 2.0,
+            "maxRateGrowth": -0.5,
+            "logisticK": 1.5,
+            "logisticMidpoint": 0.5,
+            "maPeriod": 24,
+            "regimeAlpha": 1.0,
+            "balanceSize": 1000000,
+            "sens": {
+              "gMin": 0.2,
+              "gMax": 1.0,
+              "bStar": 1000000,
+              "kappaB": 1.0
+            },
+            "buckets": [
+              {
+                "label": "Up to $250k",
+                "repBalance": 100000,
+                "share": 0.5
+              },
+              {
+                "label": "$250k to $1M",
+                "repBalance": 500000,
+                "share": 0.25
+              },
+              {
+                "label": "$1M to $5M",
+                "repBalance": 2000000,
+                "share": 0.15
+              },
+              {
+                "label": "Over $5M",
+                "repBalance": 8000000,
+                "share": 0.1
+              }
+            ]
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-int-checking",
+        "overlay": {
+          "kind": "nmd-decay",
+          "params": {
+            "closureSteady": 0.8,
+            "closureInitial": 1.5,
+            "closureTauMonths": 18,
+            "burnoutLambda": 0.05,
+            "maxRateDecay": 2.5,
+            "maxRateGrowth": -0.5,
+            "logisticK": 1.5,
+            "logisticMidpoint": 1.0,
+            "maPeriod": 24,
+            "regimeAlpha": 1.0,
+            "balanceSize": 1000000,
+            "sens": {
+              "gMin": 0.2,
+              "gMax": 1.0,
+              "bStar": 1000000,
+              "kappaB": 1.0
+            },
+            "buckets": [
+              {
+                "label": "Up to $250k",
+                "repBalance": 150000,
+                "share": 0.25
+              },
+              {
+                "label": "$250k to $1M",
+                "repBalance": 500000,
+                "share": 0.25
+              },
+              {
+                "label": "$1M to $5M",
+                "repBalance": 2000000,
+                "share": 0.3
+              },
+              {
+                "label": "Over $5M",
+                "repBalance": 10000000,
+                "share": 0.2
+              }
+            ]
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-savings",
+        "overlay": {
+          "kind": "nmd-decay",
+          "params": {
+            "closureSteady": 0.5,
+            "closureInitial": 1.0,
+            "closureTauMonths": 18,
+            "burnoutLambda": 0,
+            "maxRateDecay": 5.0,
+            "maxRateGrowth": 0,
+            "logisticK": 0.4,
+            "logisticMidpoint": 3.0,
+            "maPeriod": 24,
+            "regimeAlpha": 0,
+            "balanceSize": 1000000,
+            "sens": {
+              "gMin": 0.2,
+              "gMax": 1.0,
+              "bStar": 1000000,
+              "kappaB": 1.0
+            },
+            "buckets": [
+              {
+                "label": "Up to $250k",
+                "repBalance": 100000,
+                "share": 0.5
+              },
+              {
+                "label": "$250k to $1M",
+                "repBalance": 500000,
+                "share": 0.25
+              },
+              {
+                "label": "$1M to $5M",
+                "repBalance": 2000000,
+                "share": 0.15
+              },
+              {
+                "label": "Over $5M",
+                "repBalance": 8000000,
+                "share": 0.1
+              }
+            ]
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-mma",
+        "overlay": {
+          "kind": "nmd-decay",
+          "params": {
+            "closureSteady": 0.6,
+            "closureInitial": 1.0,
+            "closureTauMonths": 18,
+            "burnoutLambda": 0,
+            "maxRateDecay": 8.0,
+            "maxRateGrowth": 0,
+            "logisticK": 0.4,
+            "logisticMidpoint": 2.5,
+            "maPeriod": 24,
+            "regimeAlpha": 0,
+            "balanceSize": 1000000,
+            "sens": {
+              "gMin": 0.2,
+              "gMax": 1.0,
+              "bStar": 1000000,
+              "kappaB": 1.0
+            },
+            "buckets": [
+              {
+                "label": "Up to $250k",
+                "repBalance": 150000,
+                "share": 0.25
+              },
+              {
+                "label": "$250k to $1M",
+                "repBalance": 500000,
+                "share": 0.25
+              },
+              {
+                "label": "$1M to $5M",
+                "repBalance": 2000000,
+                "share": 0.3
+              },
+              {
+                "label": "Over $5M",
+                "repBalance": 10000000,
+                "share": 0.2
+              }
+            ]
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-int-checking",
+        "overlay": {
+          "kind": "deposit-beta",
+          "params": {
+            "betaMin": 0.24,
+            "betaMax": 0.26,
+            "k": 1.0,
+            "m": 3.5,
+            "lambda": 0.5
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-savings",
+        "overlay": {
+          "kind": "deposit-beta",
+          "params": {
+            "betaMin": 0.15,
+            "betaMax": 0.5,
+            "k": 1.0,
+            "m": 3.0,
+            "lambda": 0.5
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      },
+      {
+        "familyId": "mb-mma",
+        "overlay": {
+          "kind": "deposit-beta",
+          "params": {
+            "betaMin": 0.35,
+            "betaMax": 0.75,
+            "k": 1.0,
+            "m": 3.5,
+            "lambda": 0.6
+          }
+        },
+        "modelVersion": "illustrative-v1"
+      }
+    ]
+  },
+  "targets": {
+    "label": "Every balance held at its opening level",
+    "unlistedFamilies": "runoff",
+    "targets": [
+      {
+        "familyId": "mb-cash",
+        "path": [
+          {
+            "month": 1,
+            "balance": 400000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 0,
+          "termMonths": 1
+        }
+      },
+      {
+        "familyId": "mb-treasuries",
+        "path": [
+          {
+            "month": 1,
+            "balance": 300000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 0,
+          "termMonths": 36
+        }
+      },
+      {
+        "familyId": "mb-agencies",
+        "path": [
+          {
+            "month": 1,
+            "balance": 150000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 10,
+          "termMonths": 36
+        }
+      },
+      {
+        "familyId": "mb-agency-mbs",
+        "path": [
+          {
+            "month": 1,
+            "balance": 400000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 75,
+          "termMonths": 360
+        }
+      },
+      {
+        "familyId": "mb-ci-floating",
+        "path": [
+          {
+            "month": 1,
+            "balance": 450000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 225,
+          "termMonths": 36
+        }
+      },
+      {
+        "familyId": "mb-ci-fixed",
+        "path": [
+          {
+            "month": 1,
+            "balance": 100000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 225,
+          "termMonths": 60
+        }
+      },
+      {
+        "familyId": "mb-cre-fixed",
+        "path": [
+          {
+            "month": 1,
+            "balance": 1100000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 175,
+          "termMonths": 36
+        }
+      },
+      {
+        "familyId": "mb-cre-multifamily",
+        "path": [
+          {
+            "month": 1,
+            "balance": 300000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 150,
+          "termMonths": 84
+        }
+      },
+      {
+        "familyId": "mb-cre-construction",
+        "path": [
+          {
+            "month": 1,
+            "balance": 250000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 275,
+          "termMonths": 24
+        }
+      },
+      {
+        "familyId": "mb-resi-mortgages",
+        "path": [
+          {
+            "month": 1,
+            "balance": 750000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 125,
+          "termMonths": 360
+        }
+      },
+      {
+        "familyId": "mb-heloc",
+        "path": [
+          {
+            "month": 1,
+            "balance": 100000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 125,
+          "termMonths": 120
+        }
+      },
+      {
+        "familyId": "mb-consumer",
+        "path": [
+          {
+            "month": 1,
+            "balance": 200000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 275,
+          "termMonths": 60
+        }
+      },
+      {
+        "familyId": "mb-other-loans",
+        "path": [
+          {
+            "month": 1,
+            "balance": 250000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 225,
+          "termMonths": 84
+        }
+      },
+      {
+        "familyId": "mb-nib-checking",
+        "path": [
+          {
+            "month": 1,
+            "balance": 900000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 0,
+          "termMonths": 360
+        }
+      },
+      {
+        "familyId": "mb-int-checking",
+        "path": [
+          {
+            "month": 1,
+            "balance": 650000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 0,
+          "termMonths": 360
+        }
+      },
+      {
+        "familyId": "mb-savings",
+        "path": [
+          {
+            "month": 1,
+            "balance": 550000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 0,
+          "termMonths": 360
+        }
+      },
+      {
+        "familyId": "mb-mma",
+        "path": [
+          {
+            "month": 1,
+            "balance": 1050000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 0,
+          "termMonths": 360
+        }
+      },
+      {
+        "familyId": "mb-cds",
+        "path": [
+          {
+            "month": 1,
+            "balance": 1050000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 0,
+          "termMonths": 12
+        }
+      },
+      {
+        "familyId": "mb-fhlb-fixed",
+        "path": [
+          {
+            "month": 1,
+            "balance": 150000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 15,
+          "termMonths": 36
+        }
+      },
+      {
+        "familyId": "mb-fhlb-floating",
+        "path": [
+          {
+            "month": 1,
+            "balance": 100000000
+          }
+        ],
+        "newBusinessPricing": {
+          "spreadOverIndexBp": 25,
+          "termMonths": 24
+        }
+      }
+    ]
+  },
+  "templates": [
+    {
+      "familyId": "mb-cash",
+      "rateType": "fixed",
+      "amortization": "bullet",
+      "indexTenorMonths": 1,
+      "fixedIndex": "matched",
+      "termMonths": 1,
+      "spreadOverIndexBp": 0
+    },
+    {
+      "familyId": "mb-treasuries",
+      "rateType": "fixed",
+      "amortization": "bullet",
+      "indexTenorMonths": 36,
+      "fixedIndex": "matched",
+      "termMonths": 36,
+      "spreadOverIndexBp": 0
+    },
+    {
+      "familyId": "mb-agencies",
+      "rateType": "fixed",
+      "amortization": "bullet",
+      "indexTenorMonths": 36,
+      "fixedIndex": "matched",
+      "termMonths": 36,
+      "spreadOverIndexBp": 10
+    },
+    {
+      "familyId": "mb-agency-mbs",
+      "rateType": "fixed",
+      "amortization": "level-pay",
+      "indexTenorMonths": 360,
+      "fixedIndex": "matched",
+      "behavior": "family",
+      "termMonths": 360,
+      "spreadOverIndexBp": 75
+    },
+    {
+      "familyId": "mb-ci-floating",
+      "rateType": "floating",
+      "amortization": "bullet",
+      "indexTenorMonths": 1,
+      "termMonths": 36,
+      "spreadOverIndexBp": 225
+    },
+    {
+      "familyId": "mb-ci-fixed",
+      "rateType": "fixed",
+      "amortization": "level-pay",
+      "indexTenorMonths": 60,
+      "fixedIndex": "matched",
+      "termMonths": 60,
+      "spreadOverIndexBp": 225
+    },
+    {
+      "familyId": "mb-cre-fixed",
+      "rateType": "fixed",
+      "amortization": "bullet",
+      "indexTenorMonths": 36,
+      "fixedIndex": "matched",
+      "termMonths": 36,
+      "spreadOverIndexBp": 175
+    },
+    {
+      "familyId": "mb-cre-multifamily",
+      "rateType": "fixed",
+      "amortization": "level-pay",
+      "indexTenorMonths": 84,
+      "fixedIndex": "matched",
+      "termMonths": 84,
+      "spreadOverIndexBp": 150
+    },
+    {
+      "familyId": "mb-cre-construction",
+      "rateType": "floating",
+      "amortization": "bullet",
+      "indexTenorMonths": 1,
+      "termMonths": 24,
+      "spreadOverIndexBp": 275
+    },
+    {
+      "familyId": "mb-resi-mortgages",
+      "rateType": "fixed",
+      "amortization": "level-pay",
+      "indexTenorMonths": 360,
+      "fixedIndex": "matched",
+      "behavior": "family",
+      "termMonths": 360,
+      "spreadOverIndexBp": 125
+    },
+    {
+      "familyId": "mb-heloc",
+      "rateType": "floating",
+      "amortization": "level-pay",
+      "indexTenorMonths": 1,
+      "termMonths": 120,
+      "spreadOverIndexBp": 125
+    },
+    {
+      "familyId": "mb-consumer",
+      "rateType": "fixed",
+      "amortization": "level-pay",
+      "indexTenorMonths": 60,
+      "fixedIndex": "matched",
+      "termMonths": 60,
+      "spreadOverIndexBp": 275
+    },
+    {
+      "familyId": "mb-other-loans",
+      "rateType": "fixed",
+      "amortization": "level-pay",
+      "indexTenorMonths": 84,
+      "fixedIndex": "matched",
+      "termMonths": 84,
+      "spreadOverIndexBp": 225
+    },
+    {
+      "familyId": "mb-nib-checking",
+      "rateType": "deposit",
+      "amortization": "decay",
+      "indexTenorMonths": 1,
+      "behavior": "family",
+      "termMonths": 360,
+      "spreadOverIndexBp": 0
+    },
+    {
+      "familyId": "mb-int-checking",
+      "rateType": "deposit",
+      "amortization": "decay",
+      "indexTenorMonths": 1,
+      "behavior": "family",
+      "termMonths": 360,
+      "spreadOverIndexBp": 0
+    },
+    {
+      "familyId": "mb-savings",
+      "rateType": "deposit",
+      "amortization": "decay",
+      "indexTenorMonths": 1,
+      "behavior": "family",
+      "termMonths": 360,
+      "spreadOverIndexBp": 0
+    },
+    {
+      "familyId": "mb-mma",
+      "rateType": "deposit",
+      "amortization": "decay",
+      "indexTenorMonths": 1,
+      "behavior": "family",
+      "termMonths": 360,
+      "spreadOverIndexBp": 0
+    },
+    {
+      "familyId": "mb-cds",
+      "rateType": "fixed",
+      "amortization": "bullet",
+      "indexTenorMonths": 12,
+      "fixedIndex": "matched",
+      "termMonths": 12,
+      "spreadOverIndexBp": 0
+    },
+    {
+      "familyId": "mb-fhlb-fixed",
+      "rateType": "fixed",
+      "amortization": "bullet",
+      "indexTenorMonths": 36,
+      "fixedIndex": "matched",
+      "termMonths": 36,
+      "spreadOverIndexBp": 15
+    },
+    {
+      "familyId": "mb-fhlb-floating",
+      "rateType": "floating",
+      "amortization": "bullet",
+      "indexTenorMonths": 1,
+      "termMonths": 24,
+      "spreadOverIndexBp": 25
+    }
+  ],
+  "warmup": {
+    "file": "sofr-monthly-v1.json"
+  },
+  "goingConcern": true
+}

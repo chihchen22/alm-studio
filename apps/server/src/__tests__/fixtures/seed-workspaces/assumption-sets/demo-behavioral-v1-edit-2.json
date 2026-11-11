@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "demo-behavioral-v1-edit-2",
+  "label": "Demo base behavioral set",
+  "bindings": [
+    {
+      "familyId": "mortgages",
+      "overlay": {
+        "kind": "prepay",
+        "model": "four-factor-cpr",
+        "params": {
+          "secSpread": 120,
+          "primSpread": 130,
+          "wac": 6.5,
+          "minCpr": 3,
+          "maxCpr": 65,
+          "steepness": 2.5,
+          "inflection": 50,
+          "seasoningRamp": 30,
+          "seasonalityAmp": 20,
+          "burnoutDecay": 0.1
+        }
+      },
+      "modelVersion": "kernel-four-factor-cpr-1"
+    },
+    {
+      "familyId": "mbs",
+      "overlay": {
+        "kind": "prepay",
+        "model": "four-factor-cpr",
+        "params": {
+          "secSpread": 120,
+          "primSpread": 130,
+          "wac": 6.5,
+          "minCpr": 2,
+          "maxCpr": 65,
+          "steepness": 2.5,
+          "inflection": 50,
+          "seasoningRamp": 30,
+          "seasonalityAmp": 20,
+          "burnoutDecay": 0.1
+        }
+      },
+      "modelVersion": "kernel-four-factor-cpr-1"
+    },
+    {
+      "familyId": "dda",
+      "overlay": {
+        "kind": "nmd-decay",
+        "params": {
+          "closureSteady": 0.75,
+          "closureInitial": 2,
+          "closureTauMonths": 24,
+          "burnoutLambda": 0.1,
+          "maxRateDecay": 3,
+          "maxRateGrowth": -1,
+          "logisticK": 2,
+          "logisticMidpoint": 0,
+          "maPeriod": 24,
+          "regimeAlpha": 2,
+          "balanceSize": 1000000,
+          "sens": {
+            "gMin": 0.15,
+            "gMax": 1,
+            "bStar": 1100000,
+            "kappaB": 1.3
+          },
+          "buckets": [
+            {
+              "label": "≤ $250k",
+              "repBalance": 100000,
+              "share": 0.45
+            },
+            {
+              "label": "$250k–$1M",
+              "repBalance": 500000,
+              "share": 0.3
+            },
+            {
+              "label": "$1M–$5M",
+              "repBalance": 2500000,
+              "share": 0.2
+            },
+            {
+              "label": "> $5M",
+              "repBalance": 10000000,
+              "share": 0.1
+            }
+          ]
+        }
+      },
+      "modelVersion": "kernel-nmd-decay-1"
+    },
+    {
+      "familyId": "mma",
+      "overlay": {
+        "kind": "deposit-beta",
+        "params": {
+          "betaMin": 0.45,
+          "betaMax": 0.8,
+          "k": 0.55,
+          "m": 4,
+          "lambda": 0.9
+        }
+      },
+      "modelVersion": "kernel-deposit-beta-1"
+    }
+  ],
+  "contentHash": "67c9269841442234fca3fab9fba483b6f75544d0f01bfe3c1d64b05cadb10650"
+}

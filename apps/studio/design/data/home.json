@@ -1,0 +1,234 @@
+{
+ "run": "run-20260923-163546-001557f",
+ "book": "synthetic-2500-v1",
+ "asOf": "2026-03-31",
+ "eve": [
+  {
+   "scenarioId": "S0",
+   "eve": 623336149.1835155,
+   "source": "eve.byScenario[S0].eve, .deltaEveVsBase, .deltaEvePct",
+   "deltaEveVsBase": 0,
+   "deltaEvePct": 0
+  },
+  {
+   "scenarioId": "S-200",
+   "eve": 437899844.5694809,
+   "source": "eve.byScenario[S-200].eve, .deltaEveVsBase, .deltaEvePct",
+   "deltaEveVsBase": -185436304.61403465,
+   "deltaEvePct": -0.29749005389296074
+  },
+  {
+   "scenarioId": "S-100",
+   "eve": 515974265.53458595,
+   "source": "eve.byScenario[S-100].eve, .deltaEveVsBase, .deltaEvePct",
+   "deltaEveVsBase": -107361883.6489296,
+   "deltaEvePct": -0.17223753794731603
+  },
+  {
+   "scenarioId": "S100",
+   "eve": 547119694.551199,
+   "source": "eve.byScenario[S100].eve, .deltaEveVsBase, .deltaEvePct",
+   "deltaEveVsBase": -76216454.63231659,
+   "deltaEvePct": -0.12227183475906162
+  },
+  {
+   "scenarioId": "S200",
+   "eve": 438388281.46850014,
+   "source": "eve.byScenario[S200].eve, .deltaEveVsBase, .deltaEvePct",
+   "deltaEveVsBase": -184947867.7150154,
+   "deltaEvePct": -0.29670646882468094
+  }
+ ],
+ "nii": [
+  {
+   "scenarioId": "S0",
+   "net12": 13942069.425553694,
+   "net24": 11239864.335110337,
+   "source": "nii.byScenario[S0].totalNet12/24"
+  },
+  {
+   "scenarioId": "S-200",
+   "net12": -23942696.810464486,
+   "net24": -91675739.61667219,
+   "source": "nii.byScenario[S-200].totalNet12/24"
+  },
+  {
+   "scenarioId": "S-100",
+   "net12": -11437836.729154542,
+   "net24": -63617266.22600308,
+   "source": "nii.byScenario[S-100].totalNet12/24"
+  },
+  {
+   "scenarioId": "S100",
+   "net12": 27584980.721177474,
+   "net24": 51576500.517235845,
+   "source": "nii.byScenario[S100].totalNet12/24"
+  },
+  {
+   "scenarioId": "S200",
+   "net12": 34590012.56766032,
+   "net24": 65874135.14278647,
+   "source": "nii.byScenario[S200].totalNet12/24"
+  }
+ ],
+ "niiChange12mS200": {
+  "totalDelta": 20647943.142106622,
+  "baseValue": 13942069.425553694,
+  "scenarioValue": 34590012.56766032,
+  "source": "attribution.headlines[nii-12m, S200].totalDelta, .baseValue, .scenarioValue",
+  "percentNote": "no stored envelope field carries an NII percent change, so the NII change tile carries no chip"
+ },
+ "intake": {
+  "file": "var/store/portfolios/synthetic-2500-v1.meta.json",
+  "basis": "intake statistics, not engine output",
+  "positionCount": 2351,
+  "assets": 5358726767,
+  "source": "intake.positionCount, intake.assets"
+ },
+ "lastRun": {
+  "runId": {
+   "value": "run-20260923-163546-001557f",
+   "source": "provenance.runId"
+  },
+  "plan": {
+   "value": "none (derived from the request)",
+   "source": "provenance.planId absent; runLog shows a derived plan",
+   "runLogPlan": {
+    "t": "plan",
+    "derived": true,
+    "stageIds": [
+     "st-curve",
+     "st-tlp",
+     "st-term",
+     "st-cashflow",
+     "st-nii",
+     "st-eve",
+     "st-gap",
+     "st-ftp"
+    ]
+   }
+  },
+  "profileHash": {
+   "value": "902a64599cde9f55511ba45c86d3402e6f4717bc74d2d0ec25e3271261fcfc07",
+   "label": "Plugin profile hash",
+   "source": "provenance.profileHash"
+  },
+  "finishedAt": {
+   "value": "2026-09-23T16:35:47.898Z",
+   "source": "provenance.timestamps.finishedAt"
+  },
+  "scenarioIds": {
+   "value": [
+    "S0",
+    "S-200",
+    "S-100",
+    "S100",
+    "S200"
+   ],
+   "source": "provenance.scenarioIds"
+  },
+  "assumptionSet": {
+   "value": "vanilla-empty-v1",
+   "source": "provenance.assumptionSets[0].id"
+  },
+  "inputsHash": {
+   "value": "e0834800ca9b889187f7c3e67a5e48c6628ee13c09dc3a213f2b146eec84c25a",
+   "source": "provenance.inputsHash"
+  },
+  "rerunComparison": {
+   "value": "Unobservable",
+   "reason": "No rerun comparison stored"
+  }
+ },
+ "lenses": {
+  "file": "data/lenses-read.json",
+  "note": "Engine lens read. Produced by a one-off script, read-lenses.mts (not committed), which calls packages/engine/src/report/readLens over every var/store/lens/*.json definition (validateLens first, ascending id, base scenario from the stored request as GET /api/runs/:id/lenses derives it) against var/store/runs/run-20260923-163546-001557f/result.json. Output saved verbatim.",
+  "baseScenarioId": "S0",
+  "rows": [
+   {
+    "id": "balance-demo-v1",
+    "status": "unobservable",
+    "headline": null,
+    "worstConstraint": null,
+    "reasons": [
+     "no custom metric \"balance-summary\" on the envelope; the run named no stage producing it"
+    ],
+    "source": "lenses[balance-demo-v1].status"
+   },
+   {
+    "id": "capital-demo-v1",
+    "status": "unobservable",
+    "headline": null,
+    "worstConstraint": null,
+    "reasons": [
+     "no capital metric on the envelope; a capital component is a later release"
+    ],
+    "source": "lenses[capital-demo-v1].status"
+   },
+   {
+    "id": "liquidity-demo-v1",
+    "status": "pass",
+    "headline": 4.19585555821205,
+    "worstConstraint": {
+     "scenarioId": "S200",
+     "constraintId": "cum-gap-1m",
+     "reader": "cumulativeLiquidityGap",
+     "op": "atLeast",
+     "value": 159792777.91060248,
+     "limit": -50000000,
+     "headroom": 4.19585555821205,
+     "headroomBasis": "fraction",
+     "status": "pass"
+    },
+    "reasons": [],
+    "source": "lenses[liquidity-demo-v1].status"
+   },
+   {
+    "id": "rate-demo-v1",
+    "status": "breach",
+    "headline": -26.172986362111466,
+    "worstConstraint": {
+     "scenarioId": "S-200",
+     "constraintId": "nii-12",
+     "reader": "deltaNiiPct",
+     "op": "atLeast",
+     "value": -2.717298636211147,
+     "limit": -0.1,
+     "headroom": -26.172986362111466,
+     "headroomBasis": "fraction",
+     "status": "breach"
+    },
+    "reasons": [],
+    "source": "lenses[rate-demo-v1].status"
+   },
+   {
+    "id": "strategy-demo-v1",
+    "status": "breach",
+    "headline": -182.12606074844095,
+    "worstConstraint": {
+     "scenarioId": "S-200",
+     "constraintId": "nii-24",
+     "reader": "deltaNiiPct",
+     "op": "atLeast",
+     "value": -9.156303037422049,
+     "limit": -0.05,
+     "headroom": -182.12606074844095,
+     "headroomBasis": "fraction",
+     "status": "breach"
+    },
+    "reasons": [],
+    "source": "lenses[strategy-demo-v1].status"
+   },
+   {
+    "id": "wal-gap-demo-v1",
+    "status": "unobservable",
+    "headline": null,
+    "worstConstraint": null,
+    "reasons": [
+     "no custom metric \"wal-gap\" on the envelope; the run named no stage producing it"
+    ],
+    "source": "lenses[wal-gap-demo-v1].status"
+   }
+  ]
+ }
+}

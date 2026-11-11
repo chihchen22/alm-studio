@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "0.2.0",
+  "kind": "stochastic-distribution",
+  "model": "hull-white-1f",
+  "runId": "golden-stochastic-hw-vanilla-64",
+  "scenarioId": "S0",
+  "assumptionSetId": "vanilla-empty-v1",
+  "seed": "42",
+  "nPaths": 64,
+  "horizonMonths": 360,
+  "discountBasis": "all-in",
+  "curveDefault": {
+    "kind": "default",
+    "version": 2
+  },
+  "calibration": {
+    "source": "cap-atm-calibration",
+    "a": 0.010724117190284644,
+    "sigma": 0.006116484379837266,
+    "rmseBp": 0.9009946994701852,
+    "rmseGateBp": 5,
+    "rmseGateBreached": false,
+    "nQuotes": 15,
+    "underlyingTau": 0.25,
+    "iterations": 2000
+  },
+  "martingale": {
+    "correctedMaxAbsErrBp": 5.551115123125783e-12,
+    "rawTerminalErrBp": 109.37093187088132,
+    "terminalDfStandardError": 0.008469767993619865,
+    "terminalYears": 30
+  },
+  "eveDistribution": {
+    "nPaths": 64,
+    "mean": 120866072.26933393,
+    "standardError": 112854.74049312677,
+    "stdev": 8727944.654986672,
+    "min": 102398163.65606487,
+    "max": 143607060.62218142,
+    "quantiles": [
+      {
+        "p": 0.05,
+        "value": 107785843.84643812
+      },
+      {
+        "p": 0.25,
+        "value": 115123337.66798642
+      },
+      {
+        "p": 0.5,
+        "value": 120392501.65263408
+      },
+      {
+        "p": 0.75,
+        "value": 126062091.6636838
+      },
+      {
+        "p": 0.95,
+        "value": 135424228.97940633
+      }
+    ]
+  },
+  "nii12mDistribution": {
+    "nPaths": 64,
+    "mean": 11772965.6583846,
+    "standardError": 1.0036228337889995e-9,
+    "stdev": 5.632109537858176e-9,
+    "min": 11772965.658384606,
+    "max": 11772965.658384606,
+    "quantiles": [
+      {
+        "p": 0.05,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.25,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.5,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.75,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.95,
+        "value": 11772965.658384606
+      }
+    ]
+  },
+  "notImplemented": [
+    {
+      "_tag": "not-implemented",
+      "layer": "stochastic.shocked-scenarios",
+      "reason": "stochastic distributions are computed for the base scenario only this window; shocked-scenario distributions await the shocked-NII convention migration and are refused, not approximated. NII horizon distributed: 12 months."
+    }
+  ]
+}

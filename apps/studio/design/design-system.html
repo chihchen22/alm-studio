@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio design system</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+
+/* Page chrome: three sizes (fs-1 labels, fs-3 body, fs-5 titles) */
+.page { max-width: 1240px; margin: 0 auto; padding: 0 var(--sp-5) var(--sp-7); }
+@media (min-width: 1280px) { .page { padding-left: var(--sp-6); padding-right: var(--sp-6); } }
+.page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-5); padding: var(--sp-7) 0 var(--sp-5); }
+.page-head h1 { font-size: var(--fs-5); font-weight: 600; letter-spacing: -.01em; }
+.page-head p { color: var(--ink-2); max-width: 64ch; margin-top: var(--sp-2); }
+.index { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-4); padding: 0 0 var(--sp-2); list-style: none; margin: 0; }
+.index a { color: var(--ink-2); text-decoration: none; transition: color var(--t-fast); }
+.index a:hover { color: var(--ink); }
+.ds-section { padding-top: var(--sp-7); scroll-margin-top: var(--sp-5); }
+.ds-section > h2 { font-size: var(--fs-5); font-weight: 600; letter-spacing: -.01em; }
+.lede { color: var(--ink-2); max-width: 68ch; margin: var(--sp-2) 0 var(--sp-5); }
+
+
+/* Palette */
+.pal-group + .pal-group { margin-top: var(--sp-6); }
+.pal-group > .label { margin-bottom: var(--sp-3); }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--sp-4) var(--sp-5); }
+.swatch { display: flex; gap: var(--sp-3); align-items: flex-start; }
+.swatch-chip { width: 40px; height: 40px; flex: none; border-radius: var(--r-1); border: 1px solid var(--line); }
+.swatch-name { font-family: var(--mono); font-size: var(--fs-1); color: var(--ink); }
+.swatch-role { font-size: var(--fs-1); color: var(--ink-2); }
+
+/* Type */
+.type-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--sp-5); align-items: baseline; padding: var(--sp-3) 0; }
+.type-meta { display: grid; gap: var(--sp-1); }
+.type-meta .swatch-name { font-size: var(--fs-1); }
+
+/* Spacing, radius, elevation */
+.sp-row { display: grid; grid-template-columns: 120px 56px minmax(0, 1fr); gap: var(--sp-4); align-items: center; padding: var(--sp-1) 0; }
+.sp-bar { height: var(--sp-3); background: var(--line-2); border-radius: 2px; }
+.shape-row { display: flex; flex-wrap: wrap; gap: var(--sp-5); }
+.shape { width: 132px; height: 88px; background: var(--surface); border: 1px solid var(--line); display: flex; align-items: flex-end; padding: var(--sp-3); }
+
+.spec-table { width: 100%; border-collapse: collapse; }
+.spec-table td { padding: var(--sp-3) var(--sp-4) var(--sp-3) 0; vertical-align: middle; color: var(--ink-2); }
+.spec-table td:first-child { width: 200px; }
+
+
+/* The style guide shows card titles at fs-4; product screens use the shared fs-3 */
+.card-title { font-size: var(--fs-4); }
+
+/* Voice */
+.voice td:nth-child(2) { color: var(--ink); }
+
+@media (max-width: 1199px) {
+  .type-row { grid-template-columns: 180px minmax(0, 1fr); }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="page-head">
+  <div>
+    <h1>Studio design system</h1>
+    <p>The visual twin of design-system.md. Every value on this page is a token from tokens.css, and every component carries the class name Studio pages copy.</p>
+  </div>
+  <div class="seg" role="group" aria-label="Theme">
+    <button type="button" data-theme-set="system" aria-pressed="true">System</button>
+    <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+    <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+  </div>
+</header>
+
+<ul class="index" aria-label="Sections">
+  <li><a href="#palette">Palette</a></li>
+  <li><a href="#type">Type</a></li>
+  <li><a href="#spacing">Spacing</a></li>
+  <li><a href="#buttons">Buttons</a></li>
+  <li><a href="#cards">Cards</a></li>
+  <li><a href="#stat-tiles">Stat tiles</a></li>
+  <li><a href="#tables">Tables</a></li>
+  <li><a href="#chips-status">Chips and status</a></li>
+  <li><a href="#rail">Rail</a></li>
+  <li><a href="#sheet">Sheet</a></li>
+  <li><a href="#charts">Charts</a></li>
+  <li><a href="#voice">Voice</a></li>
+</ul>
+
+<!-- ============ PALETTE ============ -->
+<section class="ds-section" id="palette">
+  <h2>Palette</h2>
+  <p class="lede">Colors are named by role. A page writes the token, never the value, and dark mode swaps the value underneath. One accent per screen, and at most two accent-colored elements above the fold.</p>
+
+  <div class="pal-group">
+    <div class="label">Surfaces and ink</div>
+    <div class="swatches">
+      <div class="swatch"><span class="swatch-chip" style="background: var(--bg)"></span><div><div class="swatch-name">--bg</div><div class="swatch-role">Page background.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--surface)"></span><div><div class="swatch-name">--surface</div><div class="swatch-role">Cards, sheets, table bodies.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--surface-2)"></span><div><div class="swatch-name">--surface-2</div><div class="swatch-role">Table header rows, input fields, hover rows.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--ink)"></span><div><div class="swatch-name">--ink</div><div class="swatch-role">Primary text and headline numbers.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--ink-2)"></span><div><div class="swatch-name">--ink-2</div><div class="swatch-role">Descriptions and secondary table cells.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--muted)"></span><div><div class="swatch-name">--muted</div><div class="swatch-role">Labels, axis text, captions, disabled text.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--line)"></span><div><div class="swatch-name">--line</div><div class="swatch-role">Hairline dividers and chart gridlines.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--line-2)"></span><div><div class="swatch-name">--line-2</div><div class="swatch-role">Input outlines and card edges where space is not enough.</div></div></div>
+    </div>
+  </div>
+
+  <div class="pal-group">
+    <div class="label">Accent</div>
+    <div class="swatches">
+      <div class="swatch"><span class="swatch-chip" style="background: var(--accent)"></span><div><div class="swatch-name">--accent</div><div class="swatch-role">The one interactive color: primary button, selected item, focus ring.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--accent-ink)"></span><div><div class="swatch-name">--accent-ink</div><div class="swatch-role">Text on an accent fill.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--accent-wash)"></span><div><div class="swatch-name">--accent-wash</div><div class="swatch-role">Selected row and selected rail item background.</div></div></div>
+    </div>
+  </div>
+
+  <div class="pal-group">
+    <div class="label">Delta and status</div>
+    <div class="swatches">
+      <div class="swatch"><span class="swatch-chip" style="background: var(--pos)"></span><div><div class="swatch-name">--pos</div><div class="swatch-role">Favorable delta; Pass status.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--neg)"></span><div><div class="swatch-name">--neg</div><div class="swatch-role">Adverse delta; Breach status.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--warn)"></span><div><div class="swatch-name">--warn</div><div class="swatch-role">Near a limit, not over it.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--unobs)"></span><div><div class="swatch-name">--unobs</div><div class="swatch-role">Unobservable: the engine cannot compute the value from its inputs.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--stale)"></span><div><div class="swatch-name">--stale</div><div class="swatch-role">Stale: an input is older than its freshness window.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--pos-wash)"></span><div><div class="swatch-name">--pos-wash and the other washes</div><div class="swatch-role">Chip and cell backgrounds, the matching status hue at .12 alpha.</div></div></div>
+    </div>
+  </div>
+
+  <div class="pal-group">
+    <div class="label">Chart series</div>
+    <div class="swatches">
+      <div class="swatch"><span class="swatch-chip" style="background: var(--series-1)"></span><div><div class="swatch-name">--series-1</div><div class="swatch-role">First categorical series; single-series charts.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--series-2)"></span><div><div class="swatch-name">--series-2</div><div class="swatch-role">Second categorical series.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--series-3)"></span><div><div class="swatch-name">--series-3</div><div class="swatch-role">Third categorical series.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--series-4)"></span><div><div class="swatch-name">--series-4</div><div class="swatch-role">Fourth series; beyond three, fold to Other or facet.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--series-5)"></span><div><div class="swatch-name">--series-5</div><div class="swatch-role">Fifth categorical series.</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background: var(--series-6)"></span><div><div class="swatch-name">--series-6</div><div class="swatch-role">Sixth categorical series, the last slot.</div></div></div>
+    </div>
+  </div>
+
+  <div class="pal-group">
+    <div class="label">Sequential ramp</div>
+    <div class="ramp" aria-hidden="true">
+      <span class="ramp-cell" style="background: var(--seq-1)"></span><span class="ramp-cell" style="background: var(--seq-2)"></span><span class="ramp-cell" style="background: var(--seq-3)"></span><span class="ramp-cell" style="background: var(--seq-4)"></span><span class="ramp-cell" style="background: var(--seq-5)"></span><span class="ramp-cell" style="background: var(--seq-6)"></span><span class="ramp-cell" style="background: var(--seq-7)"></span>
+    </div>
+    <div class="ramp-names">
+      <span class="swatch-name">--seq-1</span><span class="swatch-name">--seq-2</span><span class="swatch-name">--seq-3</span><span class="swatch-name">--seq-4</span><span class="swatch-name">--seq-5</span><span class="swatch-name">--seq-6</span><span class="swatch-name">--seq-7</span>
+    </div>
+    <p class="swatch-role" style="margin-top: var(--sp-2)">Heatmaps and ordered bins. --seq-1 is the lowest magnitude; --seq-7 is always the highest-contrast end against the background, so the ramp reverses in dark mode.</p>
+  </div>
+</section>
+
+<!-- ============ TYPE ============ -->
+<section class="ds-section" id="type">
+  <h2>Type</h2>
+  <p class="lede">One system sans for text, one monospace for identifiers. Seven sizes exist; a single screen uses three at most. Numbers use tabular figures so columns align on the digit. This specimen shows all seven, which no product screen does.</p>
+  <div class="card">
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--fs-7 / 34px</span><span class="swatch-role">Hero figure, one per screen, weight 400</span></div><div style="font-size: var(--fs-7); font-weight: 400; letter-spacing: -.02em; line-height: 1.15">623,336,149<!-- source: eve.byScenario[S0].eve --></div></div>
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--fs-6 / 26px</span><span class="swatch-role">Page title and stat tile values, weight 400; the title is the only non-number at this size</span></div><div style="font-size: var(--fs-6); font-weight: 400; letter-spacing: -.01em; line-height: 1.2">13,942,069<!-- source: nii.byScenario[S0].totalNet12 --></div></div>
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--fs-5 / 20px</span><span class="swatch-role">Section titles on this style guide only</span></div><div style="font-size: var(--fs-5); font-weight: 600">Economic value of equity</div></div>
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--fs-4 / 16px</span><span class="swatch-role">Card and sheet titles, input text</span></div><div style="font-size: var(--fs-4); font-weight: 600">Scenario results</div></div>
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--fs-3 / 14px</span><span class="swatch-role">Body, table cells, buttons</span></div><div style="font-size: var(--fs-3)">EVE falls 184,947,868 USD under the +200 bp parallel shock, a 29.7% decline from base.<!-- source: eve.byScenario[S200].deltaEveVsBase, eve.byScenario[S200].deltaEvePct --></div></div>
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--fs-2 / 13px</span><span class="swatch-role">Dense tables, secondary metadata</span></div><div style="font-size: var(--fs-2); color: var(--ink-2)">As of 2026-03-31, 12m horizon, book synthetic-2500-v1<!-- source: cashflows.grid.asOf, nii.horizonsMonths[0], provenance.portfolioId --></div></div>
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--fs-1 / 12px</span><span class="swatch-role">Labels, captions, chips, axis text</span></div><div class="label">Base NII</div></div>
+    <div class="type-row"><div class="type-meta"><span class="swatch-name">--mono</span><span class="swatch-role">Run IDs and file hashes, never table numbers</span></div><div class="mono" style="font-size: var(--fs-1); color: var(--ink-2)">run-20260923-163546-001557f<!-- source: provenance.runId --></div></div>
+  </div>
+</section>
+
+<!-- ============ SPACING ============ -->
+<section class="ds-section" id="spacing">
+  <h2>Spacing</h2>
+  <p class="lede">Seven steps, and no margin or padding outside them. Space separates groups before any rule does. Page gutters are 24px at 1024 wide and 32px at 1440.</p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="sp-row"><span class="swatch-name">--sp-1</span><span class="muted">4px</span><span class="sp-bar" style="width: var(--sp-1)"></span></div>
+      <div class="sp-row"><span class="swatch-name">--sp-2</span><span class="muted">8px</span><span class="sp-bar" style="width: var(--sp-2)"></span></div>
+      <div class="sp-row"><span class="swatch-name">--sp-3</span><span class="muted">12px</span><span class="sp-bar" style="width: var(--sp-3)"></span></div>
+      <div class="sp-row"><span class="swatch-name">--sp-4</span><span class="muted">16px</span><span class="sp-bar" style="width: var(--sp-4)"></span></div>
+      <div class="sp-row"><span class="swatch-name">--sp-5</span><span class="muted">24px</span><span class="sp-bar" style="width: var(--sp-5)"></span></div>
+      <div class="sp-row"><span class="swatch-name">--sp-6</span><span class="muted">32px</span><span class="sp-bar" style="width: var(--sp-6)"></span></div>
+      <div class="sp-row"><span class="swatch-name">--sp-7</span><span class="muted">48px</span><span class="sp-bar" style="width: var(--sp-7)"></span></div>
+    </div>
+    <div class="card stack">
+      <div>
+        <div class="label" style="margin-bottom: var(--sp-3)">Radius</div>
+        <div class="shape-row">
+          <div class="shape" style="border-radius: var(--r-1)"><span class="swatch-name">--r-1 inputs</span></div>
+          <div class="shape" style="border-radius: var(--r-2)"><span class="swatch-name">--r-2 cards</span></div>
+          <div class="shape" style="border-radius: var(--r-3)"><span class="swatch-name">--r-3 sheets</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom: var(--sp-3)">Elevation</div>
+        <div class="shape-row">
+          <div class="shape" style="border-radius: var(--r-2); box-shadow: var(--shadow-1)"><span class="swatch-name">--shadow-1 cards</span></div>
+          <div class="shape" style="border-radius: var(--r-2); box-shadow: var(--shadow-2)"><span class="swatch-name">--shadow-2 sheets</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom: var(--sp-2)">Motion</div>
+        <table class="spec-table">
+          <tr><td class="swatch-name">--t-fast / 120ms</td><td>Hover and focus changes.</td></tr>
+          <tr><td class="swatch-name">--t-base / 200ms</td><td>Sheets, panels and drawers opening. Nothing that carries a number animates.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUTTONS ============ -->
+<section class="ds-section" id="buttons">
+  <h2>Buttons</h2>
+  <p class="lede">Buttons are verbs. One primary button per screen; it takes the accent. Everything else is the default or the quiet button.</p>
+  <div class="card">
+    <table class="spec-table">
+      <tr><td><button class="btn btn-primary" type="button">Run</button></td><td><span class="swatch-name">.btn .btn-primary</span><br>The one action the screen exists for.</td></tr>
+      <tr><td><button class="btn" type="button">Export</button></td><td><span class="swatch-name">.btn</span><br>Secondary actions that stay visible.</td></tr>
+      <tr><td><button class="btn btn-quiet" type="button">Cancel</button></td><td><span class="swatch-name">.btn .btn-quiet</span><br>Dismissals and low-weight actions beside a primary.</td></tr>
+      <tr><td><button class="btn" type="button" disabled>Compare</button></td><td><span class="swatch-name">.btn:disabled</span><br>Unavailable until a second run exists.</td></tr>
+      <tr><td><button class="btn btn-quiet btn-icon" type="button" aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></td><td><span class="swatch-name">.btn .btn-quiet .btn-icon</span><br>An icon only where it is the control, with an accessible name.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ============ CARDS ============ -->
+<section class="ds-section" id="cards">
+  <h2>Cards</h2>
+  <p class="lede">A card groups one subject on the surface color. The edge is a hairline and the lightest shadow; the content inside is separated by space.</p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Run summary</div>
+      <p class="card-desc">The inputs this set of results was computed from.</p>
+      <dl class="kv">
+        <dt>Run</dt><dd class="mono">run-20260923-163546-001557f<!-- source: provenance.runId --></dd>
+        <dt>Book</dt><dd>synthetic-2500-v1<!-- source: provenance.portfolioId --></dd>
+        <dt>As-of date</dt><dd>2026-03-31<!-- source: cashflows.grid.asOf --></dd>
+        <dt>NII horizons</dt><dd>12m and 24m<!-- source: nii.horizonsMonths --></dd>
+        <dt>Scenarios</dt><dd>5: S0, S-200, S-100, S100, S200<!-- source: provenance.scenarioIds --></dd>
+        <dt>Assumption set</dt><dd class="mono">vanilla-empty-v1<!-- source: provenance.assumptionSets[0].id --></dd>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="card-title">Run checks</div>
+      <p class="card-desc">What this run computed, and what it could not.</p>
+      <ul class="list">
+        <li>Duration sanity, all 5 scenarios <span class="status status-pass">Pass</span><!-- source: eve.byScenario[*].durationSanityPassed --></li>
+        <li>Equity duration, base <span class="num">-2.48 years</span><!-- source: eve.byScenario[S0].effectiveDurationEquity --></li>
+        <li>Equity duration, shocked scenarios <span class="status status-unobs">Unobservable</span><!-- source: eve.durationMode = base-only --></li>
+        <li>FTP, shocked scenarios <span class="status status-unobs">Unobservable</span><!-- source: ftp.shockedScenarios._tag = not-implemented --></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAT TILES ============ -->
+<section class="ds-section" id="stat-tiles">
+  <h2>Stat tiles</h2>
+  <p class="lede">A label, a headline figure at weight 400 in tabular figures with its unit, a delta chip on delta tiles, and a mono source line naming the envelope field. The exact figure sits in the tile's title attribute. Levels print in ink whatever their sign; only the delta takes the favorable or adverse color.</p>
+  <div class="grid-3">
+    <div class="stat" title="623,336,149 USD">
+      <div class="stat-label">Base EVE</div>
+      <div class="stat-value"><span class="num">623.3</span><!-- source: eve.byScenario[S0].eve --><span class="stat-unit">mm USD</span></div>
+      <div class="stat-source">eve.byScenario<wbr>[S0]<wbr>.eve</div>
+    </div>
+    <div class="stat" title="-184,947,868 USD">
+      <div class="stat-label">EVE change, +200 bp</div>
+      <div class="stat-value is-neg"><span class="num">-184.9</span><!-- source: eve.byScenario[S200].deltaEveVsBase --><span class="stat-unit">mm USD</span></div>
+      <span class="stat-delta is-neg"><span class="num">-29.7%</span><!-- source: eve.byScenario[S200].deltaEvePct --> vs base</span>
+      <div class="stat-source">eve.byScenario<wbr>[S200]<wbr>.deltaEveVsBase</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Equity duration, +200 bp</div>
+      <div class="stat-value">Unobservable</div><!-- source: eve.durationMode = base-only; eve.byScenario[S200] carries no effectiveDurationEquity -->
+      <div class="stat-note">This run computed durations for the base scenario only, so no shocked-scenario duration exists.</div>
+      <div class="stat-source">eve.durationMode</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TABLES ============ -->
+<section class="ds-section" id="tables">
+  <h2>Tables</h2>
+  <p class="lede">Rows are separated by space, not rules. Figures align right in tabular figures. The first column names the row in ink; the other cells are secondary ink, and only change columns take the delta colors.</p>
+  <div class="card table-card">
+    <table class="table">
+      <thead>
+        <tr><th>Scenario</th><th class="num">EVE (USD)</th><th class="num">Change vs base (USD)</th><th class="num">Change vs base</th><th class="num">Equity duration (years)</th><th>Duration check</th></tr>
+      </thead>
+      <tbody>
+        <!-- source: eve.byScenario[*].eve, .deltaEveVsBase, .deltaEvePct, .effectiveDurationEquity, .durationSanityPassed -->
+        <tr><td>Base</td><td class="num lvl">623,336,149</td><td class="num">0</td><td class="num">0.0%</td><td class="num lvl">-2.48</td><td><span class="status status-pass">Pass</span></td></tr>
+        <tr><td>+100 bp parallel</td><td class="num lvl">547,119,695</td><td class="num neg">-76,216,455</td><td class="num neg">-12.2%</td><td class="num">Unobservable</td><td><span class="status status-pass">Pass</span></td></tr>
+        <tr><td>+200 bp parallel</td><td class="num lvl">438,388,281</td><td class="num neg">-184,947,868</td><td class="num neg">-29.7%</td><td class="num">Unobservable</td><td><span class="status status-pass">Pass</span></td></tr>
+        <tr><td>-100 bp parallel</td><td class="num lvl">515,974,266</td><td class="num neg">-107,361,884</td><td class="num neg">-17.2%</td><td class="num">Unobservable</td><td><span class="status status-pass">Pass</span></td></tr>
+        <tr><td>-200 bp parallel</td><td class="num lvl">437,899,845</td><td class="num neg">-185,436,305</td><td class="num neg">-29.7%</td><td class="num">Unobservable</td><td><span class="status status-pass">Pass</span></td></tr>
+      </tbody>
+    </table>
+    <div class="table-foot">Run run-20260923-163546-001557f, book synthetic-2500-v1, as of 2026-03-31. Durations were computed for the base scenario only.<!-- source: provenance.runId, provenance.portfolioId, cashflows.grid.asOf, eve.durationMode --></div>
+  </div>
+</section>
+
+<!-- ============ CHIPS AND STATUS ============ -->
+<section class="ds-section" id="chips-status">
+  <h2>Chips and status</h2>
+  <p class="lede">A neutral chip tags a filter or a basis. A status chip always carries its word; the border style is the cue that does not depend on color.</p>
+  <div class="grid-2">
+    <div class="card stack">
+      <div>
+        <div class="label" style="margin-bottom: var(--sp-3)">Neutral chip</div>
+        <div class="chip-row">
+          <span class="chip">+200 bp parallel</span><!-- source: request.scenarios[S200].rateSpec.shockBp -->
+          <span class="chip">12m horizon</span><!-- source: nii.horizonsMonths[0] -->
+          <span class="chip">synthetic-2500-v1</span><!-- source: provenance.portfolioId -->
+          <span class="chip">USD</span>
+        </div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom: var(--sp-3)">Status chip</div>
+        <div class="chip-row">
+          <span class="status status-pass">Pass</span>
+          <span class="status status-breach">Breach</span>
+          <span class="status status-unobs">Unobservable</span>
+          <span class="status status-stale">Stale</span>
+        </div>
+      </div>
+    </div>
+    <div class="card table-card">
+      <table class="table">
+        <thead><tr><th>Status</th><th>Class</th><th>Border</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><span class="status status-pass">Pass</span></td><td class="mono">.status-pass</td><td>Solid</td><td>Within limit.</td></tr>
+          <tr><td><span class="status status-breach">Breach</span></td><td class="mono">.status-breach</td><td>Dashed</td><td>Over limit.</td></tr>
+          <tr><td><span class="status status-unobs">Unobservable</span></td><td class="mono">.status-unobs</td><td>Dotted</td><td>Cannot be computed from inputs.</td></tr>
+          <tr><td><span class="status status-stale">Stale</span></td><td class="mono">.status-stale</td><td>3px double</td><td>Input past its freshness window.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAIL ============ -->
+<section class="ds-section" id="rail">
+  <h2>Rail</h2>
+  <p class="lede">The persistent shell. The 232px rail on the left lists the workflow in order, grouped by hairlines (Home; Inputs; Compose; Read), with the current page on a neutral wash. The header band carries the page title at fs-6 weight 400, one row of pill chips for the selectors and the page's one action, and the metadata line. The 280px assistant rail on the right stays available and works without a provider: its drop zone sits under the text, then what the assistant will do on this page. Shown once here as a specimen.</p>
+  <div class="shell">
+    <aside class="rail">
+      <div class="rail-brand">Studio</div>
+      <nav aria-label="Workflow">
+        <div class="rail-group">
+          <a class="rail-item" href="#rail">Home</a>
+        </div>
+        <div class="rail-group">
+          <div class="rail-group-label">Inputs</div>
+          <a class="rail-item" href="#rail">Balance Sheet</a>
+          <a class="rail-item" href="#rail">Market</a>
+          <a class="rail-item" href="#rail">Assumptions</a>
+          <a class="rail-item" href="#rail">Scenarios</a>
+        </div>
+        <div class="rail-group">
+          <div class="rail-group-label">Compose</div>
+          <a class="rail-item" href="#rail">Plan</a>
+          <a class="rail-item" href="#rail">Run</a>
+        </div>
+        <div class="rail-group">
+          <div class="rail-group-label">Read</div>
+          <a class="rail-item" href="#rail" aria-current="page">Results</a>
+          <a class="rail-item" href="#rail">Compare</a>
+        </div>
+      </nav>
+      <div class="rail-foot">
+        <span class="field-label muted">Theme</span>
+        <div class="seg" role="group" aria-label="Theme">
+          <button type="button" data-theme-set="system" aria-pressed="true">System</button>
+          <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+        </div>
+      </div>
+    </aside>
+    <div class="shell-main">
+      <header class="head-band">
+    <h1 class="page-title">Results</h1>
+    <div class="head-chips">
+      <button class="pill pill-select" type="button" aria-haspopup="listbox"><span class="pill-key">Book</span><span>synthetic-2500-v1</span></button><!-- source: provenance.portfolioId -->
+      <button class="pill pill-select" type="button" aria-haspopup="listbox"><span class="pill-key">Run</span><span class="mono">run-20260923-163546-001557f</span></button><!-- source: provenance.runId -->
+      <button class="pill pill-quiet pill-action" type="button">Export</button>
+    </div>
+    <p class="head-meta"><span class="num">2,351</span><!-- source: portfolios/synthetic-2500-v1.meta.json intake.positionCount --> positions, assets <span class="num">5,358.7</span><!-- source: portfolios/synthetic-2500-v1.meta.json intake.assets = 5,358,726,767 --> mm USD, intake statistics</p>
+  </header>
+      <div class="shell-body">
+        <div class="stat" title="623,336,149 USD">
+          <div class="stat-label">Base EVE</div>
+          <div class="stat-value"><span class="num">623.3</span><!-- source: eve.byScenario[S0].eve --><span class="stat-unit">mm USD</span></div>
+          <div class="stat-source">eve.byScenario<wbr>[S0]<wbr>.eve</div>
+        </div>
+        <!-- source: eve.byScenario[S100|S200|S-100].deltaEveVsBase -->
+        <table class="table">
+          <thead><tr><th>Scenario</th><th class="num">Change vs base (USD)</th></tr></thead>
+          <tbody>
+            <tr><td>+100 bp parallel</td><td class="num neg">-76,216,455</td></tr>
+            <tr><td>+200 bp parallel</td><td class="num neg">-184,947,868</td></tr>
+            <tr><td>-100 bp parallel</td><td class="num neg">-107,361,884</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <aside class="assist-rail" aria-label="Assistant">
+      <div class="assist-title">Assistant</div>
+      <p class="assist-text">No provider configured. The manual path is the pages on the left.</p>
+      <label class="drop">
+        <input type="file">
+        <span>Drop a file here</span>
+        <span class="drop-hint">Balance sheet, curve or assumption file</span>
+        <span class="btn">Choose file</span>
+      </label>
+      <div class="assist-does">
+        <div class="label">What the assistant will do here</div>
+        <ul>
+          <li>Summarise the last run</li>
+          <li>Explain a lens breach</li>
+          <li>Draft a scenario</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ SHEET ============ -->
+<section class="ds-section" id="sheet">
+  <h2>Sheet</h2>
+  <p class="lede">A sheet edits one object without leaving the page. It slides in from the right over the content, carries its own primary action, and closes on Escape or Cancel.</p>
+  <div class="sheet-stage">
+    <div class="sheet-notes">
+      <span class="label">Behavior</span>
+      <span>Opens and closes in --t-base, 200ms. Radius --r-3, elevation --shadow-2, width 400px.</span>
+      <span>The footer holds the actions: the primary on the right, Cancel beside it.</span>
+      <span>Field labels are nouns; the primary button names what happens.</span>
+    </div>
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="sheet-title" id="sheet-title">Scenario</div>
+        <button class="btn btn-quiet btn-icon" type="button" aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="sheet-body">
+        <label class="field"><span class="field-label">Scenario name</span><input class="input" type="text" value="+200 bp parallel"></label>
+        <label class="field"><span class="field-label">Shock shape</span>
+          <select class="input"><option>Parallel</option><option>Steepener</option><option>Flattener</option><option>Short rate up</option><option>Short rate down</option></select>
+        </label>
+        <label class="field"><span class="field-label">Shock size</span><span class="input-wrap"><input class="input" type="text" value="200" inputmode="numeric"><!-- source: request.scenarios[S200].rateSpec.shockBp --><span class="input-suffix">bp</span></span><span class="field-help">Applied instantaneously to every tenor of the base curve.</span></label>
+        <label class="field"><span class="field-label">Horizon</span><select class="input"><option>12m</option><option>24m</option></select><!-- source: nii.horizonsMonths --></label>
+      </div>
+      <div class="sheet-foot">
+        <button class="btn btn-quiet" type="button">Cancel</button>
+        <button class="btn btn-primary" type="button">Save scenario</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHARTS ============ -->
+<section class="ds-section" id="charts">
+  <h2>Charts</h2>
+  <p class="lede">No gridlines except a zero line where negative values exist, and no y-axis. The SVG carries marks only and stretches to the card; the unit above and the category labels below are HTML text, so they never scale under 12px. Headline values sit as chips beside the title, a single-series chart is neutral with the base darker, and every chart keeps its source caption and a table view. Hover a mark for its value. All three plot run run-20260923-163546-001557f.</p>
+  <div class="grid-2 charts">
+    <figure class="card viz">
+      <div class="viz-head"><div class="viz-title">EVE by parallel scenario</div>
+        <div class="chip-row"><span class="stat-delta is-neg">+200 bp <span class="num">-184.9</span> mm</span><!-- source: eve.byScenario[S200].deltaEveVsBase --><span class="stat-delta is-neg">-200 bp <span class="num">-185.4</span> mm</span><!-- source: eve.byScenario[S-200].deltaEveVsBase --></div></div>
+      <div class="plot">
+        <div class="plot-top"><span>mm USD</span><span>Base darker</span></div>
+        <svg viewBox="0 0 530 180" preserveAspectRatio="none" role="img" aria-label="EVE by parallel rate scenario, mm USD; base scenario darker"><g><title>-200 bp: 437.9 mm USD</title><rect class="hit" x="0" y="0" width="106" height="180"/><path class="bar-lvl" d="M39 180V73.9Q39 69.9 43 69.9H63Q67 69.9 67 73.9V180Z"/></g><!-- source: eve.byScenario[S-200].eve --><g><title>-100 bp: 516.0 mm USD</title><rect class="hit" x="106" y="0" width="106" height="180"/><path class="bar-lvl" d="M145 180V54.3Q145 50.3 149 50.3H169Q173 50.3 173 54.3V180Z"/></g><!-- source: eve.byScenario[S-100].eve --><g><title>Base: 623.3 mm USD</title><rect class="hit" x="212" y="0" width="106" height="180"/><path class="bar-base" d="M251 180V27.3Q251 23.3 255 23.3H275Q279 23.3 279 27.3V180Z"/></g><!-- source: eve.byScenario[S0].eve --><g><title>+100 bp: 547.1 mm USD</title><rect class="hit" x="318" y="0" width="106" height="180"/><path class="bar-lvl" d="M357 180V46.4Q357 42.4 361 42.4H381Q385 42.4 385 46.4V180Z"/></g><!-- source: eve.byScenario[S100].eve --><g><title>+200 bp: 438.4 mm USD</title><rect class="hit" x="424" y="0" width="106" height="180"/><path class="bar-lvl" d="M463 180V73.8Q463 69.8 467 69.8H487Q491 69.8 491 73.8V180Z"/></g><!-- source: eve.byScenario[S200].eve --></svg>
+        <div class="plot-cats" aria-hidden="true"><span>-200 bp</span><span>-100 bp</span><span class="is-base">Base</span><span>+100 bp</span><span>+200 bp</span></div>
+      </div>
+      <figcaption>Source: eve.byScenario[*].eve, run <span class="run">run-20260923-163546-001557f</span></figcaption>
+      <details class="viz-table"><summary>Show table</summary><!-- source: eve.byScenario[*].eve --><table class="table"><thead><tr><th>Scenario</th><th class="num">EVE (USD)</th></tr></thead><tbody><tr><td>-200 bp</td><td class="num">437,899,845</td></tr><tr><td>-100 bp</td><td class="num">515,974,266</td></tr><tr><td>Base</td><td class="num">623,336,149</td></tr><tr><td>+100 bp</td><td class="num">547,119,695</td></tr><tr><td>+200 bp</td><td class="num">438,388,281</td></tr></tbody></table></details>
+    </figure>
+    <figure class="card viz">
+      <div class="viz-head"><div class="viz-title">Cumulative NII, 12m</div>
+        <div class="chip-row"><span class="chip">Base M12 <span class="num">13.9</span> mm</span><!-- source: nii.byScenario[S0].totalNet12 --><span class="chip">+200 bp M12 <span class="num">34.6</span> mm</span><!-- source: nii.byScenario[S200].totalNet12 --></div></div>
+      <div class="plot">
+        <div class="plot-top"><span>mm USD</span><div class="legend"><span><i class="key-line" style="background: var(--series-1)"></i>Base</span><span><i class="key-line" style="background: var(--series-2)"></i>+200 bp parallel</span></div></div>
+        <svg viewBox="0 0 530 180" preserveAspectRatio="none" role="img" aria-label="Cumulative net interest income over 12 months, base and +200 bp, mm USD"><path class="mk" d="M22.1 160.1 L66.2 143.5 L110.4 131.7 L154.6 124.6 L198.8 118.7 L242.9 114.1 L287.1 110.8 L331.2 108.8 L375.4 108 L419.6 108.6 L463.8 110.4 L507.9 113.4" stroke="var(--series-1)" stroke-width="2" stroke-linejoin="round"><title>Base, cumulative NII by month</title></path><!-- source: nii.byScenario[S0].netMonthly[0..11], cumulated --><path class="mk" d="M22.1 154.9 L66.2 132.5 L110.4 114.3 L154.6 100.2 L198.8 86.8 L242.9 74.2 L287.1 62.3 L331.2 51.2 L375.4 40.9 L419.6 31.4 L463.8 22.6 L507.9 14.7" stroke="var(--series-2)" stroke-width="2" stroke-linejoin="round"><title>+200 bp, cumulative NII by month</title></path><!-- source: nii.byScenario[S200].netMonthly[0..11], cumulated --><g><title>M1: base 4.2, +200 bp 5.3 mm USD</title><rect class="hit" x="0" y="0" width="44.2" height="180"/></g><g><title>M2: base 7.6, +200 bp 9.9 mm USD</title><rect class="hit" x="44.2" y="0" width="44.2" height="180"/></g><g><title>M3: base 10.1, +200 bp 13.8 mm USD</title><rect class="hit" x="88.3" y="0" width="44.2" height="180"/></g><g><title>M4: base 11.6, +200 bp 16.7 mm USD</title><rect class="hit" x="132.5" y="0" width="44.2" height="180"/></g><g><title>M5: base 12.8, +200 bp 19.5 mm USD</title><rect class="hit" x="176.7" y="0" width="44.2" height="180"/></g><g><title>M6: base 13.8, +200 bp 22.1 mm USD</title><rect class="hit" x="220.8" y="0" width="44.2" height="180"/></g><g><title>M7: base 14.5, +200 bp 24.6 mm USD</title><rect class="hit" x="265" y="0" width="44.2" height="180"/></g><g><title>M8: base 14.9, +200 bp 27.0 mm USD</title><rect class="hit" x="309.2" y="0" width="44.2" height="180"/></g><g><title>M9: base 15.1, +200 bp 29.1 mm USD</title><rect class="hit" x="353.3" y="0" width="44.2" height="180"/></g><g><title>M10: base 14.9, +200 bp 31.1 mm USD</title><rect class="hit" x="397.5" y="0" width="44.2" height="180"/></g><g><title>M11: base 14.6, +200 bp 32.9 mm USD</title><rect class="hit" x="441.7" y="0" width="44.2" height="180"/></g><g><title>M12: base 13.9, +200 bp 34.6 mm USD</title><rect class="hit" x="485.8" y="0" width="44.2" height="180"/></g></svg>
+        <div class="plot-cats" aria-hidden="true"><span>M1</span><span>M2</span><span>M3</span><span>M4</span><span>M5</span><span>M6</span><span>M7</span><span>M8</span><span>M9</span><span>M10</span><span>M11</span><span>M12</span></div>
+      </div>
+      <figcaption><figcaption>Source: nii.byScenario[S0|S200].netMonthly, cumulated over months 1 to 12, run run-20260923-163546-001557f</figcaption></figcaption>
+      <details class="viz-table"><summary>Show table</summary><!-- source: nii.byScenario[S0|S200].netMonthly[0..11], cumulated --><table class="table"><thead><tr><th>Month</th><th class="num">Base (USD)</th><th class="num">+200 bp (USD)</th></tr></thead><tbody><tr><td>M1</td><td class="num">4,171,752</td><td class="num">5,256,196</td></tr><tr><td>M2</td><td class="num">7,645,389</td><td class="num">9,945,944</td></tr><tr><td>M3</td><td class="num">10,114,905</td><td class="num">13,755,243</td></tr><tr><td>M4</td><td class="num">11,605,044</td><td class="num">16,703,738</td></tr><tr><td>M5</td><td class="num">12,831,431</td><td class="num">19,503,165</td></tr><tr><td>M6</td><td class="num">13,789,766</td><td class="num">22,146,347</td></tr><tr><td>M7</td><td class="num">14,482,018</td><td class="num">24,632,591</td></tr><tr><td>M8</td><td class="num">14,906,119</td><td class="num">26,957,182</td></tr><tr><td>M9</td><td class="num">15,061,617</td><td class="num">29,116,567</td></tr><tr><td>M10</td><td class="num">14,949,869</td><td class="num">31,108,384</td></tr><tr><td>M11</td><td class="num">14,576,199</td><td class="num">32,933,793</td></tr><tr><td>M12</td><td class="num">13,942,069</td><td class="num">34,590,013</td></tr></tbody></table></details>
+    </figure>
+  </div>
+  <div style="margin-top: var(--sp-5)">
+    <figure class="card viz">
+      <div class="viz-head"><div class="viz-title">Repricing profile by balance sheet line, base</div>
+        <div class="ramp-legend"><span>Share of line balance, %</span><div><div class="ramp"><span class="ramp-cell" style="background: var(--seq-1)"></span><span class="ramp-cell" style="background: var(--seq-2)"></span><span class="ramp-cell" style="background: var(--seq-3)"></span><span class="ramp-cell" style="background: var(--seq-4)"></span><span class="ramp-cell" style="background: var(--seq-5)"></span><span class="ramp-cell" style="background: var(--seq-6)"></span><span class="ramp-cell" style="background: var(--seq-7)"></span></div><div class="ramp-names"><span>0-5</span><span>5-10</span><span>10-15</span><span>15-20</span><span>20-30</span><span>30-45</span><span>45-100</span></div></div></div></div>
+      <div class="hm" style="--hm-cols: 9" role="img" aria-label="Share of each balance sheet line repricing in each time band, base scenario"><span></span><span class="hm-col">0-1M</span><span class="hm-col">1-3M</span><span class="hm-col">3-6M</span><span class="hm-col">6-12M</span><span class="hm-col">1-2Y</span><span class="hm-col">2-3Y</span><span class="hm-col">3-5Y</span><span class="hm-col">5-10Y</span><span class="hm-col">10Y+</span><span class="hm-row">Cash</span><!-- source: gap.repricing[S0].byCoaNode[coa-cash].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="Cash, 0-1M: 23.0% of balance">23%</span><span class="hm-cell hm-hi" style="background: var(--seq-7)" title="Cash, 1-3M: 77.0% of balance">77%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Cash, 3-6M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Cash, 6-12M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Cash, 1-2Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Cash, 2-3Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Cash, 3-5Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Cash, 5-10Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Cash, 10Y+: 0.0% of balance">0%</span><span class="hm-row">Investments</span><!-- source: gap.repricing[S0].byCoaNode[coa-investments].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Investments, 0-1M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Investments, 1-3M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Investments, 3-6M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Investments, 6-12M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="Investments, 1-2Y: 5.7% of balance">6%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="Investments, 2-3Y: 10.8% of balance">11%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="Investments, 3-5Y: 23.8% of balance">24%</span><span class="hm-cell hm-hi" style="background: var(--seq-7)" title="Investments, 5-10Y: 59.6% of balance">60%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Investments, 10Y+: 0.0% of balance">0%</span><span class="hm-row">Fixed loans</span><!-- source: gap.repricing[S0].byCoaNode[coa-fixed-loans].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Fixed loans, 0-1M: 1.9% of balance">2%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Fixed loans, 1-3M: 3.9% of balance">4%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="Fixed loans, 3-6M: 5.9% of balance">6%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="Fixed loans, 6-12M: 12.1% of balance">12%</span><span class="hm-cell hm-mid" style="background: var(--seq-4)" title="Fixed loans, 1-2Y: 19.8% of balance">20%</span><span class="hm-cell hm-mid" style="background: var(--seq-4)" title="Fixed loans, 2-3Y: 15.1% of balance">15%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="Fixed loans, 3-5Y: 20.8% of balance">21%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="Fixed loans, 5-10Y: 20.5% of balance">20%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Fixed loans, 10Y+: 0.0% of balance">0%</span><span class="hm-row">Floating loans</span><!-- source: gap.repricing[S0].byCoaNode[coa-floating-loans].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-hi" style="background: var(--seq-7)" title="Floating loans, 0-1M: 100.0% of balance">100%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 1-3M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 3-6M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 6-12M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 1-2Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 2-3Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 3-5Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 5-10Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Floating loans, 10Y+: 0.0% of balance">0%</span><span class="hm-row">Mortgages</span><!-- source: gap.repricing[S0].byCoaNode[coa-mortgages].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Mortgages, 0-1M: 1.7% of balance">2%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Mortgages, 1-3M: 3.4% of balance">3%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Mortgages, 3-6M: 4.9% of balance">5%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="Mortgages, 6-12M: 9.0% of balance">9%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="Mortgages, 1-2Y: 14.8% of balance">15%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="Mortgages, 2-3Y: 10.9% of balance">11%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="Mortgages, 3-5Y: 14.0% of balance">14%</span><span class="hm-cell hm-mid" style="background: var(--seq-4)" title="Mortgages, 5-10Y: 17.5% of balance">18%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="Mortgages, 10Y+: 23.7% of balance">24%</span><span class="hm-row">MBS</span><!-- source: gap.repricing[S0].byCoaNode[coa-mbs].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MBS, 0-1M: 1.5% of balance">1%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MBS, 1-3M: 2.9% of balance">3%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MBS, 3-6M: 4.4% of balance">4%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="MBS, 6-12M: 8.4% of balance">8%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="MBS, 1-2Y: 14.5% of balance">14%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="MBS, 2-3Y: 11.0% of balance">11%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="MBS, 3-5Y: 14.1% of balance">14%</span><span class="hm-cell hm-mid" style="background: var(--seq-4)" title="MBS, 5-10Y: 17.4% of balance">17%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="MBS, 10Y+: 25.7% of balance">26%</span><span class="hm-row">DDA</span><!-- source: gap.repricing[S0].byCoaNode[coa-dda].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="DDA, 0-1M: 3.3% of balance">3%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="DDA, 1-3M: 5.2% of balance">5%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="DDA, 3-6M: 5.9% of balance">6%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="DDA, 6-12M: 8.6% of balance">9%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="DDA, 1-2Y: 11.8% of balance">12%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="DDA, 2-3Y: 8.3% of balance">8%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="DDA, 3-5Y: 11.5% of balance">11%</span><span class="hm-cell hm-mid" style="background: var(--seq-4)" title="DDA, 5-10Y: 17.2% of balance">17%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="DDA, 10Y+: 28.4% of balance">28%</span><span class="hm-row">MMA</span><!-- source: gap.repricing[S0].byCoaNode[coa-mma].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-hi" style="background: var(--seq-7)" title="MMA, 0-1M: 61.8% of balance">62%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MMA, 1-3M: 2.3% of balance">2%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MMA, 3-6M: 2.5% of balance">3%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MMA, 6-12M: 3.5% of balance">3%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MMA, 1-2Y: 4.6% of balance">5%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MMA, 2-3Y: 3.2% of balance">3%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="MMA, 3-5Y: 4.5% of balance">4%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="MMA, 5-10Y: 6.7% of balance">7%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="MMA, 10Y+: 11.0% of balance">11%</span><span class="hm-row">CDs</span><!-- source: gap.repricing[S0].byCoaNode[coa-cds].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="CDs, 0-1M: 7.7% of balance">8%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="CDs, 1-3M: 14.1% of balance">14%</span><span class="hm-cell hm-mid" style="background: var(--seq-4)" title="CDs, 3-6M: 17.3% of balance">17%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="CDs, 6-12M: 23.9% of balance">24%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="CDs, 1-2Y: 24.2% of balance">24%</span><span class="hm-cell hm-lo" style="background: var(--seq-2)" title="CDs, 2-3Y: 8.7% of balance">9%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="CDs, 3-5Y: 4.1% of balance">4%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="CDs, 5-10Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="CDs, 10Y+: 0.0% of balance">0%</span><span class="hm-row">FHLB advances</span><!-- source: gap.repricing[S0].byCoaNode[coa-fhlb].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="FHLB advances, 0-1M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="FHLB advances, 1-3M: 2.4% of balance">2%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="FHLB advances, 3-6M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="FHLB advances, 6-12M: 0.0% of balance">0%</span><span class="hm-cell hm-hi" style="background: var(--seq-6)" title="FHLB advances, 1-2Y: 43.3% of balance">43%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="FHLB advances, 2-3Y: 20.3% of balance">20%</span><span class="hm-cell hm-hi" style="background: var(--seq-6)" title="FHLB advances, 3-5Y: 34.0% of balance">34%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="FHLB advances, 5-10Y: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="FHLB advances, 10Y+: 0.0% of balance">0%</span><span class="hm-row">Borrowings</span><!-- source: gap.repricing[S0].byCoaNode[coa-borrowings].rows[*].assets + liabilities, as share of row total --><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Borrowings, 0-1M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Borrowings, 1-3M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Borrowings, 3-6M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Borrowings, 6-12M: 0.0% of balance">0%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="Borrowings, 1-2Y: 11.7% of balance">12%</span><span class="hm-cell hm-lo" style="background: var(--seq-3)" title="Borrowings, 2-3Y: 11.9% of balance">12%</span><span class="hm-cell hm-hi" style="background: var(--seq-5)" title="Borrowings, 3-5Y: 25.9% of balance">26%</span><span class="hm-cell hm-hi" style="background: var(--seq-7)" title="Borrowings, 5-10Y: 50.5% of balance">50%</span><span class="hm-cell hm-lo" style="background: var(--seq-1)" title="Borrowings, 10Y+: 0.0% of balance">0%</span></div>
+      <figcaption>Source: gap.repricing[S0].byCoaNode[*].rows[*], assets plus liabilities as a share of each line's total, run run-20260923-163546-001557f</figcaption>
+      <details class="viz-table"><summary>Show table</summary><!-- source: gap.repricing[S0].byCoaNode[*].rows[*] --><table class="table"><thead><tr><th>Line</th><th class="num">0-1M</th><th class="num">1-3M</th><th class="num">3-6M</th><th class="num">6-12M</th><th class="num">1-2Y</th><th class="num">2-3Y</th><th class="num">3-5Y</th><th class="num">5-10Y</th><th class="num">10Y+</th></tr></thead><tbody><tr><td>Cash</td><td class="num">23.0%</td><td class="num">77.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td></tr><tr><td>Investments</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">5.7%</td><td class="num">10.8%</td><td class="num">23.8%</td><td class="num">59.6%</td><td class="num">0.0%</td></tr><tr><td>Fixed loans</td><td class="num">1.9%</td><td class="num">3.9%</td><td class="num">5.9%</td><td class="num">12.1%</td><td class="num">19.8%</td><td class="num">15.1%</td><td class="num">20.8%</td><td class="num">20.5%</td><td class="num">0.0%</td></tr><tr><td>Floating loans</td><td class="num">100.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td></tr><tr><td>Mortgages</td><td class="num">1.7%</td><td class="num">3.4%</td><td class="num">4.9%</td><td class="num">9.0%</td><td class="num">14.8%</td><td class="num">10.9%</td><td class="num">14.0%</td><td class="num">17.5%</td><td class="num">23.7%</td></tr><tr><td>MBS</td><td class="num">1.5%</td><td class="num">2.9%</td><td class="num">4.4%</td><td class="num">8.4%</td><td class="num">14.5%</td><td class="num">11.0%</td><td class="num">14.1%</td><td class="num">17.4%</td><td class="num">25.7%</td></tr><tr><td>DDA</td><td class="num">3.3%</td><td class="num">5.2%</td><td class="num">5.9%</td><td class="num">8.6%</td><td class="num">11.8%</td><td class="num">8.3%</td><td class="num">11.5%</td><td class="num">17.2%</td><td class="num">28.4%</td></tr><tr><td>MMA</td><td class="num">61.8%</td><td class="num">2.3%</td><td class="num">2.5%</td><td class="num">3.5%</td><td class="num">4.6%</td><td class="num">3.2%</td><td class="num">4.5%</td><td class="num">6.7%</td><td class="num">11.0%</td></tr><tr><td>CDs</td><td class="num">7.7%</td><td class="num">14.1%</td><td class="num">17.3%</td><td class="num">23.9%</td><td class="num">24.2%</td><td class="num">8.7%</td><td class="num">4.1%</td><td class="num">0.0%</td><td class="num">0.0%</td></tr><tr><td>FHLB advances</td><td class="num">0.0%</td><td class="num">2.4%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">43.3%</td><td class="num">20.3%</td><td class="num">34.0%</td><td class="num">0.0%</td><td class="num">0.0%</td></tr><tr><td>Borrowings</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">0.0%</td><td class="num">11.7%</td><td class="num">11.9%</td><td class="num">25.9%</td><td class="num">50.5%</td><td class="num">0.0%</td></tr></tbody></table></details>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ VOICE ============ -->
+<section class="ds-section" id="voice">
+  <h2>Voice</h2>
+  <p class="lede">Calm and exact. Labels are nouns, buttons are verbs, numbers carry their unit and basis, and a value the engine cannot compute says so in a word.</p>
+  <div class="card table-card">
+    <table class="table voice">
+      <thead><tr><th>Element</th><th>Write</th><th>Not</th></tr></thead>
+      <tbody>
+        <tr><td>Label</td><td>Base NII</td><td>Your NII (base case) is</td></tr>
+        <tr><td>Button</td><td>Run</td><td>Click here to start a run</td></tr>
+        <tr><td>Number</td><td>623.3 mm USD; -29.7% vs base; 12m horizon</td><td>623</td></tr><!-- source: eve.byScenario[S0].eve, eve.byScenario[S200].deltaEvePct -->
+        <tr><td>Missing value</td><td>Unobservable</td><td>A dash or a blank cell</td></tr>
+        <tr><td>Completion</td><td>Run finished. 5 scenarios.</td><!-- source: provenance.scenarioIds --><td>Great news, your run is done</td></tr>
+        <tr><td>Error</td><td>Curve file has no 10Y tenor. Add it and run again.</td><td>Oops, something went wrong</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var buttons = document.querySelectorAll("[data-theme-set]");
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var v = b.getAttribute("data-theme-set");
+      root.setAttribute("data-theme", v);
+      buttons.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    });
+  });
+})();
+</script>
+</body>
+</html>

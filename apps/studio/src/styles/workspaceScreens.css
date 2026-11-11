@@ -1,0 +1,26 @@
+/* Workspace Home, New, Overview and Compare (Task E3). Tokens only; imported once, from pages/workspace/wsCommon.tsx. */
+.ws-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
+.ws-group-title { padding: var(--sp-2) var(--sp-3) 0; }
+.ws-form { display: grid; gap: var(--sp-4); margin-top: var(--sp-4); max-width: 560px; }
+.ws-start, .ws-blocks { display: grid; gap: var(--sp-2); margin: 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line); border-radius: var(--r-1); min-width: 0; }
+.ws-start-choice, .ws-block-choice { display: flex; align-items: center; gap: var(--sp-2); color: var(--ink); cursor: pointer; }
+.ws-notice { margin: 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--warn); border-radius: var(--r-1); background: var(--warn-wash); color: var(--ink); }
+.ws-problems { margin-top: var(--sp-3); }
+.ws-banner { border-color: var(--accent); background: var(--accent-wash); }
+.ws-confirm { display: grid; gap: var(--sp-3); flex: 1 1 100%; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--line-2); border-radius: var(--r-1); background: var(--surface-2); }
+.ws-hash { overflow-wrap: anywhere; font-size: var(--fs-1); }
+.ws-clashes { margin-top: var(--sp-4); }
+.ws-detail { white-space: normal; min-width: 220px; }
+.ws-stale-roles { margin: var(--sp-2) 0 0; padding-left: var(--sp-4); }
+.ws-launch-gate { margin: var(--sp-4) var(--sp-3) 0; }
+.ws-compare-pickers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); margin-top: var(--sp-4); }
+.ws-entries { white-space: normal; min-width: 180px; }
+.ws-entries ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--sp-1); }
+.ws-verdict { display: inline-flex; align-items: center; min-height: 20px; padding: 0 var(--sp-2); border: 1px solid var(--line-2); border-radius: 999px; font-size: var(--fs-1); font-weight: 600; white-space: nowrap; }
+.ws-verdict-chip-same { color: var(--muted); background: var(--surface-2); }
+.ws-verdict-chip-changed { color: var(--warn); border-color: var(--warn); background: var(--warn-wash); }
+.ws-verdict-chip-only-a, .ws-verdict-chip-only-b { color: var(--accent); border-color: var(--accent); background: var(--accent-wash); }
+@media (max-width: 900px) {
+  .ws-compare-pickers { grid-template-columns: minmax(0, 1fr); }
+  .ws-form { max-width: none; }
+}

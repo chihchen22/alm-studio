@@ -1,0 +1,286 @@
+{
+  "schemaVersion": "1.4.0",
+  "planId": "PLAN-EXAMPLE-IRRBB-1",
+  "label": "Example quarterly IRRBB run",
+  "authoredBy": "orchestrator",
+  "asOf": "2026-03-31",
+  "grid": {
+    "horizonMonths": 360
+  },
+  "note": "A run plan is data. It is authored by a person or an agent, diffed against the last approved plan, and validated by the type gate and the routing gate before anything executes. Nothing in this file is a result. The graph also RUNS: the behavioral stages form a chain that rewrites the book one licensed binding set at a time, the contractual pass reads the last link, and the metrics read the series. Two stages, st-client-rate and st-draw, name catalog components no mounted plugin executes (the engine mounts a flat-carry client-rate plugin under its own name, engine.behavioral.loan-client-rate, not under the catalog component st-client-rate names): they compile to not-implemented tags because no type only they produce is read by another stage, and either would refuse the plan outright the moment a metric consumed it.",
+  "inputs": {
+    "marketSnapshot": "market_public.json",
+    "positionBook": "example-book-v1",
+    "dimensionTaxonomy": "demo-dimensions-v1",
+    "routingPolicy": "model-map.json"
+  },
+  "stages": [
+    {
+      "id": "st-curve",
+      "component": "alm-yield-curve",
+      "kind": "curve",
+      "consumes": ["MarketSnapshot"],
+      "produces": ["ZeroCurve"],
+      "params": { "index": "SOFR-OIS", "dayCount": "ACT/360", "interpolation": "linear-in-zero" }
+    },
+    {
+      "id": "st-tlp",
+      "component": "alm-tlp-overlay",
+      "kind": "curve",
+      "consumes": ["ZeroCurve", "MarketSnapshot"],
+      "produces": ["FundingCurve"],
+      "params": { "dayCount": "ACT/360" },
+      "dependsOn": ["st-curve"],
+      "note": "The all-in funding curve, its own contract type. EVE discounting must state whether it runs the all-in or the risk-free leg, because the two are not comparable, so the two legs are two types: st-curve produces ZeroCurve and this stage produces FundingCurve. A metric that needs both names both producers, and a metric that names neither is refused at the gate. The day count is the one the engine executes; a curve stage that declares another is refused at the gate."
+    },
+    {
+      "id": "st-term",
+      "component": "engine.rate-path",
+      "kind": "term-structure",
+      "consumes": ["ZeroCurve"],
+      "produces": ["RatePath", "DiscountFactorPath"],
+      "dependsOn": ["st-curve"],
+      "note": "The deterministic shocked path the default profile mounts. A stochastic term structure, alm-hull-white among them, is a plugin a profile mounts in this row's place: the plan names the component, and a component no mounted plugin declares is refused rather than silently skipped."
+    },
+    {
+      "id": "st-prepay-mortgage",
+      "component": "alm-mortgage-prepayment",
+      "kind": "behavioral",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["Position"],
+      "selector": { "behavioralClasses": "prepayment", "productFamily": "Mortgages" },
+      "disposition": "M",
+      "tier": "Tier 1",
+      "feeds": ["nii", "eve", "ir-gap"],
+      "dependsOn": ["st-term"],
+      "note": "The first link of the behavioral chain: it reads the context book and hands the rewritten book to the next link. Tier 1 on a $1.0B book because the long-dated option makes EVE sensitive per dollar, not because the balance is large."
+    },
+    {
+      "id": "st-prepay-consumer",
+      "component": "alm-mortgage-prepayment",
+      "kind": "behavioral",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["Position"],
+      "selector": { "behavioralClasses": "prepayment", "productFamily": "Fixed Loans" },
+      "disposition": "M",
+      "tier": "Tier 2",
+      "feeds": ["nii", "eve", "ir-gap"],
+      "dependsOn": ["st-prepay-mortgage", "st-term"],
+      "note": "Same component, narrower selector, lower order. The personal and auto books carry less option content than the mortgage book."
+    },
+    {
+      "id": "st-prepay-mbs",
+      "component": "alm-mortgage-prepayment",
+      "kind": "behavioral",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["Position"],
+      "selector": { "behavioralClasses": "prepayment", "productFamily": "Investments" },
+      "disposition": "M",
+      "tier": "Tier 2",
+      "feeds": ["nii", "eve", "ir-gap"],
+      "dependsOn": ["st-prepay-consumer", "st-term"]
+    },
+    {
+      "id": "st-client-rate",
+      "component": "alm-loan-client-rate",
+      "kind": "behavioral",
+      "consumes": ["RatePath"],
+      "produces": ["ClientRatePath"],
+      "selector": { "behavioralClasses": "client-rate-asset" },
+      "disposition": "M",
+      "tier": "Tier 2",
+      "feeds": ["nii"],
+      "dependsOn": ["st-term"],
+      "note": "A catalog entry awaiting an executor: the engine mounts a flat-carry client-rate plugin under its own name (engine.behavioral.loan-client-rate), not under this catalog component, so this stage still compiles to a not-implemented tag and nothing reads its path. It sits OFF the behavioral chain, because a stage nothing executes may not be a link in a chain the numbers flow through."
+    },
+    {
+      "id": "st-draw",
+      "component": "alm-draw-rate-model",
+      "kind": "behavioral",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["CommitmentSchedule"],
+      "selector": { "behavioralClasses": "draw-utilization" },
+      "disposition": "A",
+      "tier": "Tier 2",
+      "feeds": ["liq-gap"],
+      "dependsOn": ["st-term"],
+      "note": "A catalog entry awaiting an executor: the engine mounts no draw-rate plugin, so this stage compiles to a not-implemented tag. It is the binding liquidity model on the thinnest-data row of the map, carried as a management assumption because the utilization data will not support a stable fit, and the only behavioral family in the catalog with a forward model and no calibration component."
+    },
+    {
+      "id": "st-decay-nmd",
+      "component": "alm-deposit-decay",
+      "kind": "behavioral",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["Position"],
+      "selector": { "behavioralClasses": "decay", "dimensions": { "segment": ["Rate shoppers", "Relationship", "Whole book"] } },
+      "disposition": "M",
+      "tier": "Tier 1",
+      "feeds": ["eve", "ir-gap", "liq-gap"],
+      "dependsOn": ["st-prepay-mbs", "st-term"],
+      "note": "Deliberately does not feed NII. The going-concern earnings run takes its balance from the new-volume stage, and routing decay into NII is the canonical routing error the gate exists to catch. The selector's dimensions predicate names the calibration segments the decay bindings may cover; a decay binding on a position outside those segments is refused at compile by L1."
+    },
+    {
+      "id": "st-beta-hys",
+      "component": "alm-deposit-beta",
+      "kind": "behavioral",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["Position"],
+      "selector": { "behavioralClasses": "deposit-beta" },
+      "disposition": "M",
+      "tier": "Tier 1",
+      "feeds": ["nii", "eve"],
+      "dependsOn": ["st-decay-nmd", "st-term"],
+      "note": "The engine's deposit-beta overlay rewrites the position's repricing terms like every other behavioral kind, so this stage produces a Position and not a rate path. DepositRatePath stays in the contract vocabulary for a future rate-side model that genuinely produces one."
+    },
+    {
+      "id": "st-early-withdrawal",
+      "component": "engine.cd-rollover",
+      "kind": "behavioral",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["Position"],
+      "selector": { "behavioralClasses": "early-withdrawal" },
+      "disposition": "A",
+      "tier": "Tier 2",
+      "feeds": ["nii", "eve", "ir-gap", "liq-gap"],
+      "dependsOn": ["st-beta-hys", "st-term"],
+      "note": "The last link of the chain: the contractual pass runs on the book this stage hands over. Carried as a management assumption despite adequate materiality and data, because the driver test overrides the quadrant: brokered rollover is a funding-mix decision, so the history records treasury strategy rather than depositor behavior."
+    },
+    {
+      "id": "st-cashflow",
+      "component": "engine.contractual",
+      "kind": "contractual-cashflow",
+      "consumes": ["Position", "RatePath"],
+      "produces": ["Cashflow", "RepricingSchedule"],
+      "dependsOn": ["st-early-withdrawal", "st-term"],
+      "note": "Builds the contractual stream for every position of the effective book the behavioral chain produced. It no longer claims a commitment schedule: the contractual pass does not produce one, and T6 refuses a claim an executor cannot keep."
+    },
+    {
+      "id": "st-balance-plan",
+      "component": "engine.balance-plan",
+      "kind": "balance-new-business",
+      "consumes": ["Position", "RatePath", "Cashflow"],
+      "produces": ["Cashflow"],
+      "selector": { "side": "Liability" },
+      "disposition": "A",
+      "feeds": ["nii"],
+      "dependsOn": ["st-cashflow", "st-early-withdrawal", "st-term"],
+      "note": "The stage that owns the NII balance. A static scenario gets its contractual series back unchanged; a dynamic one is reinvested. The engine's balance-plan stage carries this stage kind."
+    },
+    {
+      "id": "st-nii",
+      "component": "alm-nii",
+      "kind": "metric",
+      "consumes": ["Cashflow"],
+      "produces": ["NiiResult"],
+      "dependsOn": ["st-balance-plan", "st-client-rate"]
+    },
+    {
+      "id": "st-eve",
+      "component": "alm-eve",
+      "kind": "metric",
+      "consumes": ["Cashflow", "ZeroCurve", "FundingCurve", "Position"],
+      "produces": ["EveResult"],
+      "dependsOn": ["st-cashflow", "st-curve", "st-tlp", "st-early-withdrawal"]
+    },
+    {
+      "id": "st-gap",
+      "component": "alm-gap-analytics",
+      "kind": "metric",
+      "consumes": ["Cashflow", "RepricingSchedule", "Position"],
+      "produces": ["GapResult"],
+      "dependsOn": ["st-cashflow", "st-early-withdrawal", "st-draw"]
+    },
+    {
+      "id": "st-ftp",
+      "component": "engine.metric.ftp",
+      "kind": "metric",
+      "consumes": ["Cashflow", "ZeroCurve", "FundingCurve", "Position", "NiiResult", "RatePath"],
+      "produces": ["FtpResult"],
+      "dependsOn": ["st-cashflow", "st-curve", "st-tlp", "st-term", "st-nii", "st-early-withdrawal"],
+      "note": "The optional metric. A plan that omits it gets a result with no ftp block, which the result contract has permitted since 1.2.0; a plan that names it gets the three-leg par-match for the base scenario."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S0",
+      "label": "S0",
+      "rateSpec": {
+        "kind": "base"
+      }
+    },
+    {
+      "id": "S100",
+      "label": "S100",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": 100
+      }
+    },
+    {
+      "id": "S-100",
+      "label": "S-100",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": -100
+      }
+    },
+    {
+      "id": "S200",
+      "label": "S200",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": 200
+      }
+    },
+    {
+      "id": "S-200",
+      "label": "S-200",
+      "rateSpec": {
+        "kind": "parallel",
+        "shockBp": -200
+      }
+    }
+  ],
+  "reports": [
+    {
+      "id": "r-mgmt",
+      "view": "managementView",
+      "metrics": [
+        "nii",
+        "eve"
+      ]
+    },
+    {
+      "id": "r-reg",
+      "view": "regulatoryView",
+      "metrics": [
+        "eve",
+        "ir-gap",
+        "liq-gap"
+      ]
+    },
+    {
+      "id": "r-gov",
+      "view": "governanceTier",
+      "metrics": [
+        "eve"
+      ],
+      "note": "How much EVE sits behind a Tier 1 model versus a management assumption."
+    }
+  ],
+  "validationRules": {
+    "typeGate": [
+      "T1 Every stage's consumed types are produced by a declared upstream stage or supplied by a context file.",
+      "T2 Unit and sign conventions agree across every edge, per the contract plane.",
+      "T3 The as-of date and grid are consistent across all stages.",
+      "T4 The dependency graph is acyclic and every dependsOn resolves.",
+      "T5 No stage is orphaned: everything is reachable from an input and reaches a metric."
+    ],
+    "routingGate": [
+      "R1 For each behavioral stage, every metric in feeds[] must be non-none for that stage's behavioral class in the routing policy.",
+      "R2 A stage whose declared disposition is M may not be routed to a metric the policy marks A, without a documented override.",
+      "R3 Every selector must match at least one position in the book, so a binding cannot silently apply to nothing. Behavioral selectors bind on behavioralClasses, the multi-valued dimension, because one balance can be governed by more than one behavioral model.",
+      "R4 Every position carrying a behavioral class must be matched by at least one behavioral stage, so a material book cannot silently run contractual-only."
+    ]
+  }
+}

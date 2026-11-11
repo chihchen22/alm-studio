@@ -1,0 +1,20 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.vite/
+
+# Demo run artifacts (regenerable from committed seed)
+data/out/
+
+# Local scratch scripts
+scratch/
+
+# Platform file store (ADR-014): local run state and results, regenerable.
+/var/
+
+# Local backups
+*.bak*
+
+# Python bytecode from the replica (replica/)
+__pycache__/

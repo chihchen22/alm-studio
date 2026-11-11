@@ -1,0 +1,35 @@
+{
+  "name": "alm-studio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ALM Studio: a free, open-source tool for learning bank asset and liability management by doing it.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "data"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "demo": "npm run demo --workspace data",
+    "walkthrough": "npm run walkthrough --workspace data",
+    "vanilla": "npm run vanilla --workspace data",
+    "platform": "tsx apps/server/src/main.ts",
+    "studio": "tsx apps/server/scripts/studio.ts",
+    "platform:seed": "tsx apps/server/scripts/seed-store.ts",
+    "learn": "node scripts/learn.mjs",
+    "learn:reset": "node scripts/learn.mjs reset",
+    "accept": "tsx data/src/examples/acceptance.ts",
+    "check:vol-naming": "node scripts/check-vol-naming.mjs",
+    "replica:check": "node scripts/replica-check.mjs",
+    "docs:check": "node scripts/docs-check.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "_note": "Deterministic block of the Python reference readout (run on the shipped public pack on the U.S. Treasury CMT convention, 2026-08-31). Committed here so the twelve-quantity cross-language reproduction gate runs inside the suite without reaching outside the repository.",
+  "_generated_utc": null,
+  "gates_summary": {
+    "passed": 6,
+    "total": 6
+  },
+  "det": {
+    "pv": 993229.4981013333,
+    "pv_pct_face": 99.32294981013334,
+    "wal_years": 10.812633641257582,
+    "life_cpr_base": 0.06083582617107164,
+    "first_year_cpr": 0.02132458302719442,
+    "pv_pct_grid": {
+      "-200": 105.66042701132166,
+      "-100": 104.88819848648893,
+      "base": 99.32294981013334,
+      "+100": 92.73067127331717,
+      "+200": 86.91906461192431
+    },
+    "wal_grid": {
+      "-200": 2.4826675395621995,
+      "-100": 6.318534858230047,
+      "base": 10.812633641257582,
+      "+100": 11.50122284324913,
+      "+200": 11.559527601281454
+    },
+    "effdur_pm100": 6.12020043525299,
+    "effdur_pm200": 4.717278945909153,
+    "option_cost_bp": 0.0
+  },
+  "scurve_reference_points_cpr": {
+    "-200bp": 6.032613939578493,
+    "atm": 10.47563262125337,
+    "+100bp": 35.5,
+    "+200bp": 60.52436737874663
+  }
+}

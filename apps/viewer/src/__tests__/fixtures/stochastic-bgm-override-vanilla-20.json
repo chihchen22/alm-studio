@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "0.3.0",
+  "kind": "stochastic-distribution",
+  "model": "bgm-lmm-2f",
+  "runId": "fixture-stochastic-bgm-override-vanilla-20",
+  "scenarioId": "S0",
+  "assumptionSetId": "vanilla-empty-v1",
+  "seed": "42",
+  "nPaths": 20,
+  "horizonMonths": 360,
+  "discountBasis": "all-in",
+  "curveDefault": {
+    "kind": "default",
+    "version": 2
+  },
+  "calibration": {
+    "source": "override",
+    "model": "bgm-lmm-2f",
+    "a": 0.2,
+    "b": 0.5,
+    "c": 0.48,
+    "d": 0.8,
+    "beta": 0,
+    "volScalar": 0.031,
+    "reason": "illustrative parameters"
+  },
+  "martingale": {
+    "correctedMaxAbsErrBp": 4.440892098500626e-12,
+    "rawTerminalErrBp": 486.07453786275653,
+    "terminalDfStandardError": 0.038884539341735726,
+    "terminalYears": 30
+  },
+  "simulation": {
+    "nCapFires": 0,
+    "nFloorFires": 0,
+    "nTotalEvolutions": 1299600,
+    "savedTenors": [
+      0.002777777777777778,
+      0.08333333333333333,
+      1,
+      2,
+      3,
+      5,
+      7,
+      10,
+      20,
+      30
+    ],
+    "fixedCostMs": 71.55712499999981
+  },
+  "eveDistribution": {
+    "nPaths": 20,
+    "mean": 120866072.26933393,
+    "standardError": 145603.6157652808,
+    "stdev": 18278020.780113548,
+    "min": 93168443.61522603,
+    "max": 150438929.48493993,
+    "quantiles": [
+      {
+        "p": 0.05,
+        "value": 95912859.08912948
+      },
+      {
+        "p": 0.25,
+        "value": 106612800.82259306
+      },
+      {
+        "p": 0.5,
+        "value": 120897065.8638925
+      },
+      {
+        "p": 0.75,
+        "value": 134529978.9051952
+      },
+      {
+        "p": 0.95,
+        "value": 145881873.97998086
+      }
+    ]
+  },
+  "nii12mDistribution": {
+    "nPaths": 20,
+    "mean": 11772965.658384612,
+    "standardError": 1.862645149230957e-9,
+    "stdev": 5.7331008021821494e-9,
+    "min": 11772965.658384606,
+    "max": 11772965.658384606,
+    "quantiles": [
+      {
+        "p": 0.05,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.25,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.5,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.75,
+        "value": 11772965.658384606
+      },
+      {
+        "p": 0.95,
+        "value": 11772965.658384606
+      }
+    ]
+  },
+  "notImplemented": [
+    {
+      "_tag": "not-implemented",
+      "layer": "stochastic.shocked-scenarios",
+      "reason": "stochastic distributions are computed for the base scenario only this window; shocked-scenario distributions await the shocked-NII convention migration and are refused, not approximated. NII horizon distributed: 12 months."
+    }
+  ]
+}
